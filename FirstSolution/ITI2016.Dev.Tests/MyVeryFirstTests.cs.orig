@@ -202,6 +202,8 @@ namespace ITI2016.Dev.Tests
             new V3IndexControl1().Run();
             new V3IndexControl2().Run();
         }
+<<<<<<< HEAD
+=======
 
         [Test]
         public void check_that_index_is_controlled_Version_4()
@@ -239,5 +241,8 @@ namespace ITI2016.Dev.Tests
             ASSERTThrows<IndexOutOfRangeException>( delegate() { int x = new IPV4( 87987 )[5]; } );
             ASSERTThrows<IndexOutOfRangeException>( delegate() { new IPV4( 87987 ).SetByte( 5, 98 ); } );
         }
+
+
+>>>>>>> upstream/master
     }
 }
