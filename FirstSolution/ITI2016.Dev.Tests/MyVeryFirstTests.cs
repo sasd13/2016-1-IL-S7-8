@@ -83,6 +83,90 @@ namespace ITI2016.Dev.Tests
         }
 
 
+        [Test]
+        // Version n°0:
+        //[ExpectedException(typeof(IndexOutOfRangeException))]
+        public void check_that_index_is_controlled_Version_1()
+        {
+            try
+            {
+                int x = new IPV4( 87987 )[5];
+
+                new IPV4( 87987 ).SetByte( 5, 99 );
+
+                string msg = string.Format( "This SHOULD have thrown a {0}", "IndexOutOfRangeException" );
+                throw new AssertionException( msg );
+            }
+            catch( IndexOutOfRangeException ex )
+            {
+            }
+        }
+
+        abstract class ExceptionChecker
+        {
+            public void Run()
+            {
+                try
+                {
+                    DoAction();
+                    string msg = string.Format( "This SHOULD have thrown a {0}", "IndexOutOfRangeException" );
+                    throw new AssertionException( msg );
+                }
+                catch( IndexOutOfRangeException ex )
+                {
+                }
+            }
+
+            protected abstract void DoAction();
+        }
+
+        class IndexControl1 : ExceptionChecker
+        {
+            protected override void DoAction()
+            {
+                int x = new IPV4( 87987 )[5];
+            }
+        }
+
+        class IndexControl2 : ExceptionChecker
+        {
+            protected override void DoAction()
+            {
+                new IPV4( 87987 ).SetByte( 5, 98 );
+            }
+        }
+
+        public void check_that_index_is_controlled_Version_2()
+        {
+            new IndexControl1().Run();
+            new IndexControl2().Run();
+        }
+
+
+        abstract class ExceptionChecker<T>
+        {
+            public void Run()
+            {
+                try
+                {
+                    DoAction();
+                    string msg = string.Format( "This SHOULD have thrown a {0}", "IndexOutOfRangeException" );
+                    throw new AssertionException( msg );
+                }
+                catch( IndexOutOfRangeException ex )
+                {
+                }
+            }
+
+            protected abstract void DoAction();
+        }
+
+        public void check_that_index_is_controlled_Version_3()
+        {
+            new V3IndexControl1().Run();
+            new V3IndexControl2().Run();
+        }
+
 
     }
 }

@@ -24,16 +24,20 @@ namespace ITI2016.Dev.Tests
         }
 
         [Test]
-        public void CarStatus_speed_management()
+        public void CarStatus_gear_management()
         {
             // Speed n°1
             CarStatus s = CarStatus.IsRunning | (CarStatus)(1 << 5);
-            Assert.That( s.GetSpeed(), Is.EqualTo( 1 ) );
+            Assert.That( s.GetGear(), Is.EqualTo( 1 ) );
             // Speed n°3
-            s = (s & ~CarStatus.SpeedMask) | (s | (CarStatus)(3 << 5));
+            s = (s & ~CarStatus.GearMask) | (s | (CarStatus)(3 << 5));
 
-            s = s.SetSpeed( 3 );
+            s = s.SetGear( 3 );
+
+            s = CarStatusExtension.SetGear( s, 4 );
         }
+
+
 
     }
 }
