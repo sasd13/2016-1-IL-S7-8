@@ -28,7 +28,7 @@ namespace ITI2016.Dev.Tests
         {
             // Speed n°1
             CarStatus s = CarStatus.IsRunning | (CarStatus)(1 << 5);
-            Assert.That( s.GetGear(), Is.EqualTo( 1 ) );
+            Assert.That( s.GetGear(), Is.EqualTo( CarGear.First ) );
             // Speed n°3
             s = (s & ~CarStatus.GearMask) | (s | (CarStatus)(3 << 5));
 

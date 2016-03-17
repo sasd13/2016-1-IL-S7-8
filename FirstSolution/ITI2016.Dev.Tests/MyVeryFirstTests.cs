@@ -136,24 +136,43 @@ namespace ITI2016.Dev.Tests
             }
         }
 
+        [Test]
         public void check_that_index_is_controlled_Version_2()
         {
             new IndexControl1().Run();
             new IndexControl2().Run();
         }
 
-
-        abstract class ExceptionChecker<T>
+        abstract class ExceptionCheckerVERSION0<T>
         {
             public void Run()
             {
                 try
                 {
                     DoAction();
-                    string msg = string.Format( "This SHOULD have thrown a {0}", "IndexOutOfRangeException" );
+                }
+                catch( Exception ex )
+                {
+                    if( ex is T ) return;
+                }
+                string msg = string.Format( "This SHOULD have thrown a {0}", typeof( T ).Name );
+                throw new AssertionException( msg );
+            }
+
+            protected abstract void DoAction();
+        }
+
+        abstract class ExceptionChecker<T> where T : Exception
+        {
+            public void Run()
+            {
+                try
+                {
+                    DoAction();
+                    string msg = string.Format( "This SHOULD have thrown a {0}", typeof( T ).Name );
                     throw new AssertionException( msg );
                 }
-                catch( IndexOutOfRangeException ex )
+                catch( T )
                 {
                 }
             }
@@ -161,10 +180,64 @@ namespace ITI2016.Dev.Tests
             protected abstract void DoAction();
         }
 
+        class V3IndexControl1 : ExceptionChecker<IndexOutOfRangeException>
+        {
+            protected override void DoAction()
+            {
+                int x = new IPV4( 87987 )[5];
+            }
+        }
+
+        class V3IndexControl2 : ExceptionChecker<IndexOutOfRangeException>
+        {
+            protected override void DoAction()
+            {
+                new IPV4( 87987 ).SetByte( 5, 98 );
+            }
+        }
+
+        [Test]
         public void check_that_index_is_controlled_Version_3()
         {
             new V3IndexControl1().Run();
             new V3IndexControl2().Run();
+        }
+
+        [Test]
+        public void check_that_index_is_controlled_Version_4()
+        {
+            ASSERTThrows<IndexOutOfRangeException>( TestGetter );
+            ASSERTThrows<IndexOutOfRangeException>( TestSetter );
+        }
+
+        private void ASSERTThrows<T>( Action shouldThrow ) where T : Exception
+        {
+            try
+            {
+                shouldThrow();
+                string msg = string.Format( "This SHOULD have thrown a {0}", typeof( T ).Name );
+                throw new AssertionException( msg );
+            }
+            catch( T )
+            {
+            }
+        }
+
+        static void TestGetter()
+        {
+            int x = new IPV4( 87987 )[5];
+        }
+
+        static void TestSetter()
+        {
+            new IPV4( 87987 ).SetByte( 5, 98 );
+        }
+
+        [Test]
+        public void check_that_index_is_controlled_Version_5()
+        {
+            ASSERTThrows<IndexOutOfRangeException>( delegate() { int x = new IPV4( 87987 )[5]; } );
+            ASSERTThrows<IndexOutOfRangeException>( delegate() { new IPV4( 87987 ).SetByte( 5, 98 ); } );
         }
 
 
