@@ -12,11 +12,9 @@ namespace ITI2016.Dev.Tests
         IEnumerator<T> GetEnumerator();
     }
 
-    interface IReadOnlyCollection<T>
+    interface IReadOnlyCollection<T> : IEnumerable<T>
     {
         int Count { get; }
-
-        IEnumerator<T> GetEnumerator();
     }
 
     interface IReadOnlyList<T> : IReadOnlyCollection<T>
