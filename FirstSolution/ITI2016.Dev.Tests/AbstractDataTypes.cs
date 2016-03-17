@@ -31,6 +31,8 @@ namespace ITI2016.Dev.Tests
         void InsertAt( int i, T e );
 
         void RemoveAt( int i );
+
+        void Clear();
     }
 
     interface ISet<T> : IReadOnlyCollection<T>
