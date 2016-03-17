@@ -6,17 +6,7 @@ using System.Threading.Tasks;
 
 namespace ITI2016.Dev
 {
-    /*
-    A Car can be in multiple states:
-    - The engine is running or not.
-    - There may be a speed engaged (typically 5 speeds)
-    - The clutch pedal can be pressed or not.
-    - The gas pedal can be pressed or not.
-    - The brake pedal can be pressed or not.
-    - The hand brake can be set or not.
-
-    How do you (efficiently) encode this state?
-    */
+<<<<<<< HEAD
     public enum CarStatus : byte
     {
         IsRunning = 1,                  //00000001
@@ -31,10 +21,56 @@ namespace ITI2016.Dev
                                                     //100 : Gear 4 (Vitesse 4)
                                                     //101 : Gear 5 (Vitesse 5)
                                                     //110 : Reverse (Marche arriere)
+=======
+    /*
+    A Car can be in multiple states:
+    - The engine is running or not.
+    - There may be a speed engaged (typically 5 speeds)
+    - The clutch pedal can be pressed or not.
+    - The gas pedal can be pressed or not.
+    - The brake pedal can be pressed or not.
+    - The hand brake can be set or not.
+
+    How do you (efficiently) encode this state?
+    */
+    public enum CarStatus : byte
+    {
+        IsRunning = 1,
+        IsClutchPedal = 1 << 1,
+        IsGasPedal = 1 << 2,
+        IsBrakePedal = 1 << 3,
+        IsHandBrake = 1 << 4,
+        GearMask = 7 << 5
+>>>>>>> upstream/master
     }
 
     public enum CarGear
     {
+<<<<<<< HEAD
+        None = 0,
+        Gear1 = 1,
+        Gear2 = 2,
+        Gear3 = 3,
+        Gear4 = 4,
+        Gear5 = 5,
+        Reverse = 6
+    }
+
+    public static class CarStatusExtension
+    {
+        public static CarGear GetGear(this CarGear c)
+        {
+            return CarGear.None;
+        }
+
+        public static CarGear SetGear(this CarGear c, int value)
+        {
+            return CarGear.None;
+        }
+    }
+}
+
+=======
         None,
         First = 1,
         Second = 2,
@@ -88,3 +124,4 @@ namespace ITI2016.Dev
 
 
 }
+>>>>>>> upstream/master

@@ -28,7 +28,7 @@ namespace ITI2016.Dev.Tests
             byte b3 = (byte)(b1 + b2);
 
             // Assert
-            Assert.That(b3, Is.EqualTo(103));
+            Assert.That( b3, Is.EqualTo( 108 ) );
         }
 
 
@@ -46,64 +46,6 @@ namespace ITI2016.Dev.Tests
 
             // Assert
             Assert.That(sb, Is.EqualTo(negative));
-        }
-
-        public struct IPV4
-        {
-            readonly int _address;
-
-            public IPV4(int ipAddress)
-            {
-                _address = ipAddress;
-            }
-
-            public IPV4(byte hiByte, byte hiLoByte, byte loHiByte, byte loByte)
-            {
-                _address = (hiByte << 24) | (hiLoByte << 16) | (loHiByte << 8) | loByte;
-            }
-
-            public int this[int i]
-            {
-                get
-                {
-                    if (i < 0 || i > 3) throw new IndexOutOfRangeException();
-                    return (_address >> (i * 8)) & 0xFF;
-                }
-            }
-
-            public IPV4 SetByte(int index, byte value)
-            {
-                if (index < 0 | index > 3) throw new IndexOutOfRangeException();
-                index <<= 3;
-                return new IPV4((_address & ~(0xFF << index)) | (value << index));
-            }
-
-            public IPV4 ClearByte(int index)
-            {
-                if (index < 0 | index > 3) throw new IndexOutOfRangeException();
-                return new IPV4(_address & ~(0xFF << (index * 8)));
-            }
-
-            // Version 0:
-            //public override string ToString()
-            //{
-            //    return this[3].ToString() + '.' + this[2].ToString() + '.' + this[1].ToString() + '.' + this[0].ToString();
-            //}
-
-            // Version 1:
-            //public override string ToString()
-            //{
-            //    return string.Format( "{0}.{1}.{2}.{3}", this[3], this[2], this[1], this[0] );
-            //}
-
-            // Version 2:
-            //public override string ToString()
-            //{
-            //    return $"{this[3]}.{this[2]}.{this[1]}.{this[0]}";
-            //}
-
-            // Version 3:
-            public override string ToString() => $"{this[3]}.{this[2]}.{this[1]}.{this[0]}";
         }
 
         [Test]
@@ -140,12 +82,89 @@ namespace ITI2016.Dev.Tests
             Assert.That(a1.ToString(), Is.EqualTo(expected));
         }
 
+
         [Test]
-        [ExpectedException(typeof(IndexOutOfRangeException))]
-        public void check_that_index_is_controlled()
+        // Version n°0:
+        //[ExpectedException(typeof(IndexOutOfRangeException))]
+        public void check_that_index_is_controlled_Version_1()
         {
-            IPV4 a = new IPV4();
-            int x = a[5];
+            try
+            {
+                int x = new IPV4( 87987 )[5];
+
+                new IPV4( 87987 ).SetByte( 5, 99 );
+
+                string msg = string.Format( "This SHOULD have thrown a {0}", "IndexOutOfRangeException" );
+                throw new AssertionException( msg );
+            }
+            catch( IndexOutOfRangeException ex )
+            {
+            }
+        }
+
+        abstract class ExceptionChecker
+        {
+            public void Run()
+            {
+                try
+                {
+                    DoAction();
+                    string msg = string.Format( "This SHOULD have thrown a {0}", "IndexOutOfRangeException" );
+                    throw new AssertionException( msg );
+                }
+                catch( IndexOutOfRangeException ex )
+                {
+                }
+            }
+
+            protected abstract void DoAction();
+        }
+
+        class IndexControl1 : ExceptionChecker
+        {
+            protected override void DoAction()
+            {
+                int x = new IPV4( 87987 )[5];
+            }
+        }
+
+        class IndexControl2 : ExceptionChecker
+        {
+            protected override void DoAction()
+            {
+                new IPV4( 87987 ).SetByte( 5, 98 );
+            }
+        }
+
+        public void check_that_index_is_controlled_Version_2()
+        {
+            new IndexControl1().Run();
+            new IndexControl2().Run();
+        }
+
+
+        abstract class ExceptionChecker<T>
+        {
+            public void Run()
+            {
+                try
+                {
+                    DoAction();
+                    string msg = string.Format( "This SHOULD have thrown a {0}", "IndexOutOfRangeException" );
+                    throw new AssertionException( msg );
+                }
+                catch( IndexOutOfRangeException ex )
+                {
+                }
+            }
+
+            protected abstract void DoAction();
+        }
+
+        public void check_that_index_is_controlled_Version_3()
+        {
+            new V3IndexControl1().Run();
+            new V3IndexControl2().Run();
         }
     }
 }
