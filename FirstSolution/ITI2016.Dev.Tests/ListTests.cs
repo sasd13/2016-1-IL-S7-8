@@ -60,6 +60,39 @@ namespace ITI2016.Dev.Tests
         }
 
         [Test]
+        public void removing_items()
+        {
+            List<int> list = new List<int>();
+            list.Add( 1 );
+            list.Add( 2 );
+            list.Add( 3 );
+            list.Add( 4 );
+            list.Add( 5 );
+            list.Add( 6 );
+            Assert.That( list.Count, Is.EqualTo( 6 ) );
+            list.RemoveAt( 3 );
+            Assert.That( list.Count, Is.EqualTo( 5 ) );
+            Assert.That( list[0], Is.EqualTo( 1 ) );
+            Assert.That( list[1], Is.EqualTo( 2 ) );
+            Assert.That( list[2], Is.EqualTo( 3 ) );
+            Assert.That( list[3], Is.EqualTo( 5 ) );
+            Assert.That( list[4], Is.EqualTo( 6 ) );
+
+            list.RemoveAt( 0 );
+            Assert.That( list.Count, Is.EqualTo( 4 ) );
+            Assert.That( list[0], Is.EqualTo( 2 ) );
+            Assert.That( list[1], Is.EqualTo( 3 ) );
+            Assert.That( list[2], Is.EqualTo( 5 ) );
+            Assert.That( list[3], Is.EqualTo( 6 ) );
+
+            list.RemoveAt( 3 );
+            Assert.That( list.Count, Is.EqualTo( 3 ) );
+            Assert.That( list[0], Is.EqualTo( 2 ) );
+            Assert.That( list[1], Is.EqualTo( 3 ) );
+            Assert.That( list[2], Is.EqualTo( 5 ) );
+        }
+
+        [Test]
         public void using_our_enumerator_on_an_empty_list()
         {
             List<int> list = new List<int>();
