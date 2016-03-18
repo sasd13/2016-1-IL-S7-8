@@ -67,7 +67,7 @@ namespace ITI2016.Dev
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return new ListEnumerator(this);
         }
 
         public void InsertAt( int i, T e )
@@ -85,6 +85,36 @@ namespace ITI2016.Dev
             Debug.Assert( _count >= 1 );
             Array.Copy( _array, i + 1, _array, i, --_count - i );
             _array[_count] = default( T );
+        }
+
+        private class ListEnumerator : IEnumerator<T>
+        {
+            readonly List<T> list;
+            int current_index;
+
+            public ListEnumerator(List<T> m_list)
+            {
+                list = m_list;
+                current_index = -1;
+            }
+
+            public T Current
+            {
+                get
+                {
+                    if (current_index == -1 || current_index == list._count) throw new InvalidOperationException();
+
+                    return list[current_index];
+                }
+            }
+
+            public bool MoveNext()
+            {
+                if (list._count == 0 || current_index == list._count) return false;
+                current_index++;
+
+                return true;
+            }
         }
     }
 }
