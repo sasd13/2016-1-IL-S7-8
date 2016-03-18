@@ -22,13 +22,13 @@ namespace ITI2016.Dev
         {
             get
             {
-                if( i < 0 || i >= _count ) throw new InvalidOperationException();
+                if( i < 0 || i >= _count ) throw new IndexOutOfRangeException();
                 return _array[i];
             }
 
             set
             {
-                if( i < 0 || i >= _count ) throw new InvalidOperationException();
+                if( i < 0 || i >= _count ) throw new IndexOutOfRangeException();
                 _array[i] = value;
             }
         }
@@ -72,7 +72,7 @@ namespace ITI2016.Dev
 
         public void InsertAt( int i, T e )
         {
-            if( i < 0 || i > _count ) throw new InvalidOperationException();
+            if( i < 0 || i > _count ) throw new IndexOutOfRangeException();
             EnsureEnoughSpace();
             int lenToCopy = _count++ - i;
             if( lenToCopy > 0 ) Array.Copy( _array, i, _array, i + 1, lenToCopy );
@@ -81,7 +81,7 @@ namespace ITI2016.Dev
 
         public void RemoveAt( int i )
         {
-            if( i < 0 || i >= _count ) throw new InvalidOperationException();
+            if( i < 0 || i >= _count ) throw new IndexOutOfRangeException();
             Debug.Assert( _count >= 1 );
             Array.Copy( _array, i + 1, _array, i, --_count - i );
             _array[_count] = default( T );
