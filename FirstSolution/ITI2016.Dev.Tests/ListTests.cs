@@ -93,6 +93,41 @@ namespace ITI2016.Dev.Tests
         }
 
         [Test]
+        public void inserting_items()
+        {
+            List<int> list = new List<int>();
+            list.InsertAt( 0, 876 );
+            Assert.That( list.Count, Is.EqualTo( 1 ) );
+            Assert.That( list[0], Is.EqualTo( 876 ) );
+
+            list.InsertAt( 0, -5 );
+            Assert.That( list.Count, Is.EqualTo( 2 ) );
+            Assert.That( list[0], Is.EqualTo( -5 ) );
+            Assert.That( list[1], Is.EqualTo( 876 ) );
+
+            list.InsertAt( 1, 98 );
+            Assert.That( list.Count, Is.EqualTo( 3 ) );
+            Assert.That( list[0], Is.EqualTo( -5 ) );
+            Assert.That( list[1], Is.EqualTo( 98 ) );
+            Assert.That( list[2], Is.EqualTo( 876 ) );
+
+            list.InsertAt( 3, -1000 );
+            Assert.That( list.Count, Is.EqualTo( 4 ) );
+            Assert.That( list[0], Is.EqualTo( -5 ) );
+            Assert.That( list[1], Is.EqualTo( 98 ) );
+            Assert.That( list[2], Is.EqualTo( 876 ) );
+            Assert.That( list[3], Is.EqualTo( -1000 ) );
+
+            list.InsertAt( 3, 12 );
+            Assert.That( list.Count, Is.EqualTo( 5 ) );
+            Assert.That( list[0], Is.EqualTo( -5 ) );
+            Assert.That( list[1], Is.EqualTo( 98 ) );
+            Assert.That( list[2], Is.EqualTo( 876 ) );
+            Assert.That( list[3], Is.EqualTo( 12 ) );
+            Assert.That( list[4], Is.EqualTo( -1000 ) );
+        }
+
+        [Test]
         public void using_our_enumerator_on_an_empty_list()
         {
             List<int> list = new List<int>();
