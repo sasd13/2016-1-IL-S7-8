@@ -37,26 +37,27 @@ namespace ITI2016.Dev
 
         public void Add( T e )
         {
-            if( _count < _array.Length )
+            Debug.Assert( _count <= _array.Length, "This is an INVARIANT !!!!!!!" );
+            if( _count == _array.Length )
             {
-                _array[_count++] = e;
-            }
-            else
-            {
-                Debug.Assert( _count == _array.Length, "This is obvious!" );
                 T[] t = new T[_count + 1];
                 for( int i = 0; i < _count; ++i )
                 {
                     t[i] = _array[i];
                 }
-                t[_count++] = e;
                 _array = t;
             }
+            Debug.Assert( _count < _array.Length );
+            _array[_count++] = e;
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            if( !typeof(T).IsValueType )
+            {
+                for( int i = 0; i < _count; ++i ) _array[i] = default(T);
+            }
+            _count = 0;
         }
 
         public IEnumerator<T> GetEnumerator()
