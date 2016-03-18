@@ -4,25 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ITI2016.Dev.Tests
+namespace ITI2016.Dev
 {
 
-    interface IEnumerable<T>
+    public interface IEnumerable<T>
     {
         IEnumerator<T> GetEnumerator();
     }
 
-    interface IReadOnlyCollection<T> : IEnumerable<T>
+    public interface IReadOnlyCollection<T> : IEnumerable<T>
     {
         int Count { get; }
     }
 
-    interface IReadOnlyList<T> : IReadOnlyCollection<T>
+    public interface IReadOnlyList<T> : IReadOnlyCollection<T>
     {
         T this[int i] { get; }
     }
 
-    interface IList<T> : IReadOnlyList<T>
+    public interface IList<T> : IReadOnlyList<T>
     {
         new T this[int i] { get; set; }
 
@@ -35,7 +35,7 @@ namespace ITI2016.Dev.Tests
         void Clear();
     }
 
-    interface ISet<T> : IReadOnlyCollection<T>
+    public interface ISet<T> : IReadOnlyCollection<T>
     {
         void Add( T e );
 
@@ -44,14 +44,14 @@ namespace ITI2016.Dev.Tests
         void Remove( T e );
     }
 
-    interface IEnumerator<T>
+    public interface IEnumerator<T>
     {
         bool MoveNext();
 
         T Current { get; }
     }
 
-    interface IEnumeratorJava<T>
+    public interface IEnumeratorJava<T>
     {
         bool HasNext();
 

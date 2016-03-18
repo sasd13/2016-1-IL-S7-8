@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractDataTypes.cs" />
     <Compile Include="CarStatusTests.cs" />
     <Compile Include="MyVeryFirstTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
