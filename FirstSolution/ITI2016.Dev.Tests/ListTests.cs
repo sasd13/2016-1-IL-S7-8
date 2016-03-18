@@ -16,7 +16,7 @@ namespace ITI2016.Dev.Tests
             List<int> list = new List<int>();
             IEnumerator<int> e = list.GetEnumerator();
             Assert.That( e.MoveNext(), Is.False );
-            Assert.Throws<InvalidOperationException>( () => e.MoveNext() );
+            Assert.Throws<InvalidOperationException>( () => { int x = e.Current; } );
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace ITI2016.Dev.Tests
                     case 3: Assert.That( e.Current == 987 ); break;
                 }
             }
-            Assert.Throws<InvalidOperationException>( () => e.MoveNext() );
+            Assert.Throws<InvalidOperationException>( () => Console.Write( e.Current ) );
         }
 
     }
