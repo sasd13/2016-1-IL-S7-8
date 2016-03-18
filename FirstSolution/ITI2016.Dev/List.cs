@@ -45,7 +45,7 @@ namespace ITI2016.Dev
         {
             if( _count == _array.Length )
             {
-                T[] t = new T[_count + 1];
+                T[] t = new T[_count * 2];
                 for( int i = 0; i < _count; ++i )
                 {
                     t[i] = _array[i];
