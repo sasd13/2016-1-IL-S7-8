@@ -38,6 +38,12 @@ namespace ITI2016.Dev
         public void Add( T e )
         {
             Debug.Assert( _count <= _array.Length, "This is an INVARIANT !!!!!!!" );
+            EnsureEnoughSpace();
+            _array[_count++] = e;
+        }
+
+        private void EnsureEnoughSpace()
+        {
             if( _count == _array.Length )
             {
                 T[] t = new T[_count + 1];
@@ -48,7 +54,6 @@ namespace ITI2016.Dev
                 _array = t;
             }
             Debug.Assert( _count < _array.Length );
-            _array[_count++] = e;
         }
 
         public void Clear()
@@ -67,12 +72,19 @@ namespace ITI2016.Dev
 
         public void InsertAt( int i, T e )
         {
-            throw new NotImplementedException();
+            if( i < 0 || i > _count ) throw new InvalidOperationException();
+            EnsureEnoughSpace();
+            int lenToCopy = _count++ - i;
+            if( lenToCopy > 0 ) Array.Copy( _array, i, _array, i + 1, lenToCopy );
+            _array[i] = e;
         }
 
         public void RemoveAt( int i )
         {
-            throw new NotImplementedException();
+            if( i < 0 || i >= _count ) throw new InvalidOperationException();
+            Debug.Assert( _count >= 1 );
+            Array.Copy( _array, i + 1, _array, i, --_count - i );
+            _array[_count] = default( T );
         }
     }
 }
