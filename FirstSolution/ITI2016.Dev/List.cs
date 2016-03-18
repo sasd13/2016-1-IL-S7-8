@@ -17,7 +17,6 @@ namespace ITI2016.Dev
             _array = new T[4];
         }
 
-
         public T this[int i]
         {
             get
