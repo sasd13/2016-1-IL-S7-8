@@ -64,9 +64,35 @@ namespace ITI2016.Dev
             _count = 0;
         }
 
+        class E : IEnumerator<T>
+        {
+            readonly List<T> _owner;
+            int _current;
+
+            public E( List<T> owner )
+            {
+                _owner = owner;
+                _current = -1;
+            }
+
+            public T Current 
+            {
+                get
+                {
+                    if( _current < 0 || _current >= _owner.Count ) throw new InvalidOperationException();
+                    return _owner._array[_current];
+                }
+            }
+
+            public bool MoveNext()
+            {
+                return ++_current < _owner._count;
+            }
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return new E( this );
         }
 
         public void InsertAt( int i, T e )
