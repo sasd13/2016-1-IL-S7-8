@@ -11,7 +11,6 @@ namespace ITI2016.Dev.Tests
     [TestFixture]
     public class ComplexityMeasureTests
     {
-
         [Test]
         public void testing_list_implementation()
         {
@@ -39,6 +38,5 @@ namespace ITI2016.Dev.Tests
                 Console.WriteLine( "{0}\t{1}", n, w.ElapsedTicks );
             }
         }
-
     }
 }

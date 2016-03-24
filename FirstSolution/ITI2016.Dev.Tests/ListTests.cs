@@ -10,7 +10,6 @@ namespace ITI2016.Dev.Tests
     [TestFixture]
     public class ListTests
     {
-
         [Test]
         public void adding_items()
         {
@@ -158,8 +157,5 @@ namespace ITI2016.Dev.Tests
             }
             Assert.Throws<InvalidOperationException>( () => Console.Write( e.Current ) );
         }
-
-
-
     }
 }

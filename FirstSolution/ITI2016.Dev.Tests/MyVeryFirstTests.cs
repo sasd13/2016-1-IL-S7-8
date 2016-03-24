@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace ITI2016.Dev.Tests
 {
-
     [TestFixture]
     public class MyVeryFirstTests
     {
@@ -30,7 +29,6 @@ namespace ITI2016.Dev.Tests
             // Assert
             Assert.That( b3, Is.EqualTo( 108 ) );
         }
-
 
         [TestCase(130, -126)]
         [TestCase(131, -125)]
@@ -81,7 +79,6 @@ namespace ITI2016.Dev.Tests
             IPV4 a1 = a.SetByte(index, value);
             Assert.That(a1.ToString(), Is.EqualTo(expected));
         }
-
 
         [Test]
         // Version n°0:

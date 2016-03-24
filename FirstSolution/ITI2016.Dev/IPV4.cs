@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace ITI2016.Dev
 {
-
     public struct IPV4
     {
         readonly int _address;
@@ -64,6 +63,5 @@ namespace ITI2016.Dev
         // Version 3:
         public override string ToString() => $"{this[3]}.{this[2]}.{this[1]}.{this[0]}";
     }
-
 }
 

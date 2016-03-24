@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace ITI2016.Dev
 {
-
     public interface IEnumerable<T>
     {
         IEnumerator<T> GetEnumerator();
@@ -112,7 +111,4 @@ namespace ITI2016.Dev
         T GetNext();
 
     }
-
-
-
 }

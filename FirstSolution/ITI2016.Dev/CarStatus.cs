@@ -82,9 +82,5 @@ namespace ITI2016.Dev
         {
             return (s & ~CarStatus.GearMask) | (s | (CarStatus)(gear << 5));
         }
-
     }
-
-
-
 }
