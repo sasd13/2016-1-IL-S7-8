@@ -37,8 +37,7 @@ namespace ITI2016.Dev
                     index++;
                     if (enumerator.Current.Key.Equals(k))
                     {
-                        _list.RemoveAt(index);
-                        _list.InsertAt(index, new KeyValuePair<TKey, TValue>(k, value));
+                        _list[index] = new KeyValuePair<TKey, TValue>(k, value);
                         setted = true;
                         break;
                     }
@@ -46,9 +45,14 @@ namespace ITI2016.Dev
 
                 if (!setted)
                 {
-                    Add(k, value);
+                    performAdd(k, value);
                 }
             }
+        }
+
+        private void performAdd(TKey k, TValue v)
+        {
+            _list.Add(new KeyValuePair<TKey, TValue>(k, v));
         }
 
         public int Count
@@ -94,7 +98,7 @@ namespace ITI2016.Dev
                 throw new InvalidOperationException();
             }
 
-            _list.InsertAt(_list.Count, new KeyValuePair<TKey, TValue>(k, v));
+            performAdd(k, v);
         }
 
         public bool ContainsKey(TKey k)
