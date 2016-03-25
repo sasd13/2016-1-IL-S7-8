@@ -95,11 +95,6 @@ namespace ITI2016.Dev
         public void Add( TKey k, TValue v )
         {
             // 1 - Finds the bucket index.
-            // 2 - Ensures that k does not appear in the linked list of node for the bucket.
-            //     If a node is found throws an InvalidArgumentException.
-            // 3 - Inserts a new Node in the linked list with k and v.
-
-            // 1 - Finds the bucket index.
             int idxBucket = FindBucketIndex( k );
             // 2 - Finds the Node in the linked list where node.Key equals k.
             Node n = FindNodeInBucket( idxBucket, k );
@@ -121,7 +116,16 @@ namespace ITI2016.Dev
 
         public bool ContainsValue( TValue v )
         {
-            throw new NotImplementedException();
+            for( int i = 0; i < _buckets.Length; i++ )
+            {
+                Node n = _buckets[i];
+                while( n != null )
+                {
+                    if( n.Value.Equals( v ) ) return true;
+                    n = n.Next;
+                }
+            }
+            return false;
         }
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
@@ -132,10 +136,32 @@ namespace ITI2016.Dev
         public bool Remove( TKey key )
         {
             // 1 - Finds the bucket index.
+            int idxBucket = FindBucketIndex( key );
             // 2 - Finds the Node in the linked list where node.Key equals k.
+            Node prevNode = null;
+            Node n = _buckets[idxBucket];
+            while( n != null )
+            {
+                if( n.Key.Equals( key ) ) break;
+                prevNode = n;
+                n = n.Next;
+            }
             // 3 - If node found, removes it and returns true.
             //     Otherwise returns false.
-            throw new NotImplementedException();
+            if( n != null )
+            {
+                if( prevNode == null )
+                {
+                    _buckets[idxBucket] = n.Next;
+                }
+                else
+                {
+                    prevNode.Next = n.Next;
+                }
+                --_count;
+                return true;
+            }
+            return false;
         }
     }
 }
