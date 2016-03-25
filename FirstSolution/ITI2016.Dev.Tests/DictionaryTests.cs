@@ -24,8 +24,6 @@ namespace ITI2016.Dev.Tests
             Assert.That( dic["Cinquante Quatre"], Is.EqualTo( 54 ) );
         }
 
-
-
         [Test]
         public void using_TryGetValue()
         {
