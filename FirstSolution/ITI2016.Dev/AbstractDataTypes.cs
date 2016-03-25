@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace ITI2016.Dev
 {
-
     public interface IEnumerable<T>
     {
         IEnumerator<T> GetEnumerator();
@@ -98,7 +97,7 @@ namespace ITI2016.Dev
         bool TryGetValue( TKey k, out TValue v );
     }
 
-    public interface IEnumerator<T>
+    public interface IEnumerator<T> : IDisposable
     {
         bool MoveNext();
 

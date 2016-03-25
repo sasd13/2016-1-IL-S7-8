@@ -21,22 +21,25 @@ namespace ITI2016.Dev
         }
         Node[] _buckets;
         int _count;
+        IEqualityComparer<TKey> _comparer;
 
-        int FindBucketIndex( TKey k ) => k.GetHashCode() % _buckets.Length;
+        int FindBucketIndex( TKey k ) =>  Math.Abs( _comparer.GetHashCode( k ) ) % _buckets.Length;
 
         Node FindNodeInBucket( int idxBucket, TKey k )
         {
             Node candidate = _buckets[idxBucket];
             while( candidate != null )
             {
-                if( candidate.Key.Equals( k ) ) break;
+                if( _comparer.Equals( candidate.Key, k ) ) break;
                 candidate = candidate.Next;
             }
             return candidate;
         }
 
-        public Dictionary()
+        public Dictionary( IEqualityComparer<TKey> comparer = null )
         {
+            if( comparer == null ) comparer = EqualityComparer<TKey>.Default;
+            _comparer = comparer;
             _buckets = new Node[7];
         }
 
@@ -141,6 +144,7 @@ namespace ITI2016.Dev
             public E( Dictionary<TKey,TValue> d )
             {
                 _owner = d;
+                _idxBuket = -1;
             }
 
             public KeyValuePair<TKey, TValue> Current
@@ -154,7 +158,20 @@ namespace ITI2016.Dev
 
             public bool MoveNext()
             {
-                throw new NotImplementedException();
+                if( _node == null )
+                {
+                    if( _idxBuket != -1 ) return false;
+                }
+                else _node = _node.Next;
+                while( _node == null && ++_idxBuket < _owner._buckets.Length )
+                {
+                    _node = _owner._buckets[_idxBuket];
+                }
+                return _node != null;
+            }
+
+            public void Dispose()
+            {
             }
         }
 
@@ -172,7 +189,7 @@ namespace ITI2016.Dev
             Node n = _buckets[idxBucket];
             while( n != null )
             {
-                if( n.Key.Equals( key ) ) break;
+                if( _comparer.Equals( n.Key, key ) ) break;
                 prevNode = n;
                 n = n.Next;
             }

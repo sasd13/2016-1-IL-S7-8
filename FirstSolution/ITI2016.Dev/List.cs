@@ -88,6 +88,10 @@ namespace ITI2016.Dev
             {
                 return ++_current < _owner._count;
             }
+
+            public void Dispose()
+            {
+            }
         }
 
         public IEnumerator<T> GetEnumerator()
