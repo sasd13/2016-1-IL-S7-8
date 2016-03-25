@@ -69,6 +69,7 @@ namespace ITI2016.Dev
                         Value = value,
                         Next = _buckets[idxBucket]
                     };
+                    ++_count;
                 }
             }
         }
@@ -97,12 +98,26 @@ namespace ITI2016.Dev
             // 2 - Ensures that k does not appear in the linked list of node for the bucket.
             //     If a node is found throws an InvalidArgumentException.
             // 3 - Inserts a new Node in the linked list with k and v.
+
+            // 1 - Finds the bucket index.
+            int idxBucket = FindBucketIndex( k );
+            // 2 - Finds the Node in the linked list where node.Key equals k.
+            Node n = FindNodeInBucket( idxBucket, k );
+            // 3 - if node found, throws an ArgumentException.
+            //     Otherwise inserts a new Node in the linked list with k and v.
+            if( n != null ) throw new ArgumentException();
+            else
+            {
+                _buckets[idxBucket] = new Node( k )
+                {
+                    Value = v,
+                    Next = _buckets[idxBucket]
+                };
+                ++_count;
+            }
         }
 
-        public bool ContainsKey( TKey k )
-        {
-            throw new NotImplementedException();
-        }
+        public bool ContainsKey( TKey k ) => FindNodeInBucket( FindBucketIndex( k ), k ) != null;
 
         public bool ContainsValue( TValue v )
         {
