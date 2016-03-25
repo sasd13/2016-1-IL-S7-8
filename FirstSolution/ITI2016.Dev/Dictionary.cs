@@ -121,7 +121,6 @@ namespace ITI2016.Dev
                 Node n = _buckets[i];
                 while( n != null )
                 {
-                    //if( n.Value == v ) return true;
                     if( 
                         (n.Value != null && n.Value.Equals( v ))
                         ||
@@ -133,9 +132,35 @@ namespace ITI2016.Dev
             return false;
         }
 
+        public class E : IEnumerator<KeyValuePair<TKey, TValue>>
+        {
+            readonly Dictionary<TKey, TValue> _owner;
+            int _idxBuket;
+            Node _node;
+
+            public E( Dictionary<TKey,TValue> d )
+            {
+                _owner = d;
+            }
+
+            public KeyValuePair<TKey, TValue> Current
+            {
+                get
+                {
+                    if( _node == null ) throw new InvalidOperationException();
+                    return new KeyValuePair<TKey, TValue>( _node.Key, _node.Value );
+                }
+            }
+
+            public bool MoveNext()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return new E( this );
         }
 
         public bool Remove( TKey key )
