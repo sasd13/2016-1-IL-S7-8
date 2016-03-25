@@ -56,10 +56,20 @@ namespace ITI2016.Dev
             set
             {
                 // 1 - Finds the bucket index.
+                int idxBucket = FindBucketIndex( k );
                 // 2 - Finds the Node in the linked list where node.Key equals k.
+                Node n = FindNodeInBucket( idxBucket, k );
                 // 3 - if node found, updates node.Value to value.
                 //     Otherwise inserts a new Node in the linked list with k and v.
-                throw new NotImplementedException();
+                if( n != null ) n.Value = value;
+                else
+                {
+                    _buckets[idxBucket] = new Node( k )
+                    {
+                        Value = value,
+                        Next = _buckets[idxBucket]
+                    };
+                }
             }
         }
 
