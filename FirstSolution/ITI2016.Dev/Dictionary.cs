@@ -121,7 +121,12 @@ namespace ITI2016.Dev
                 Node n = _buckets[i];
                 while( n != null )
                 {
-                    if( n.Value.Equals( v ) ) return true;
+                    //if( n.Value == v ) return true;
+                    if( 
+                        (n.Value != null && n.Value.Equals( v ))
+                        ||
+                        (n.Value == null && v == null)
+                        ) return true;
                     n = n.Next;
                 }
             }
@@ -161,6 +166,23 @@ namespace ITI2016.Dev
                 --_count;
                 return true;
             }
+            return false;
+        }
+
+        public bool TryGetValue( TKey k, out TValue v )
+        {
+            // 1 - Finds the bucket index.
+            int idxBucket = FindBucketIndex( k );
+            // 2 - Finds the Node in the linked list where node.Key equals k.
+            Node n = FindNodeInBucket( idxBucket, k );
+            // 3 - if node is found sets value to node.Value and returns true.
+            //     Otherwise sets value to default(TValue) and returns false.
+            if( n != null )
+            {
+                v = n.Value;
+                return true;
+            }
+            v = default( TValue );
             return false;
         }
     }
