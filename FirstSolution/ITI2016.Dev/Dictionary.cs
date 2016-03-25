@@ -22,6 +22,19 @@ namespace ITI2016.Dev
         Node[] _buckets;
         int _count;
 
+        int FindBucketIndex( TKey k ) => k.GetHashCode() % _buckets.Length;
+
+        Node FindNodeInBucket( int idxBucket, TKey k )
+        {
+            Node candidate = _buckets[idxBucket];
+            while( candidate != null )
+            {
+                if( candidate.Key.Equals( k ) ) break;
+                candidate = candidate.Next;
+            }
+            return candidate;
+        }
+
         public Dictionary()
         {
             _buckets = new Node[7];
@@ -32,9 +45,12 @@ namespace ITI2016.Dev
             get
             {
                 // 1 - Finds the bucket index.
+                int idxBucket = FindBucketIndex( k );
                 // 2 - Finds the Node in the linked list where node.Key equals k.
+                Node n = FindNodeInBucket( idxBucket, k );
                 // 3 - if node is found returns node.Value otherwise throws a KeyNotFoundException.
-                throw new NotImplementedException();
+                if( n != null ) return n.Value;
+                throw new KeyNotFoundException();
             }
 
             set
