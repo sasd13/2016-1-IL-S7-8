@@ -39,6 +39,7 @@
     <Compile Include="AbstractDataTypes.cs" />
     <Compile Include="CarStatus.cs" />
     <Compile Include="IPV4.cs" />
+    <Compile Include="Dictionary.cs" />
     <Compile Include="List.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
