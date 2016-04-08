@@ -95,12 +95,28 @@ namespace ITI2016.Dev
             if( buffer == null ) throw new ArgumentNullException( nameof( buffer ) );
             if( offset < 0 || buffer.Length > offset + count ) throw new ArgumentException();
             // This has an horrible side effect!
+            while( count > _writeBuffer.Length )
+            {
+                Array.Copy( buffer, offset, _writeBuffer, 0, _writeBuffer.Length );
+                SendWriteBuffer( _writeBuffer.Length );
+                count -= _writeBuffer.Length;
+                offset += _writeBuffer.Length;
+            }
+            if( count > 0 )
+            {
+                Array.Copy( buffer, offset, _writeBuffer, 0, count );
+                SendWriteBuffer( count );
+            }
+        }
+
+        private void SendWriteBuffer( int count )
+        {
             for( int i = 0; i < count; ++i )
             {
-                buffer[offset + i] ^= _secret[_position % _secret.Length];
+                _writeBuffer[i] ^= _secret[_position % _secret.Length];
                 ++_position;
             }
-            _inner.Write( buffer, offset, count );
+            _inner.Write( _writeBuffer, 0, count );
         }
     }
 }
