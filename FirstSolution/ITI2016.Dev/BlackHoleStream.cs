@@ -9,74 +9,54 @@ namespace ITI2016.Dev
 {
     public class BlackHoleStream : Stream
     {
-        public override bool CanRead
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override bool CanRead => true;
 
-        public override bool CanSeek
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override bool CanSeek => true;
 
-        public override bool CanWrite
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override bool CanWrite => true;
 
-        public override long Length
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override long Length => long.MaxValue;
 
-        public override long Position
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override long Position { get; set; }
 
         public override void Flush()
         {
-            throw new NotImplementedException();
-        }
-
-        public override int Read( byte[] buffer, int offset, int count )
-        {
-            throw new NotImplementedException();
         }
 
         public override long Seek( long offset, SeekOrigin origin )
         {
-            throw new NotImplementedException();
+            switch( origin )
+            {
+                case SeekOrigin.Begin:
+                    Position = offset;
+                    break;
+                case SeekOrigin.Current:
+                    Position += offset;
+                    break;
+                case SeekOrigin.End:
+                    Position = long.MaxValue + offset;
+                    break;
+                default:
+                    break;
+            }
+            return Position;
         }
 
         public override void SetLength( long value )
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
-        public override void Write( byte[] buffer, int offset, int count )
+        public override int Read( byte[] buffer, int offsetInBuffer, int count )
         {
-            throw new NotImplementedException();
+            for( int i = 0; i < count; ++i ) buffer[offsetInBuffer + i] = 0;
+            Position += count;
+            return count;
+        }
+
+        public override void Write( byte[] buffer, int offsetInBuffer, int count )
+        {
+            Position += count;
         }
     }
 }
