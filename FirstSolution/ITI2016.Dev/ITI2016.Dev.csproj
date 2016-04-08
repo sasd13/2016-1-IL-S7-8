@@ -41,6 +41,7 @@
     <Compile Include="CarStatus.cs" />
     <Compile Include="IPV4.cs" />
     <Compile Include="Dictionary.cs" />
+    <Compile Include="KrabouilleStream.cs" />
     <Compile Include="List.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeeStream.cs" />
