@@ -71,7 +71,6 @@ To: Example Receiver <test@example.com>
 Subject: HTML Mail with embedded picture" );
             while( m.Success )
             {
-                m.
                 m = m.NextMatch();
             }
 
