@@ -18,6 +18,7 @@ namespace ITI2016.Dev
         readonly Stream _inner;
         readonly KrabouilleMode _mode;
         readonly byte[] _secret;
+        readonly byte[] _writeBuffer;
         long _position;
 
         public KrabouilleStream( Stream inner, KrabouilleMode mode, string secret )
@@ -27,6 +28,7 @@ namespace ITI2016.Dev
             if( mode == KrabouilleMode.Krabouille )
             {
                 if( !inner.CanWrite ) throw new ArgumentException( "Stream must be writable in Krabouille mode." );
+                _writeBuffer = new byte[4096];
             }
             else if( !inner.CanRead )
             {
@@ -77,12 +79,28 @@ namespace ITI2016.Dev
 
         public override int Read( byte[] buffer, int offset, int count )
         {
-            throw new NotImplementedException();
+            if( !CanRead ) throw new NotSupportedException();
+            int lenRead = _inner.Read( buffer, offset, count );
+            for( int i = 0; i < lenRead; ++i )
+            {
+                buffer[offset + i] ^= _secret[_position % _secret.Length];
+                ++_position;
+            }
+            return lenRead;
         }
 
         public override void Write( byte[] buffer, int offset, int count )
         {
-            throw new NotImplementedException();
+            if( !CanWrite ) throw new NotSupportedException();
+            if( buffer == null ) throw new ArgumentNullException( nameof( buffer ) );
+            if( offset < 0 || buffer.Length > offset + count ) throw new ArgumentException();
+            // This has an horrible side effect!
+            for( int i = 0; i < count; ++i )
+            {
+                buffer[offset + i] ^= _secret[_position % _secret.Length];
+                ++_position;
+            }
+            _inner.Write( buffer, offset, count );
         }
     }
 }
