@@ -15,71 +15,67 @@ namespace ITI2016.Dev
 
     public class KrabouilleStream : Stream
     {
+        readonly Stream _inner;
+        readonly KrabouilleMode _mode;
+        readonly byte[] _secret;
+        long _position;
+
         public KrabouilleStream( Stream inner, KrabouilleMode mode, string secret )
         {
+            if( inner == null ) throw new ArgumentNullException( nameof( inner ) );
+            if( string.IsNullOrEmpty( secret ) ) throw new ArgumentException( "Must not be null nor empty.", nameof( secret ) );
+            if( mode == KrabouilleMode.Krabouille )
+            {
+                if( !inner.CanWrite ) throw new ArgumentException( "Stream must be writable in Krabouille mode." );
+            }
+            else if( !inner.CanRead )
+            {
+                throw new ArgumentException( "Stream must be readable in UnKrabouille mode." );
+            }
+            _inner = inner;
+            _mode = mode;
+            _secret = Encoding.UTF7.GetBytes( secret );
         }
 
-        public override bool CanRead
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override bool CanRead => _mode == KrabouilleMode.UnKrabouille;
 
-        public override bool CanSeek
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override bool CanSeek => false;
 
-        public override bool CanWrite
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override bool CanWrite => _mode == KrabouilleMode.Krabouille;
 
         public override long Length
         {
             get
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
         }
 
         public override long Position
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
+            get { return _position; }
             set
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
-        }
-
-        public override void Flush()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override int Read( byte[] buffer, int offset, int count )
-        {
-            throw new NotImplementedException();
         }
 
         public override long Seek( long offset, SeekOrigin origin )
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override void SetLength( long value )
+        {
+            throw new NotSupportedException();
+        }
+
+
+        public override void Flush()
+        {
+        }
+
+        public override int Read( byte[] buffer, int offset, int count )
         {
             throw new NotImplementedException();
         }
