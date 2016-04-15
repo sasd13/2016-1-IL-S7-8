@@ -36,6 +36,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MyLinq.cs" />
     <Compile Include="AbstractDataTypes.cs" />
     <Compile Include="BlackHoleStream.cs" />
     <Compile Include="CarStatus.cs" />
