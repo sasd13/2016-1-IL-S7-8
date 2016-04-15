@@ -15,8 +15,52 @@ namespace ITI2016.Dev
             {
                 while( e.MoveNext() ) count++;
             }
-
             return count;
+        }
+
+
+
+        class EWhere<T> : IEnumerable<T>
+        {
+            readonly IEnumerable<T> _container;
+            readonly Func<T, bool> _predicate;
+
+            public EWhere( IEnumerable<T> container, Func<T, bool> predicate )
+            {
+                _container = container;
+                _predicate = predicate;
+            }
+
+            class E : IEnumerator<T>
+            {
+                readonly EWhere<T> _holderE;
+
+                public E( EWhere<T> h )
+                {
+                    _holderE = h;
+                }
+
+                public T Current
+                {
+                    get
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+
+                public bool MoveNext()
+                {
+                    throw new NotImplementedException();
+                }
+
+                public void Dispose() {}
+
+            }
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                return new E( this );
+            }
         }
 
         /// <summary>
@@ -31,7 +75,7 @@ namespace ITI2016.Dev
         /// </returns>
         public static IEnumerable<T> Where<T>( this IEnumerable<T> container, Func<T,bool> predicate )
         {
-            return container;
+            return new EWhere<T>( container, predicate );
         }
 
     }
