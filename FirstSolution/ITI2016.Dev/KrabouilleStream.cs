@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,7 +37,10 @@ namespace ITI2016.Dev
             }
             _inner = inner;
             _mode = mode;
-            _secret = Encoding.UTF7.GetBytes( secret );
+            using( var gen = new Rfc2898DeriveBytes( secret, Encoding.UTF7.GetBytes("JJlmèkjd oozid<yc ooJJ") ) )
+            {
+                _secret = gen.GetBytes( 150 );
+            }
         }
 
         public override bool CanRead => _mode == KrabouilleMode.UnKrabouille;
@@ -83,7 +87,9 @@ namespace ITI2016.Dev
             int lenRead = _inner.Read( buffer, offset, count );
             for( int i = 0; i < lenRead; ++i )
             {
-                buffer[offset + i] ^= _secret[_position % _secret.Length];
+                byte c = buffer[offset + i];
+                buffer[offset + i] = (byte)(c ^ _secret[_position % _secret.Length]);
+                _secret[_position % _secret.Length] = c;
                 ++_position;
             }
             return lenRead;
