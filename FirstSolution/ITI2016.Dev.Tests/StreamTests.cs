@@ -104,5 +104,35 @@ namespace ITI2016.Dev.Tests
 
         }
 
+
+        [TestCase( 1 )]
+        [TestCase( 3 )]
+        [TestCase( 13 )]
+        [TestCase( 4 * 1024 )]
+        public void KrabouilleStream_works( int bufferSize )
+        {
+            string kFile = GetOutputFile( _inputFile, ".K" );
+
+            using( Stream input = File.OpenRead( _inputFile ) )
+            using( Stream output = File.OpenWrite( kFile ) )
+            using( Stream krab = new KrabouilleStream( output, KrabouilleMode.Krabouille, "My Secret..." ) )
+            {
+                input.CopyTo( krab, bufferSize );
+            }
+            CollectionAssert.AreNotEqual( File.ReadAllBytes( _inputFile ), File.ReadAllBytes( kFile ) );
+
+            string kdFile = GetOutputFile( _inputFile, ".K.D" );
+
+            using( Stream input = File.OpenRead( kFile ) )
+            using( Stream deKrab = new KrabouilleStream( input, KrabouilleMode.UnKrabouille, "My Secret..." ) )
+            using( Stream output = File.OpenWrite( kdFile ) )
+            {
+                deKrab.CopyTo( output, bufferSize );
+            }
+
+            CollectionAssert.AreEqual( File.ReadAllBytes( _inputFile ), File.ReadAllBytes( kdFile ) );
+        }
+
+
     }
 }
