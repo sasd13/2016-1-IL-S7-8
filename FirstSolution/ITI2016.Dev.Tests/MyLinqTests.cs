@@ -70,6 +70,27 @@ namespace ITI2016.Dev.Tests
             var withZero = positiveString.Where( s => s.Contains( '0' ) );
             var backToInt = withZero.Select( s => int.Parse( s ) );
 
+            var backToInt2 = list.Where( v => v >= 0 )
+                            .Select( v => v.ToString() )
+                            .Where( s => s.Contains( '0' ) )
+                            .Select( s => int.Parse( s ) );
+
+            var backToInt3 = from v in list
+                              where v >= 0
+                              let s = v.ToString()
+                              where s.Contains( '0' )
+                              select int.Parse( s );
+
+
+            var backToInt4 = EnumerableExtension.Select(
+                                EnumerableExtension.Where(
+                                    EnumerableExtension.Select(
+                                        EnumerableExtension.Where( list, 
+                                                                   v => v >= 0 ),
+                                        v => v.ToString() ),
+                                    s => s.Contains( '0' ) ),
+                                s => int.Parse( s ) );
+
             using( var eR = backToInt.GetEnumerator() )
             {
                 Assert.That( eR.MoveNext() );
