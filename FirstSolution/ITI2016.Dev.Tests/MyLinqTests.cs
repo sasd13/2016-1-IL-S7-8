@@ -46,7 +46,7 @@ namespace ITI2016.Dev.Tests
         public void where_works()
         {
             //List<int> list = new List<int>( new int[] { 7, 9, 67, 90809 } );
-            var list = new List<int>( -7, 8, 67, 90809, 870 );
+            var list = new List<int>( -7, 8, 67, 90809, 870, -6 );
 
             var result = list.Where( v => v >= 0 && (v & 1) == 0 );
             using( var eR = result.GetEnumerator() )
@@ -55,6 +55,31 @@ namespace ITI2016.Dev.Tests
                 Assert.That( eR.Current, Is.EqualTo( 8 ) );
                 Assert.That( eR.MoveNext() );
                 Assert.That( eR.Current, Is.EqualTo( 870 ) );
+                Assert.That( eR.MoveNext(), Is.False );
+            }
+        }
+
+        [Test]
+        public void selection_and_projection_and_selection()
+        {
+            //List<int> list = new List<int>( new int[] { 7, 9, 67, 90809 } );
+            var list = new List<int>( -7, 8, 67, -50, 90809, 870, -6, 90, -4, 8006 );
+
+            var positive = list.Where( v => v >= 0 );
+            var positiveString = positive.Select( v => v.ToString() );
+            var withZero = positiveString.Where( s => s.Contains( '0' ) );
+            var backToInt = withZero.Select( s => int.Parse( s ) );
+
+            using( var eR = backToInt.GetEnumerator() )
+            {
+                Assert.That( eR.MoveNext() );
+                Assert.That( eR.Current, Is.EqualTo( 90809 ) );
+                Assert.That( eR.MoveNext() );
+                Assert.That( eR.Current, Is.EqualTo( 870 ) );
+                Assert.That( eR.MoveNext() );
+                Assert.That( eR.Current, Is.EqualTo( 90 ) );
+                Assert.That( eR.MoveNext() );
+                Assert.That( eR.Current, Is.EqualTo( 8006 ) );
                 Assert.That( eR.MoveNext(), Is.False );
             }
         }

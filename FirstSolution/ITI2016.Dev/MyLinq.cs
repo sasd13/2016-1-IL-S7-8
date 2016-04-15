@@ -18,8 +18,6 @@ namespace ITI2016.Dev
             return count;
         }
 
-
-
         class EWhere<T> : IEnumerable<T>
         {
             readonly IEnumerable<T> _container;
@@ -34,23 +32,23 @@ namespace ITI2016.Dev
             class E : IEnumerator<T>
             {
                 readonly EWhere<T> _holderE;
+                readonly IEnumerator<T> _inSource;
 
                 public E( EWhere<T> h )
                 {
                     _holderE = h;
+                    _inSource = _holderE._container.GetEnumerator();
                 }
 
-                public T Current
-                {
-                    get
-                    {
-                        throw new NotImplementedException();
-                    }
-                }
+                public T Current => _inSource.Current;
 
                 public bool MoveNext()
                 {
-                    throw new NotImplementedException();
+                    while( _inSource.MoveNext() )
+                    {
+                        if( _holderE._predicate( _inSource.Current ) ) return true;
+                    }
+                    return false;
                 }
 
                 public void Dispose() {}
