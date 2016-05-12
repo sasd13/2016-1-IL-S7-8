@@ -17,6 +17,12 @@ namespace ITI2016.Dev
             _array = new T[4];
         }
 
+        public List( params T[] args )
+        {
+            _array = (T[])args.Clone();
+            _count = _array.Length;
+        }
+
         public T this[int i]
         {
             get
@@ -87,6 +93,10 @@ namespace ITI2016.Dev
             public bool MoveNext()
             {
                 return ++_current < _owner._count;
+            }
+
+            public void Dispose()
+            {
             }
         }
 

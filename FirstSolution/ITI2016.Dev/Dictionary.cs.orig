@@ -1,3 +1,17 @@
+<<<<<<< HEAD
+﻿using ITI2016.Dev;
+using System;
+
+namespace ITI2016.Dev
+{
+    class Dictionary<TKey, TValue> : IDictionary<TKey, TValue>
+    {
+        List<KeyValuePair<TKey, TValue>> _list;
+
+        public Dictionary()
+        {
+            _list = new List<KeyValuePair<TKey, TValue>>();
+=======
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,12 +55,24 @@ namespace ITI2016.Dev
             if( comparer == null ) comparer = EqualityComparer<TKey>.Default;
             _comparer = comparer;
             _buckets = new Node[7];
+>>>>>>> c0906eec09fcc8e591403f147625ef711a73fb23
         }
 
         public TValue this[TKey k]
         {
             get
             {
+<<<<<<< HEAD
+                foreach (KeyValuePair<TKey, TValue> keyValuePair in _list)
+                {
+                    if (keyValuePair.Key.Equals(k))
+                    {
+                        return keyValuePair.Value;
+                    }
+                }
+                
+                throw new ArgumentException();
+=======
                 // 1 - Finds the bucket index.
                 int idxBucket = FindBucketIndex( k );
                 // 2 - Finds the Node in the linked list where node.Key equals k.
@@ -54,10 +80,30 @@ namespace ITI2016.Dev
                 // 3 - if node is found returns node.Value otherwise throws a KeyNotFoundException.
                 if( n != null ) return n.Value;
                 throw new KeyNotFoundException();
+>>>>>>> c0906eec09fcc8e591403f147625ef711a73fb23
             }
 
             set
             {
+<<<<<<< HEAD
+                bool setted = false;
+                IEnumerator<KeyValuePair<TKey, TValue>> enumerator = GetEnumerator();
+                int index = -1;
+                while (enumerator.MoveNext())
+                {
+                    index++;
+                    if (enumerator.Current.Key.Equals(k))
+                    {
+                        _list[index] = new KeyValuePair<TKey, TValue>(k, value);
+                        setted = true;
+                        break;
+                    }
+                }
+
+                if (!setted)
+                {
+                    performAdd(k, value);
+=======
                 // 1 - Finds the bucket index.
                 int idxBucket = FindBucketIndex( k );
                 // 2 - Finds the Node in the linked list where node.Key equals k.
@@ -73,10 +119,88 @@ namespace ITI2016.Dev
                         Next = _buckets[idxBucket]
                     };
                     ++_count;
+>>>>>>> c0906eec09fcc8e591403f147625ef711a73fb23
                 }
             }
         }
 
+<<<<<<< HEAD
+        private void performAdd(TKey k, TValue v)
+        {
+            _list.Add(new KeyValuePair<TKey, TValue>(k, v));
+        }
+
+        public int Count
+        {
+            get
+            {
+                return _list.Count;
+            }
+        }
+
+        public IEnumerable<TKey> Keys
+        {
+            get
+            {
+                List<TKey> enumerable = new List<TKey>();
+                foreach (KeyValuePair<TKey, TValue> keyValuePair in _list)
+                {
+                    enumerable.Add(keyValuePair.Key);
+                }
+
+                return enumerable;
+            }
+        }
+
+        public IEnumerable<TValue> Values
+        {
+            get
+            {
+                List<TValue> enumerable = new List<TValue>();
+                foreach (KeyValuePair<TKey, TValue> keyValuePair in _list)
+                {
+                    enumerable.Add(keyValuePair.Value);
+                }
+
+                return enumerable;
+            }
+        }
+
+        public void Add(TKey k, TValue v)
+        {
+            if (ContainsKey(k))
+            {
+                throw new InvalidOperationException();
+            }
+
+            performAdd(k, v);
+        }
+
+        public bool ContainsKey(TKey k)
+        {
+            foreach (KeyValuePair<TKey, TValue> keyValuePair in _list)
+            {
+                if (keyValuePair.Key.Equals(k))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool ContainsValue(TValue v)
+        {
+            foreach (KeyValuePair<TKey, TValue> keyValuePair in _list)
+            {
+                if (keyValuePair.Value.Equals(v))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+=======
         public int Count => _count;
 
         public IEnumerable<TKey> Keys
@@ -173,10 +297,30 @@ namespace ITI2016.Dev
             public void Dispose()
             {
             }
+>>>>>>> c0906eec09fcc8e591403f147625ef711a73fb23
         }
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
+<<<<<<< HEAD
+            return _list.GetEnumerator();
+        }
+
+        public bool Remove(TKey key)
+        {
+            IEnumerator<KeyValuePair<TKey, TValue>> enumerator = GetEnumerator();
+            int index = -1;
+            while (enumerator.MoveNext())
+            {
+                index++;
+                if (enumerator.Current.Key.Equals(key))
+                {
+                    _list.RemoveAt(index);
+                    return true;
+                }
+            }
+
+=======
             return new E( this );
         }
 
@@ -225,6 +369,7 @@ namespace ITI2016.Dev
                 return true;
             }
             v = default( TValue );
+>>>>>>> c0906eec09fcc8e591403f147625ef711a73fb23
             return false;
         }
     }

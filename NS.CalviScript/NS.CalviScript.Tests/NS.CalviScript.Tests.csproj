@@ -2,14 +2,19 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(SolutionDir)packages\NUnit.Runners.Net4.2.6.4\tools\nunit.exe</StartProgram>
+    <StartArguments>NS.CalviScript.Tests.dll</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6AE9B3CE-1FFC-4705-B3BE-FA91F6DF2814}</ProjectGuid>
+    <ProjectGuid>{ADBBA8EF-014D-455A-BEAC-8A74DCC80525}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ITI2016.Dev.Tests</RootNamespace>
-    <AssemblyName>ITI2016.Dev.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <RootNamespace>NS.CalviScript.Tests</RootNamespace>
+    <AssemblyName>NS.CalviScript.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -44,27 +49,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyLinqTests.cs" />
-    <Compile Include="StreamTests.cs" />
-    <Compile Include="StringTests.cs" />
-    <Compile Include="CarStatusTests.cs" />
-    <Compile Include="ComplexityMeasureTests.cs" />
-    <Compile Include="DictionaryTests.cs" />
-    <Compile Include="ListTests.cs" />
-    <Compile Include="MyVeryFirstTests.cs" />
+    <Compile Include="SimpleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ITI2016.Dev\ITI2016.Dev.csproj">
-      <Project>{6dddd50b-d099-4558-a51b-7b4ccfaae574}</Project>
-      <Name>ITI2016.Dev</Name>
+    <ProjectReference Include="..\NS.CalviScript\NS.CalviScript.csproj">
+      <Project>{29ae4630-9d29-4c9b-af7f-230a39c79f48}</Project>
+      <Name>NS.CalviScript</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

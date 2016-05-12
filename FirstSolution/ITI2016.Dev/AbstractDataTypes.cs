@@ -94,10 +94,10 @@ namespace ITI2016.Dev
         /// <param name="v">The associated value.</param>
         void Add( TKey k, TValue v );
 
-
+        bool TryGetValue( TKey k, out TValue v );
     }
 
-    public interface IEnumerator<T>
+    public interface IEnumerator<T> : IDisposable
     {
         bool MoveNext();
 
