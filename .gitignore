@@ -235,3 +235,5 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 FirstSolution/ITI2016.Dev.Tests/**/TestFiles/
+
+*.orig
