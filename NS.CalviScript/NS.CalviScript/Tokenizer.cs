@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Text;
 
 namespace NS.CalviScript
@@ -15,27 +16,35 @@ namespace NS.CalviScript
 
         public Token GetNextToken()
         {
-            if (IsEnd) return new Token(TokenType.End);
+            if( IsEnd ) return new Token( TokenType.End );
 
-            while (IsWhiteSpace || IsComment)
+            while( IsWhiteSpace || IsComment )
             {
-                if (IsWhiteSpace) HandleWhiteSpace();
-                if (IsComment) HandleComment();
+                if( IsWhiteSpace ) HandleWhiteSpaces();
+                if( IsComment ) HandleComment();
             }
 
             Token result;
-            if (Peek() == '+') result = new Token(TokenType.Plus);
-            else if (Peek() == '-') result = new Token(TokenType.Minus);
-            else if (Peek() == '*') result = new Token(TokenType.Mult);
-            else if (Peek() == '/') result = new Token(TokenType.Div);
-            else if (Peek() == '%') result = new Token(TokenType.Modulo);
-            else if (Peek() == '(') result = new Token(TokenType.LeftParenthesis);
-            else if (Peek() == ')') result = new Token(TokenType.RightParenthesis);
-            else if (IsNumber) result = HandleNumber();
-            else result = new Token(TokenType.None);
+            if( Peek() == '+' ) result = HandleSimpleToken( TokenType.Plus );
+            else if( Peek() == '-' ) result = HandleSimpleToken( TokenType.Minus );
+            else if( Peek() == '*' ) result = HandleSimpleToken( TokenType.Mult );
+            else if( Peek() == '/' ) result = HandleSimpleToken( TokenType.Div );
+            else if( Peek() == '%' ) result = HandleSimpleToken( TokenType.Modulo );
+            else if( Peek() == '(' ) result = HandleSimpleToken( TokenType.LeftParenthesis );
+            else if( Peek() == ')' ) result = HandleSimpleToken( TokenType.RightParenthesis );
+            else if( IsNumber ) result = HandleNumber();
+            else result = new Token( TokenType.Error, Peek() );
 
             return result;
         }
+
+        Token HandleSimpleToken( TokenType type )
+        {
+            char c = Peek();
+            Forward();
+            return new Token( type, c );
+        }
+
 
         char Read() => _input[ _pos++ ];
 
@@ -43,48 +52,48 @@ namespace NS.CalviScript
 
         void Forward() => _pos++;
 
-        char Peek(int offset) => _input[_pos + offset];
+        char Peek( int offset ) => _input[ _pos + offset ];
 
         public bool IsEnd => _pos >= _input.Length;
 
-        bool IsComment => _pos < _input.Length - 1 && Peek() == '/' && Peek(1) == '/';
+        bool IsComment => _pos < _input.Length - 1 && Peek() == '/' && Peek( 1 ) == '/';
 
         void HandleComment()
         {
-            Debug.Assert(IsComment);
+            Debug.Assert( IsComment );
 
             do
             {
                 Forward();
-            } while ( !IsEnd && Peek() != '\r' && Peek() != '\n' );
+            } while( !IsEnd && Peek() != '\r' && Peek() != '\n' );
         }
 
-        bool IsWhiteSpace => char.IsWhiteSpace(Peek());
+        bool IsWhiteSpace => char.IsWhiteSpace( Peek() );
 
-        void HandleWhiteSpace()
+        void HandleWhiteSpaces()
         {
-            Debug.Assert(IsWhiteSpace);
+            Debug.Assert( IsWhiteSpace );
 
             do
             {
                 Forward();
-            } while ( !IsEnd && IsWhiteSpace );
+            } while( !IsEnd && IsWhiteSpace );
         }
 
-        bool IsNumber => char.IsDigit(Peek()) && Peek() != '0';
+        bool IsNumber => char.IsDigit( Peek() ) && Peek() != '0';
 
         Token HandleNumber()
         {
-            Debug.Assert(IsNumber);
+            Debug.Assert( IsNumber );
 
             StringBuilder sb = new StringBuilder();
             do
             {
-                sb.Append(Peek());
+                sb.Append( Peek() );
                 Forward();
-            } while (!IsEnd && char.IsDigit(Peek()));
+            } while( !IsEnd && char.IsDigit( Peek() ) );
 
-            return new Token(TokenType.Number, sb.ToString());
+            return new Token( TokenType.Number, sb.ToString() );
         }
     }
 }
