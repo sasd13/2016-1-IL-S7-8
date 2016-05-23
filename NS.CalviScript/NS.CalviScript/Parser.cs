@@ -16,67 +16,72 @@ namespace NS.CalviScript
             _tokenizer.GetNextToken();
         }
 
-        public IExpr ParseOperation()
+        public IExpr ParseExpression()
         {
-            IExpr operationExpr = Operation();
+            IExpr expr = Expr();
             Token token;
             if( !_tokenizer.MatchToken( TokenType.End, out token ) )
             {
-                return new ErrorExpr(
+                expr = new ErrorExpr(
                     string.Format(
-                        "Expected end of input, but {0} found.",
-                        _tokenizer.CurrentToken.Type ) );
+                        "Expected end of input but {0} found.",
+                        token.Type ) );
             }
-            return operationExpr;
+
+            return expr;
         }
 
-        public IExpr Operation()
+        IExpr Expr()
         {
-            IExpr left = Operand();
-            Token t = _tokenizer.CurrentToken;
-            while( t.Type == TokenType.Plus || t.Type == TokenType.Minus || t.Type == TokenType.Mult || t.Type == TokenType.Div || t.Type == TokenType.Modulo )
+            IExpr leftTerm = Term();
+            Token token;
+            while( _tokenizer.MatchTermOp( out token ) )
             {
-                _tokenizer.GetNextToken();
-                IExpr right = Operand();
-                left = new BinaryExpr( t.Type, left, right );
-                t = _tokenizer.CurrentToken;
+                IExpr rightTerm = Term();
+                leftTerm = new BinaryExpr( token.Type, leftTerm, rightTerm );
             }
 
-            return left;
+            return leftTerm;
         }
 
-        public IExpr Operand()
+        IExpr Term()
         {
-            IExpr result;
-            if( _tokenizer.CurrentToken.Type == TokenType.Number )
+            IExpr leftFactor = Factor();
+            Token token;
+            while( _tokenizer.MatchFactorOp( out token ) )
             {
-                Token t = _tokenizer.CurrentToken;
-                result = new NumberExpr( int.Parse( t.Value ) );
-                _tokenizer.GetNextToken();
+                IExpr rightTerm = Factor();
+                leftFactor = new BinaryExpr( token.Type, leftFactor, rightTerm );
             }
-            else
-            {
-                result = PrioritizedOperation();
-            }
-            return result;
+
+            return leftFactor;
         }
 
-        public IExpr PrioritizedOperation()
+        IExpr Factor()
         {
             Token token;
-            if( _tokenizer.MatchToken( TokenType.LeftParenthesis, out token ) )
+            if( _tokenizer.MatchNumber( out token ) )
             {
-                IExpr expr = Operation();
+                return new NumberExpr( int.Parse( token.Value ) );
+            }
+            if( _tokenizer.MatchToken( TokenType.LeftParenthesis ) )
+            {
+                IExpr expr = Expr();
                 if( !_tokenizer.MatchToken( TokenType.RightParenthesis, out token ) )
                 {
-                    return new ErrorExpr( string.Format( "Unexpected token: {0}", _tokenizer.CurrentToken.Type ) );
+                    return new ErrorExpr(
+                        string.Format(
+                            "Expected right parenthesis, {0} found.",
+                            token.Type ) );
                 }
+
                 return expr;
             }
-            else
-            {
-                return new ErrorExpr( string.Format( "Unexpected token: {0}", _tokenizer.CurrentToken.Type ) );
-            }
+
+            return new ErrorExpr(
+                string.Format(
+                    "Unexpected token: {0}.",
+                    token.Type ) );
         }
     }
 }
