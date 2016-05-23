@@ -16,7 +16,7 @@ namespace NS.CalviScript
 
         public Token GetNextToken()
         {
-            if( IsEnd ) return new Token( TokenType.End );
+            if( IsEnd ) return CurrentToken = new Token( TokenType.End );
 
             while( IsWhiteSpace || IsComment )
             {
@@ -33,10 +33,36 @@ namespace NS.CalviScript
             else if( Peek() == '(' ) result = HandleSimpleToken( TokenType.LeftParenthesis );
             else if( Peek() == ')' ) result = HandleSimpleToken( TokenType.RightParenthesis );
             else if( IsNumber ) result = HandleNumber();
-            else result = new Token( TokenType.Error, Peek() );
+            else result = new Token( TokenType.Error, Read() );
 
+            CurrentToken = result;
             return result;
         }
+
+        public bool MatchTermOp( out Token token )
+        {
+            return MatchOp( t => t == TokenType.Plus || t == TokenType.Minus, out token );
+        }
+
+        public bool MatchFactorOp( out Token token )
+        {
+            return MatchOp( t => t == TokenType.Mult || t == TokenType.Div || t == TokenType.Modulo, out token );
+        }
+
+        bool MatchOp( Func<TokenType, bool> predicate, out Token token )
+        {
+            if( predicate( CurrentToken.Type ) )
+            {
+                token = CurrentToken;
+                GetNextToken();
+                return true;
+            }
+
+            token = null;
+            return false;
+        }
+
+        public Token CurrentToken { get; private set; }
 
         Token HandleSimpleToken( TokenType type )
         {
@@ -45,6 +71,29 @@ namespace NS.CalviScript
             return new Token( type, c );
         }
 
+        public bool MatchNumber( out Token token )
+        {
+            return MatchToken( TokenType.Number, out token );
+        }
+
+        public bool MatchToken( TokenType type )
+        {
+            Token t;
+            return MatchToken( type, out t );
+        }
+
+        public bool MatchToken( TokenType type, out Token token )
+        {
+            if( type == CurrentToken.Type )
+            {
+                token = CurrentToken;
+                GetNextToken();
+                return true;
+            }
+
+            token = null;
+            return false;
+        }
 
         char Read() => _input[ _pos++ ];
 

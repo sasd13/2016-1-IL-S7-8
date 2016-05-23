@@ -49,6 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExprTests.cs" />
+    <Compile Include="InfixStringVisitorTests.cs" />
+    <Compile Include="LispyStringVisitorTests.cs" />
+    <Compile Include="ParserTests.cs" />
     <Compile Include="SimpleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

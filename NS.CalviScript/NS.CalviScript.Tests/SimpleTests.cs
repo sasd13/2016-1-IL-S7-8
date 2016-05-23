@@ -163,5 +163,23 @@ namespace NS.CalviScript.Tests
             Assert.That( t4.Value, Is.EqualTo( "123" ) );
             Assert.That( t5.Type, Is.EqualTo( TokenType.End ) );
         }
+
+        [Test]
+        public void handle_unexpected_character()
+        {
+            Tokenizer sut = new Tokenizer( "25 @ 27" );
+
+            Token t1 = sut.GetNextToken();
+            Token t2 = sut.GetNextToken();
+            Token t3 = sut.GetNextToken();
+            Token t4 = sut.GetNextToken();
+
+            Assert.That( t1.Type, Is.EqualTo( TokenType.Number ) );
+            Assert.That( t1.Value, Is.EqualTo( "25" ) );
+            Assert.That( t2.Type, Is.EqualTo( TokenType.Error ) );
+            Assert.That( t3.Type, Is.EqualTo( TokenType.Number ) );
+            Assert.That( t3.Value, Is.EqualTo( "27" ) );
+            Assert.That( t4.Type, Is.EqualTo( TokenType.End ) );
+        }
     }
 }
