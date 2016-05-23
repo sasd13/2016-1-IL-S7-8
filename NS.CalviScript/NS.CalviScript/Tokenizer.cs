@@ -80,18 +80,25 @@ namespace NS.CalviScript
             } while( !IsEnd && IsWhiteSpace );
         }
 
-        bool IsNumber => char.IsDigit( Peek() ) && Peek() != '0';
+        bool IsNumber => char.IsDigit( Peek() );
 
         Token HandleNumber()
         {
             Debug.Assert( IsNumber );
+
+            if( Peek() == '0' )
+            {
+                Forward();
+                if( !IsEnd && IsNumber ) return new Token( TokenType.Error, Peek() );
+                return new Token( TokenType.Number, '0' );
+            }
 
             StringBuilder sb = new StringBuilder();
             do
             {
                 sb.Append( Peek() );
                 Forward();
-            } while( !IsEnd && char.IsDigit( Peek() ) );
+            } while( !IsEnd && IsNumber );
 
             return new Token( TokenType.Number, sb.ToString() );
         }
