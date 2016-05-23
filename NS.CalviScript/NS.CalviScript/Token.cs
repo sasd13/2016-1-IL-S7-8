@@ -7,6 +7,11 @@
         {
         }
 
+        public Token( TokenType type, char c )
+            : this( type, c.ToString() )
+        {
+        }
+
         public Token( TokenType type, string value )
         {
             Type = type;
