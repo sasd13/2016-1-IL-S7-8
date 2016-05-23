@@ -11,5 +11,7 @@ namespace NS.CalviScript
         public IExpr LeftExpr { get; }
 
         public IExpr RightExpr { get; }
+
+        public string ToLispyString() => string.Format("[{0} {1} {2}]", LeftExpr.ToLispyString(), RightExpr.ToLispyString());
     }
 }
