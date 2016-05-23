@@ -33,10 +33,13 @@ namespace NS.CalviScript
             else if( Peek() == '(' ) result = HandleSimpleToken( TokenType.LeftParenthesis );
             else if( Peek() == ')' ) result = HandleSimpleToken( TokenType.RightParenthesis );
             else if( IsNumber ) result = HandleNumber();
-            else result = new Token( TokenType.Error, Peek() );
+            else result = new Token( TokenType.Error, Read() );
 
+            CurrentToken = result;
             return result;
         }
+
+        public Token CurrentToken { get; private set; }
 
         Token HandleSimpleToken( TokenType type )
         {
@@ -45,6 +48,20 @@ namespace NS.CalviScript
             return new Token( type, c );
         }
 
+        public bool MatchNumber( out Token token )
+        {
+            return MatchToken( TokenType.Number, out token );
+        }
+
+        public bool MatchOperator( out Token token )
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool MatchToken( TokenType type, out Token token )
+        {
+            throw new NotImplementedException();
+        }
 
         char Read() => _input[ _pos++ ];
 
