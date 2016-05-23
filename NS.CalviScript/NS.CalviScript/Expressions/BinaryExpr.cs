@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
 namespace NS.CalviScript
 {
@@ -41,6 +36,19 @@ namespace NS.CalviScript
                 Debug.Assert( t == TokenType.Modulo );
                 return "%";
             }
+        }
+
+        public string ToInfixString()
+        {
+            return string.Format( "({0} {1} {2})",
+                LeftExpr.ToInfixString(),
+                TokenTypeToString( Type ),
+                RightExpr.ToInfixString() );
+        }
+
+        public void Accept( IVisitor visitor )
+        {
+            visitor.Visit( this );
         }
     }
 }

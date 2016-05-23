@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NS.CalviScript
+﻿namespace NS.CalviScript
 {
     public class Parser
     {
@@ -62,7 +56,7 @@ namespace NS.CalviScript
             Token token;
             if( _tokenizer.MatchNumber( out token ) )
             {
-                return new NumberExpr( int.Parse( token.Value ) );
+                return new ConstantExpr( int.Parse( token.Value ) );
             }
             if( _tokenizer.MatchToken( TokenType.LeftParenthesis ) )
             {

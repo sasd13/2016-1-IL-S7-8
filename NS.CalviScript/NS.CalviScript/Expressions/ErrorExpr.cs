@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NS.CalviScript
+﻿namespace NS.CalviScript
 {
     public class ErrorExpr : IExpr
     {
@@ -14,6 +8,13 @@ namespace NS.CalviScript
         }
 
         public string Message { get; }
+
+        public void Accept( IVisitor visitor )
+        {
+            visitor.Visit( this );
+        }
+
+        public string ToInfixString() => ToLispyString();
 
         public string ToLispyString() => string.Format( "[Error {0}]", Message );
     }
