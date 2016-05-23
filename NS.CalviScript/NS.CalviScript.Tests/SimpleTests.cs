@@ -110,6 +110,7 @@ namespace NS.CalviScript.Tests
             Assert.That( t13.Value, Is.EqualTo( "6" ) );
         }
 
+        [Test]
         public void handle_comments()
         {
             Tokenizer sut = new Tokenizer( @"2 + // Comment
@@ -122,6 +123,62 @@ namespace NS.CalviScript.Tests
             Assert.That( t1.Type, Is.EqualTo( TokenType.Number ) );
             Assert.That( t2.Type, Is.EqualTo( TokenType.Plus ) );
             Assert.That( t3.Type, Is.EqualTo( TokenType.Number ) );
+            Assert.That( t4.Type, Is.EqualTo( TokenType.End ) );
+        }
+
+        [Test]
+        public void handle_0()
+        {
+            Tokenizer sut = new Tokenizer( "0 + 0" );
+
+            Token t1 = sut.GetNextToken();
+            Token t2 = sut.GetNextToken();
+            Token t3 = sut.GetNextToken();
+            Token t4 = sut.GetNextToken();
+
+            Assert.That( t1.Type, Is.EqualTo( TokenType.Number ) );
+            Assert.That( t1.Value, Is.EqualTo( "0" ) );
+            Assert.That( t2.Type, Is.EqualTo( TokenType.Plus ) );
+            Assert.That( t3.Type, Is.EqualTo( TokenType.Number ) );
+            Assert.That( t3.Value, Is.EqualTo( "0" ) );
+            Assert.That( t4.Type, Is.EqualTo( TokenType.End ) );
+        }
+
+        [Test]
+        public void handle_numbers_beginning_with_0()
+        {
+            Tokenizer sut = new Tokenizer( "0 + 0123" );
+
+            Token t1 = sut.GetNextToken();
+            Token t2 = sut.GetNextToken();
+            Token t3 = sut.GetNextToken();
+            Token t4 = sut.GetNextToken();
+            Token t5 = sut.GetNextToken();
+
+            Assert.That( t1.Type, Is.EqualTo( TokenType.Number ) );
+            Assert.That( t1.Value, Is.EqualTo( "0" ) );
+            Assert.That( t2.Type, Is.EqualTo( TokenType.Plus ) );
+            Assert.That( t3.Type, Is.EqualTo( TokenType.Error ) );
+            Assert.That( t4.Type, Is.EqualTo( TokenType.Number ) );
+            Assert.That( t4.Value, Is.EqualTo( "123" ) );
+            Assert.That( t5.Type, Is.EqualTo( TokenType.End ) );
+        }
+
+        [Test]
+        public void handle_unexpected_character()
+        {
+            Tokenizer sut = new Tokenizer( "25 @ 27" );
+
+            Token t1 = sut.GetNextToken();
+            Token t2 = sut.GetNextToken();
+            Token t3 = sut.GetNextToken();
+            Token t4 = sut.GetNextToken();
+
+            Assert.That( t1.Type, Is.EqualTo( TokenType.Number ) );
+            Assert.That( t1.Value, Is.EqualTo( "25" ) );
+            Assert.That( t2.Type, Is.EqualTo( TokenType.Error ) );
+            Assert.That( t3.Type, Is.EqualTo( TokenType.Number ) );
+            Assert.That( t3.Value, Is.EqualTo( "27" ) );
             Assert.That( t4.Type, Is.EqualTo( TokenType.End ) );
         }
     }
