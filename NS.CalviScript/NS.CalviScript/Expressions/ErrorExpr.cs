@@ -15,6 +15,6 @@ namespace NS.CalviScript
 
         public string Message { get; }
 
-        public string ToLispyString() => string.Format("[Error {0}]", Message);
+        public string ToLispyString() => string.Format( "[Error {0}]", Message );
     }
 }
