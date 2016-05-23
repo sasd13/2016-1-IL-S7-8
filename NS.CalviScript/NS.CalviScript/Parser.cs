@@ -32,14 +32,17 @@ namespace NS.CalviScript
 
         public IExpr Operation()
         {
-            Operand();
+            IExpr left = Operand();
             Token t = _tokenizer.CurrentToken;
             while( t.Type == TokenType.Plus || t.Type == TokenType.Minus || t.Type == TokenType.Mult || t.Type == TokenType.Div || t.Type == TokenType.Modulo )
             {
                 _tokenizer.GetNextToken();
-                Operand();
+                IExpr right = Operand();
+                left = new BinaryExpr( t.Type, left, right );
                 t = _tokenizer.CurrentToken;
             }
+
+            return left;
         }
 
         public IExpr Operand()
@@ -63,15 +66,16 @@ namespace NS.CalviScript
             Token token;
             if( _tokenizer.MatchToken( TokenType.LeftParenthesis, out token ) )
             {
-                Operation();
+                IExpr expr = Operation();
                 if( !_tokenizer.MatchToken( TokenType.RightParenthesis, out token ) )
                 {
-                    throw new Exception( string.Format( "Unexpected token: {0}", _tokenizer.CurrentToken.Type ) );
+                    return new ErrorExpr( string.Format( "Unexpected token: {0}", _tokenizer.CurrentToken.Type ) );
                 }
+                return expr;
             }
             else
             {
-                throw new Exception( string.Format( "Unexpected token: {0}", _tokenizer.CurrentToken.Type ) );
+                return new ErrorExpr( string.Format( "Unexpected token: {0}", _tokenizer.CurrentToken.Type ) );
             }
         }
     }

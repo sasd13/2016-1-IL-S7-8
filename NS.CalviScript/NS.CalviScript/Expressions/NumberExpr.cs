@@ -14,5 +14,7 @@ namespace NS.CalviScript
         }
 
         public int Value { get; }
+
+        public string ToLispyString() => Value.ToString();
     }
 }

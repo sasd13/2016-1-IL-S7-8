@@ -60,7 +60,15 @@ namespace NS.CalviScript
 
         public bool MatchToken( TokenType type, out Token token )
         {
-            throw new NotImplementedException();
+            if( type == CurrentToken.Type )
+            {
+                token = CurrentToken;
+                GetNextToken();
+                return true;
+            }
+
+            token = null;
+            return false;
         }
 
         char Read() => _input[ _pos++ ];
