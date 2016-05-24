@@ -18,28 +18,9 @@ namespace NS.CalviScript
 
         public IExpr Expr { get; }
 
-        public void Accept( IVisitor visitor )
-        {
-            visitor.Visit( this );
-        }
-
         public T Accept<T>( IVisitor<T> visitor )
         {
             return visitor.Visit( this );
-        }
-
-        public string ToInfixString()
-        {
-            return string.Format( "{0}{1}",
-                TokenTypeHelpers.TokenTypeToString( Type ),
-                Expr.ToInfixString() );
-        }
-
-        public string ToLispyString()
-        {
-            return string.Format( "[{0} {1}]",
-                TokenTypeHelpers.TokenTypeToString( Type ),
-                Expr.ToLispyString() );
         }
     }
 }
