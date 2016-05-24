@@ -24,26 +24,7 @@ namespace NS.CalviScript
             int left = Result;
             expr.RightExpr.Accept( this );
             int right = Result;
-            Result = Compute( left, right, expr.Type );
-        }
-
-        private int Compute( int left, int right, TokenType type )
-        {
-            switch( type )
-            {
-                case TokenType.Plus:
-                    return left + right;
-                case TokenType.Minus:
-                    return left - right;
-                case TokenType.Mult:
-                    return left * right;
-                case TokenType.Div:
-                    return left / right;
-                case TokenType.Modulo:
-                    return left % right;
-                default:
-                    throw new ArgumentException( "Argument is not an operator" );
-            }
+            Result = TokenTypeHelpers.Compute( left, right, expr.Type );
         }
 
         public int Result { get; private set; }
@@ -53,17 +34,20 @@ namespace NS.CalviScript
     {
         public int Visit( ErrorExpr expr )
         {
-            throw new NotImplementedException();
+            throw new InvalidOperationException( expr.Message );
         }
 
         public int Visit( ConstantExpr expr )
         {
-            throw new NotImplementedException();
+            return expr.Value;
         }
 
         public int Visit( BinaryExpr expr )
         {
-            throw new NotImplementedException();
+            return TokenTypeHelpers.Compute(
+                expr.LeftExpr.Accept( this ),
+                expr.RightExpr.Accept( this ),
+                expr.Type );
         }
     }
 }
