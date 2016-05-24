@@ -33,7 +33,18 @@ namespace NS.CalviScript
                 case TokenType.Modulo:
                     return left % right;
                 default:
-                    throw new ArgumentException( "Argument is not an operator" );
+                    throw new ArgumentException( "Argument is not an operator", nameof( type ) );
+            }
+        }
+
+        internal static int Compute( int value, TokenType type )
+        {
+            switch( type )
+            {
+                case TokenType.Minus:
+                    return -value;
+                default:
+                    throw new ArgumentException( "Unknown operator.", nameof( type ) );
             }
         }
     }

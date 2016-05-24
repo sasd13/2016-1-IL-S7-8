@@ -25,7 +25,9 @@ namespace NS.CalviScript
 
         public void Visit( UnaryExpr expr )
         {
-            throw new NotImplementedException();
+            expr.Expr.Accept( this );
+            int value = Result;
+            Result = TokenTypeHelpers.Compute( value, expr.Type );
         }
 
         public int Result { get; private set; }
@@ -40,7 +42,7 @@ namespace NS.CalviScript
 
         public int Visit( UnaryExpr expr )
         {
-            throw new NotImplementedException();
+            return TokenTypeHelpers.Compute( expr.Expr.Accept( this ), expr.Type );
         }
 
         public int Visit( ConstantExpr expr )
