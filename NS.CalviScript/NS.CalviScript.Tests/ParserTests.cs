@@ -10,6 +10,8 @@ namespace NS.CalviScript.Tests
         [TestCase( "10 + (11 + 50)", "[+ 10 [+ 11 50]]" )]
         [TestCase( "2 + 3 * 5", "[+ 2 [* 3 5]]" )]
         [TestCase( "2 * -7", "[* 2 [- 7]]" )]
+        [TestCase( "5 + 7 ? -8 * 2 : (7 * 3 ? 0 : 15)", "[? [+ 5 7] [* [- 8] 2] [? [* 7 3] 0 15]]" )]
+        [TestCase( "5 + 7 ? -8 * 2 : 7 * 3 ? 0 : 15", "[? [+ 5 7] [* [- 8] 2] [? [* 7 3] 0 15]]" )]
         public void parse_simple_expr( string input, string expected )
         {
             Tokenizer tokenizer = new Tokenizer( input );
@@ -17,7 +19,8 @@ namespace NS.CalviScript.Tests
 
             IExpr expr = sut.ParseExpression();
 
-            Assert.That( expr.ToLispyString(), Is.EqualTo( expected ) );
+            LispyStringVisitor visitor = new LispyStringVisitor();
+            Assert.That( visitor.Visit( expr ), Is.EqualTo( expected ) );
         }
     }
 }

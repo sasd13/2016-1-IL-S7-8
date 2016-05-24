@@ -27,7 +27,22 @@
 
         IExpr Expr()
         {
-            throw new System.NotImplementedException();
+            IExpr expr = MathExpr();
+            if( _tokenizer.MatchToken( TokenType.QuestionMark ) )
+            {
+                IExpr trueExpr = Expr();
+                if( !_tokenizer.MatchToken( TokenType.Colon ) )
+                {
+                    return new ErrorExpr(
+                        string.Format(
+                            "Expected <:>, but <{0}> found.",
+                            _tokenizer.CurrentToken ) );
+                }
+                IExpr falseExpr = Expr();
+                expr = new TernaryExpr( expr, trueExpr, falseExpr );
+            }
+
+            return expr;
         }
 
         IExpr MathExpr()
