@@ -11,7 +11,9 @@ namespace NS.CalviScript
 
         public int Visit( TernaryExpr expr )
         {
-            throw new NotImplementedException();
+            return expr.PredicateExpr.Accept( this ) >= 0
+                ? expr.TrueExpr.Accept( this )
+                : expr.FalseExpr.Accept( this );
         }
 
         public int Visit( UnaryExpr expr )
