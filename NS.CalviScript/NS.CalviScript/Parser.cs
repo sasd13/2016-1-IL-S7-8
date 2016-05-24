@@ -1,4 +1,6 @@
-﻿namespace NS.CalviScript
+﻿using System.Collections.Generic;
+
+namespace NS.CalviScript
 {
     public class Parser
     {
@@ -10,16 +12,54 @@
             _tokenizer.GetNextToken();
         }
 
+        public IExpr ParseProgram()
+        {
+            List<IExpr> statements = new List<IExpr>();
+            while( !_tokenizer.MatchToken( TokenType.End ) )
+            {
+                statements.Add( Statement() );
+                if( !_tokenizer.MatchToken( TokenType.SemiColon ) )
+                {
+                    return CreateErrorExpr( ";" );
+                }
+            }
+
+            return new ProgramExpr( statements );
+        }
+
+        IExpr Statement()
+        {
+            if( _tokenizer.CurrentToken.Type == TokenType.Var ) return VarDecl();
+            return ParseExpression();
+        }
+
+        IExpr VarDecl()
+        {
+            if( !_tokenizer.MatchToken( TokenType.Var ) )
+            {
+                return CreateErrorExpr( "var" );
+            }
+            Token token;
+            if( !_tokenizer.MatchToken( TokenType.Identifier, out token ) )
+            {
+                return CreateErrorExpr( "IDENTIFIER" );
+            }
+            if( !_tokenizer.MatchToken( TokenType.Equal ) )
+            {
+                return CreateErrorExpr( "=" );
+            }
+            IExpr expr = ParseExpression();
+
+            return new VarDeclExpr( token.Value, expr );
+        }
+
         public IExpr ParseExpression()
         {
             IExpr expr = Expr();
             Token token;
             if( !_tokenizer.MatchToken( TokenType.End, out token ) )
             {
-                expr = new ErrorExpr(
-                    string.Format(
-                        "Expected end of input but {0} found.",
-                        token.Type ) );
+                expr = CreateErrorExpr( "EOI" );
             }
 
             return expr;
@@ -33,10 +73,7 @@
                 IExpr trueExpr = Expr();
                 if( !_tokenizer.MatchToken( TokenType.Colon ) )
                 {
-                    return new ErrorExpr(
-                        string.Format(
-                            "Expected <:>, but <{0}> found.",
-                            _tokenizer.CurrentToken ) );
+                    return CreateErrorExpr( ":" );
                 }
                 IExpr falseExpr = Expr();
                 expr = new TernaryExpr( expr, trueExpr, falseExpr );
@@ -92,19 +129,20 @@
                 IExpr expr = Expr();
                 if( !_tokenizer.MatchToken( TokenType.RightParenthesis, out token ) )
                 {
-                    return new ErrorExpr(
-                        string.Format(
-                            "Expected right parenthesis, {0} found.",
-                            token.Type ) );
+                    return CreateErrorExpr( ")" );
                 }
 
                 return expr;
+            }
+            if( _tokenizer.MatchToken( TokenType.Identifier, out token ) )
+            {
+                return new LookUpExpr( token.Value );
             }
 
             return new ErrorExpr(
                 string.Format(
                     "Unexpected token: {0}.",
-                    token.Type ) );
+                    _tokenizer.CurrentToken.Value ) );
         }
 
         public static IExpr Parse( string input )
@@ -112,6 +150,15 @@
             Tokenizer tokenizer = new Tokenizer( input );
             Parser parser = new Parser( tokenizer );
             return parser.ParseExpression();
+        }
+
+        ErrorExpr CreateErrorExpr( string expected )
+        {
+            return new ErrorExpr(
+                string.Format(
+                    "Expected <{0}>, but <{1}> found.",
+                    expected,
+                    _tokenizer.CurrentToken.Value ) );
         }
     }
 }

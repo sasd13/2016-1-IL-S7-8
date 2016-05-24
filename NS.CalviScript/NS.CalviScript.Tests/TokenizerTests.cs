@@ -191,5 +191,30 @@ namespace NS.CalviScript.Tests
             Assert.That( t3.Value, Is.EqualTo( "27" ) );
             Assert.That( t4.Type, Is.EqualTo( TokenType.End ) );
         }
+
+        [Test]
+        public void handle_identifiers()
+        {
+            Tokenizer sut = new Tokenizer( "var _1_identifier = 12 * 3;" );
+
+            Token t1 = sut.GetNextToken();
+            Token t2 = sut.GetNextToken();
+            Token t3 = sut.GetNextToken();
+            Token t4 = sut.GetNextToken();
+            Token t5 = sut.GetNextToken();
+            Token t6 = sut.GetNextToken();
+            Token t7 = sut.GetNextToken();
+            Token t8 = sut.GetNextToken();
+
+            Assert.That( t1.Type, Is.EqualTo( TokenType.Var ) );
+            Assert.That( t2.Type, Is.EqualTo( TokenType.Identifier ) );
+            Assert.That( t2.Value, Is.EqualTo( "_1_identifier" ) );
+            Assert.That( t3.Type, Is.EqualTo( TokenType.Equal ) );
+            Assert.That( t4.Type, Is.EqualTo( TokenType.Number ) );
+            Assert.That( t5.Type, Is.EqualTo( TokenType.Mult ) );
+            Assert.That( t6.Type, Is.EqualTo( TokenType.Number ) );
+            Assert.That( t7.Type, Is.EqualTo( TokenType.SemiColon ) );
+            Assert.That( t8.Type, Is.EqualTo( TokenType.End ) );
+        }
     }
 }
