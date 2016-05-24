@@ -10,19 +10,48 @@ namespace NS.CalviScript
     {
         public void Visit( ErrorExpr expr )
         {
-            throw new NotImplementedException();
+            throw new InvalidOperationException(expr.Message);
         }
 
         public void Visit( ConstantExpr expr )
         {
-            throw new NotImplementedException();
+            Result = expr.Value;
         }
 
         public void Visit( BinaryExpr expr )
         {
-            throw new NotImplementedException();
+            expr.LeftExpr.Accept(this);
+            int left = Result;
+            expr.RightExpr.Accept(this);
+            int right = Result;
+
+            Compute(left, right, expr.Type);
         }
 
         public int Result { get; private set; }
+
+        public void Compute(int left, int right, TokenType tokenType)
+        {
+            switch (tokenType)
+            {
+                case TokenType.Plus:
+                    Result = left + right;
+                    break;
+                case TokenType.Minus:
+                    Result = left - right;
+                    break;
+                case TokenType.Mult:
+                    Result = left * right;
+                    break;
+                case TokenType.Div:
+                    Result = left / right;
+                    break;
+                case TokenType.Modulo:
+                    Result = left % right;
+                    break;
+                default:
+                    throw new ArgumentException(string.Format("'{0}' is not a valid operator", tokenType));
+            }
+        }
     }
 }
