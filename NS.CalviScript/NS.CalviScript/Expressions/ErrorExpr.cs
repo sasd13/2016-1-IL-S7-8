@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NS.CalviScript
+﻿namespace NS.CalviScript
 {
     public class ErrorExpr : IExpr
     {

@@ -9,6 +9,7 @@ namespace NS.CalviScript.Tests
         [TestCase( "(11 + 7) / 15 % 8", "[% [/ [+ 11 7] 15] 8]" )]
         [TestCase( "10 + (11 + 50)", "[+ 10 [+ 11 50]]" )]
         [TestCase( "2 + 3 * 5", "[+ 2 [* 3 5]]" )]
+        [TestCase( "2 * -7", "[* 2 [- 7]]" )]
         public void parse_simple_expr( string input, string expected )
         {
             Tokenizer tokenizer = new Tokenizer( input );

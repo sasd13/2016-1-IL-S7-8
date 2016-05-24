@@ -7,6 +7,8 @@
         void Visit( ConstantExpr expr );
 
         void Visit( ErrorExpr expr );
+
+        void Visit( UnaryExpr expr );
     }
 
     public interface IVisitor<T>
@@ -16,6 +18,8 @@
         T Visit( ConstantExpr expr );
 
         T Visit( ErrorExpr expr );
+
+        T Visit( UnaryExpr expr );
     }
 
     public static class IVisitorExtensions
