@@ -25,51 +25,51 @@ namespace NS.CalviScript
             expr.RightExpr.Accept(this);
             int right = Result;
 
-            Compute(left, right, expr.Type);
+            ComputeHelper.Compute(left, right, expr.Type);
         }
 
         public int Result { get; private set; }
 
-        public void Compute(int left, int right, TokenType tokenType)
-        {
-            switch (tokenType)
-            {
-                case TokenType.Plus:
-                    Result = left + right;
-                    break;
-                case TokenType.Minus:
-                    Result = left - right;
-                    break;
-                case TokenType.Mult:
-                    Result = left * right;
-                    break;
-                case TokenType.Div:
-                    Result = left / right;
-                    break;
-                case TokenType.Modulo:
-                    Result = left % right;
-                    break;
-                default:
-                    throw new ArgumentException(string.Format("'{0}' is not a valid operator", tokenType));
-            }
-        }
+        
     }
 
     public class GenericEvalVisitor : IVisitor<int>
     {
         public int Visit( ErrorExpr expr )
         {
-            throw new NotImplementedException();
+            throw new InvalidOperationException(expr.Message);
         }
 
         public int Visit( ConstantExpr expr )
         {
-            throw new NotImplementedException();
+            return expr.Value;
         }
 
         public int Visit( BinaryExpr expr )
         {
-            throw new NotImplementedException();
+            return ComputeHelper.Compute(expr.LeftExpr.Accept(this), expr.RightExpr.Accept(this), expr.Type);
+        }
+    }
+
+    static class ComputeHelper
+    {
+        public static int Compute(int left, int right, TokenType tokenType)
+        {
+            switch (tokenType)
+            {
+                case TokenType.Plus:
+                    return left + right;
+                case TokenType.Minus:
+                    return left - right;
+                case TokenType.Mult:
+                    return left * right;
+                case TokenType.Div:
+                    return left / right;
+                case TokenType.Modulo:
+                    return left % right;
+                default:
+                    throw new ArgumentException(string.Format("'{0}' is not a valid operator", tokenType));
+            }
         }
     }
 }

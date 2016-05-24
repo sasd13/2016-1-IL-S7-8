@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace NS.CalviScript
 {
@@ -14,6 +15,25 @@ namespace NS.CalviScript
             {
                 Debug.Assert( t == TokenType.Modulo );
                 return "%";
+            }
+        }
+
+        internal static int Compute(int left, int right, TokenType tokenType)
+        {
+            switch (tokenType)
+            {
+                case TokenType.Plus:
+                    return left + right;
+                case TokenType.Minus:
+                    return left - right;
+                case TokenType.Mult:
+                    return left * right;
+                case TokenType.Div:
+                    return left / right;
+                case TokenType.Modulo:
+                    return left % right;
+                default:
+                    throw new ArgumentException(string.Format("'{0}' is not a valid operator", tokenType));
             }
         }
     }
