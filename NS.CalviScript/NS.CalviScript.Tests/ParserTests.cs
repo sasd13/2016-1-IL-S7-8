@@ -10,6 +10,7 @@ namespace NS.CalviScript.Tests
         [TestCase( "10 + (11 + 50)", "[+ 10 [+ 11 50]]" )]
         [TestCase( "2 + 3 * 5", "[+ 2 [* 3 5]]" )]
         [TestCase( "2 * -7", "[* 2 [- 7]]" )]
+        [TestCase( "5 + 7 ? -8 * 2 : (7 * 3 ? 0 : 15)", "[? [+ 5 7] [* [- 8] 2] [? [* 7 3] 0 15]]" )]
         [TestCase( "5 + 7 ? -8 * 2 : 7 * 3 ? 0 : 15", "[? [+ 5 7] [* [- 8] 2] [? [* 7 3] 0 15]]" )]
         public void parse_simple_expr( string input, string expected )
         {
