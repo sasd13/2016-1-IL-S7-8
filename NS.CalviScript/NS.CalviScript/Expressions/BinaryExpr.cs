@@ -20,29 +20,16 @@ namespace NS.CalviScript
         public string ToLispyString()
         {
             return string.Format( "[{0} {1} {2}]",
-                TokenTypeToString( Type ),
+                TokenTypeHelpers.TokenTypeToString( Type ),
                 LeftExpr.ToLispyString(),
                 RightExpr.ToLispyString() );
-        }
-
-        string TokenTypeToString(TokenType t)
-        {
-            if( t == TokenType.Plus ) return "+";
-            else if( t == TokenType.Minus ) return "-";
-            else if( t == TokenType.Mult ) return "*";
-            else if( t == TokenType.Div ) return "/";
-            else
-            {
-                Debug.Assert( t == TokenType.Modulo );
-                return "%";
-            }
         }
 
         public string ToInfixString()
         {
             return string.Format( "({0} {1} {2})",
                 LeftExpr.ToInfixString(),
-                TokenTypeToString( Type ),
+                TokenTypeHelpers.TokenTypeToString( Type ),
                 RightExpr.ToInfixString() );
         }
 

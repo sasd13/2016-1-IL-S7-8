@@ -16,12 +16,14 @@ namespace NS.CalviScript.Tests
                     new ConstantExpr( 7 ) ),
                 new BinaryExpr(
                     TokenType.Mult,
-                    new ConstantExpr( 5 ),
+                    new UnaryExpr(
+                        TokenType.Minus,
+                        new ConstantExpr( 5 ) ),
                     new ConstantExpr( 8 ) ) );
 
             string result = expr.ToInfixString();
 
-            Assert.That( result, Is.EqualTo( "((2 + 7) + (5 * 8))" ) );
+            Assert.That( result, Is.EqualTo( "((2 + 7) + (-5 * 8))" ) );
         }
     }
 }
