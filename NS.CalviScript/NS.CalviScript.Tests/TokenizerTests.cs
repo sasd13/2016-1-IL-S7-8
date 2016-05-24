@@ -73,7 +73,7 @@ namespace NS.CalviScript.Tests
         [Test]
         public void parse_all_tokens()
         {
-            Tokenizer sut = new Tokenizer( "(5 + 70) * 5 / 3 % 7 - 6" );
+            Tokenizer sut = new Tokenizer( "(5 + 70) * 5 / 3 % 7 - 6 ? 50 : 3" );
 
             Token t1 = sut.GetNextToken();
             Token t2 = sut.GetNextToken();
@@ -88,6 +88,10 @@ namespace NS.CalviScript.Tests
             Token t11 = sut.GetNextToken();
             Token t12 = sut.GetNextToken();
             Token t13 = sut.GetNextToken();
+            Token t14 = sut.GetNextToken();
+            Token t15 = sut.GetNextToken();
+            Token t16 = sut.GetNextToken();
+            Token t17 = sut.GetNextToken();
 
             Assert.That( t1.Type, Is.EqualTo( TokenType.LeftParenthesis ) );
             Assert.That( t2.Type, Is.EqualTo( TokenType.Number ) );
@@ -108,6 +112,12 @@ namespace NS.CalviScript.Tests
             Assert.That( t12.Type, Is.EqualTo( TokenType.Minus ) );
             Assert.That( t13.Type, Is.EqualTo( TokenType.Number ) );
             Assert.That( t13.Value, Is.EqualTo( "6" ) );
+            Assert.That( t14.Type, Is.EqualTo( TokenType.QuestionMark ) );
+            Assert.That( t15.Type, Is.EqualTo( TokenType.Number ) );
+            Assert.That( t15.Value, Is.EqualTo( "50" ) );
+            Assert.That( t16.Type, Is.EqualTo( TokenType.Colon ) );
+            Assert.That( t17.Type, Is.EqualTo( TokenType.Number ) );
+            Assert.That( t17.Value, Is.EqualTo( "3" ) );
         }
 
         [Test]

@@ -32,6 +32,8 @@ namespace NS.CalviScript
             else if( Peek() == '%' ) result = HandleSimpleToken( TokenType.Modulo );
             else if( Peek() == '(' ) result = HandleSimpleToken( TokenType.LeftParenthesis );
             else if( Peek() == ')' ) result = HandleSimpleToken( TokenType.RightParenthesis );
+            else if( Peek() == '?' ) result = HandleSimpleToken( TokenType.QuestionMark );
+            else if( Peek() == ':' ) result = HandleSimpleToken( TokenType.Colon );
             else if( IsNumber ) result = HandleNumber();
             else result = new Token( TokenType.Error, Read() );
 

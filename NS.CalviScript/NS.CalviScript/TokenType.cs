@@ -12,6 +12,8 @@
         RightParenthesis,
         Number,
         Error,
-        End
+        End,
+        QuestionMark,
+        Colon
     }
 }
