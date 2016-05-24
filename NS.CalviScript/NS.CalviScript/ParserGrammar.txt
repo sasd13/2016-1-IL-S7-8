@@ -1,13 +1,24 @@
 ﻿#legend
 | : OR
+? : 0..1
 * : 0..n
 ##
 
-start: expr EOI
+program: (statement ';')* EOI
 
-expr: term (('+' | '-') term)*
+statement: vaDecl
+         | expr
+		 
+varDecl: VAR IDENTIFIER '=' expr
+
+expr: mathExpr ('?' exp ':' exp)?
+
+mathExpr: term (('+' | '-') term)*
 
 term: factor (('*' | '/' | '%') factor)*
 
-factor: NUMBER
-      | '(' expr ')'
+factor: '-'? positiveFactor
+	  
+positiveFactor: NUMBER
+              | IDENTIFIER
+              | '(' expr ')'
