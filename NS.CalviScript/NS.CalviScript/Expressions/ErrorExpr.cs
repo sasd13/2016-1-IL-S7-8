@@ -1,4 +1,6 @@
-﻿namespace NS.CalviScript
+﻿using System;
+
+namespace NS.CalviScript
 {
     public class ErrorExpr : IExpr
     {
@@ -12,6 +14,11 @@
         public void Accept( IVisitor visitor )
         {
             visitor.Visit( this );
+        }
+
+        public T Accept<T>( IVisitor<T> visitor )
+        {
+            return visitor.Visit( this );
         }
 
         public string ToInfixString() => ToLispyString();
