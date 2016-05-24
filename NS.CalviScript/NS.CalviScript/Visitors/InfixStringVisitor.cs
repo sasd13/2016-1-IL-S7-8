@@ -11,7 +11,10 @@ namespace NS.CalviScript
 
         public string Visit( TernaryExpr expr )
         {
-            throw new NotImplementedException();
+            return string.Format( "({0} ? {1} : {2})",
+                expr.PredicateExpr.Accept( this ),
+                expr.TrueExpr.Accept( this ),
+                expr.FalseExpr.Accept( this ) );
         }
 
         public string Visit( UnaryExpr expr )
