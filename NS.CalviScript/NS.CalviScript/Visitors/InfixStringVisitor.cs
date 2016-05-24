@@ -34,17 +34,20 @@ namespace NS.CalviScript
     {
         public string Visit( ErrorExpr expr )
         {
-            throw new NotImplementedException();
+            return string.Format( "[Error {0}]", expr.Message ); ;
         }
 
         public string Visit( ConstantExpr expr )
         {
-            throw new NotImplementedException();
+            return expr.Value.ToString();
         }
 
         public string Visit( BinaryExpr expr )
         {
-            throw new NotImplementedException();
+            return string.Format( "({0} {1} {2})",
+                expr.LeftExpr.Accept( this ),
+                TokenTypeHelpers.TokenTypeToString( expr.Type ),
+                expr.RightExpr.Accept( this ) );
         }
     }
 }

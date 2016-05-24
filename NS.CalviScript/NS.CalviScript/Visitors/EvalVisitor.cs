@@ -10,7 +10,7 @@ namespace NS.CalviScript
     {
         public void Visit( ErrorExpr expr )
         {
-            throw new InvalidOperationException(expr.Message);
+            throw new InvalidOperationException( expr.Message );
         }
 
         public void Visit( ConstantExpr expr )
@@ -20,24 +20,21 @@ namespace NS.CalviScript
 
         public void Visit( BinaryExpr expr )
         {
-            expr.LeftExpr.Accept(this);
+            expr.LeftExpr.Accept( this );
             int left = Result;
-            expr.RightExpr.Accept(this);
+            expr.RightExpr.Accept( this );
             int right = Result;
-
-            ComputeHelper.Compute(left, right, expr.Type);
+            Result = TokenTypeHelpers.Compute( left, right, expr.Type );
         }
 
         public int Result { get; private set; }
-
-        
     }
 
     public class GenericEvalVisitor : IVisitor<int>
     {
         public int Visit( ErrorExpr expr )
         {
-            throw new InvalidOperationException(expr.Message);
+            throw new InvalidOperationException( expr.Message );
         }
 
         public int Visit( ConstantExpr expr )
@@ -47,29 +44,10 @@ namespace NS.CalviScript
 
         public int Visit( BinaryExpr expr )
         {
-            return ComputeHelper.Compute(expr.LeftExpr.Accept(this), expr.RightExpr.Accept(this), expr.Type);
-        }
-    }
-
-    static class ComputeHelper
-    {
-        public static int Compute(int left, int right, TokenType tokenType)
-        {
-            switch (tokenType)
-            {
-                case TokenType.Plus:
-                    return left + right;
-                case TokenType.Minus:
-                    return left - right;
-                case TokenType.Mult:
-                    return left * right;
-                case TokenType.Div:
-                    return left / right;
-                case TokenType.Modulo:
-                    return left % right;
-                default:
-                    throw new ArgumentException(string.Format("'{0}' is not a valid operator", tokenType));
-            }
+            return TokenTypeHelpers.Compute(
+                expr.LeftExpr.Accept( this ),
+                expr.RightExpr.Accept( this ),
+                expr.Type );
         }
     }
 }
