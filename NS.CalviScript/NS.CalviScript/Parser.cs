@@ -27,6 +27,11 @@
 
         IExpr Expr()
         {
+            throw new System.NotImplementedException();
+        }
+
+        IExpr MathExpr()
+        {
             IExpr leftTerm = Term();
             Token token;
             while( _tokenizer.MatchTermOp( out token ) )
