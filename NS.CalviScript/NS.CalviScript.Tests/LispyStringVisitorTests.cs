@@ -7,6 +7,7 @@ namespace NS.CalviScript.Tests
     {
         [TestCase( "5 + 10 % 2", "[+ 5 [% 10 2]]" )]
         [TestCase( "-5 + 10 % 2", "[+ [- 5] [% 10 2]]" )]
+        [TestCase( "-5 + 10 % 2 ? 0 : 50 * 2", "[? [+ [- 5] [% 10 2]] 0 [* 50 2]]" )]
         public void generic_impl_can_stringify( string input, string expected )
         {
             IExpr expr = Parser.Parse( input );

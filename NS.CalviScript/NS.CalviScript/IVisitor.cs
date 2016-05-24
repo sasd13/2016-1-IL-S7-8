@@ -9,6 +9,8 @@
         T Visit( ErrorExpr expr );
 
         T Visit( UnaryExpr expr );
+
+        T Visit( TernaryExpr expr );
     }
 
     public static class IVisitorExtensions

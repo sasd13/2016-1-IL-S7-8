@@ -9,6 +9,11 @@ namespace NS.CalviScript
             throw new InvalidOperationException( expr.Message );
         }
 
+        public int Visit( TernaryExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+
         public int Visit( UnaryExpr expr )
         {
             return TokenTypeHelpers.Compute( expr.Expr.Accept( this ), expr.Type );

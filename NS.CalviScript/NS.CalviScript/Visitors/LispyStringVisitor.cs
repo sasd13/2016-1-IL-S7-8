@@ -9,6 +9,11 @@ namespace NS.CalviScript
             return string.Format( "[Error {0}]", expr.Message );
         }
 
+        public string Visit( TernaryExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+
         public string Visit( UnaryExpr expr )
         {
             return string.Format( "[{0} {1}]",

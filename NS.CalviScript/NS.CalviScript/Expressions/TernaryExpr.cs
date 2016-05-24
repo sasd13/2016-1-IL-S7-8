@@ -1,6 +1,8 @@
-﻿namespace NS.CalviScript
+﻿using System;
+
+namespace NS.CalviScript
 {
-    public class TernaryExpr
+    public class TernaryExpr : IExpr
     {
         public TernaryExpr( IExpr predicateExpr, IExpr trueExpr, IExpr falseExpr )
         {
@@ -14,5 +16,10 @@
         public IExpr TrueExpr { get; }
 
         public IExpr FalseExpr { get; }
+
+        public T Accept<T>( IVisitor<T> visitor )
+        {
+            return visitor.Visit( this );
+        }
     }
 }

@@ -1,10 +1,17 @@
-﻿namespace NS.CalviScript
+﻿using System;
+
+namespace NS.CalviScript
 {
     public class InfixStringVisitor : IVisitor<string>
     {
         public string Visit( ErrorExpr expr )
         {
             return string.Format( "[Error {0}]", expr.Message ); ;
+        }
+
+        public string Visit( TernaryExpr expr )
+        {
+            throw new NotImplementedException();
         }
 
         public string Visit( UnaryExpr expr )
