@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace NS.CalviScript
 {
@@ -17,9 +18,30 @@ namespace NS.CalviScript
                 expr.FalseExpr.Accept( this ) );
         }
 
+        public string Visit( VarDeclExpr expr )
+        {
+            return string.Format( "[VD \"{0}\" {1}]",
+                expr.Identifier,
+                expr.Expr.Accept( this ) );
+        }
+
+        public string Visit( ProgramExpr expr )
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append( "[S" );
+            foreach( IExpr e in expr.Statements )
+            {
+                sb.Append( " " );
+                sb.Append( e.Accept( this ) );
+            }
+            sb.Append( "]" );
+
+            return sb.ToString();
+        }
+
         public string Visit( LookUpExpr expr )
         {
-            throw new NotImplementedException();
+            return string.Format( "[LU \"{0}\"]", expr.Identifier );
         }
 
         public string Visit( UnaryExpr expr )

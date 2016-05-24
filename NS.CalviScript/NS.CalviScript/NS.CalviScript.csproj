@@ -45,8 +45,10 @@
     <Compile Include="Expressions\IExpr.cs" />
     <Compile Include="Expressions\ConstantExpr.cs" />
     <Compile Include="Expressions\LookUpExpr.cs" />
+    <Compile Include="Expressions\ProgramExpr.cs" />
     <Compile Include="Expressions\TernaryExpr.cs" />
     <Compile Include="Expressions\UnaryExpr.cs" />
+    <Compile Include="Expressions\VarDeclExpr.cs" />
     <Compile Include="IVisitor.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Token.cs" />

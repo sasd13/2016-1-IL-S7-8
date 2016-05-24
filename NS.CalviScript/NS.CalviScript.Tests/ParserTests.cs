@@ -22,5 +22,19 @@ namespace NS.CalviScript.Tests
             LispyStringVisitor visitor = new LispyStringVisitor();
             Assert.That( visitor.Visit( expr ), Is.EqualTo( expected ) );
         }
+
+        public void parse_program()
+        {
+            string input = @"var test = 3 + 50;
+var test2 = test * 3;";
+            Tokenizer tokenizer = new Tokenizer( input );
+            Parser sut = new Parser( tokenizer );
+
+            IExpr expr = sut.ParseProgram();
+
+            LispyStringVisitor visitor = new LispyStringVisitor();
+            string expected = @"[S [VD ""test"" [+ 3 50]] [VD ""test2"" [* [LU ""test""] 3]]]";
+            Assert.That( visitor.Visit( expr ), Is.EqualTo( expected ) );
+        }
     }
 }
