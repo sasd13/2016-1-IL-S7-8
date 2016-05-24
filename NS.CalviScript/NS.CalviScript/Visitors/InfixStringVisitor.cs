@@ -13,7 +13,7 @@ namespace NS.CalviScript
             string right = Result;
             Result = string.Format( "({0} {1} {2})",
                 left,
-                TokenTypeToString( expr.Type ),
+                TokenTypeHelpers.TokenTypeToString( expr.Type ),
                 right );
         }
 
@@ -28,18 +28,5 @@ namespace NS.CalviScript
         }
 
         public string Result { get; private set; }
-
-        string TokenTypeToString( TokenType t )
-        {
-            if( t == TokenType.Plus ) return "+";
-            else if( t == TokenType.Minus ) return "-";
-            else if( t == TokenType.Mult ) return "*";
-            else if( t == TokenType.Div ) return "/";
-            else
-            {
-                Debug.Assert( t == TokenType.Modulo );
-                return "%";
-            }
-        }
     }
 }
