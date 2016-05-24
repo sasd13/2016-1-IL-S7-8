@@ -13,14 +13,23 @@ namespace NS.CalviScript.Tests
         [Test]
         public void can_evaluate_expression()
         {
-            Tokenizer tokenizer = new Tokenizer( "(3 + 7) / (5 - 2)" );
-            Parser parser = new Parser( tokenizer );
-            IExpr expr = parser.ParseExpression();
+            IExpr expr = Parser.Parse( "(3 + 7) / (5 - 2)" );
             EvalVisitor sut = new EvalVisitor();
 
             sut.Visit( expr );
 
             Assert.That( sut.Result, Is.EqualTo( 3 ) );
+        }
+
+        [Test]
+        public void generic_impl_can_evaluate_expression()
+        {
+            IExpr expr = Parser.Parse( "2 + 7 / 2 - 3" );
+            GenericEvalVisitor sut = new GenericEvalVisitor();
+
+            int result = sut.Visit( expr );
+
+            Assert.That( result, Is.EqualTo( 2 ) );
         }
     }
 }

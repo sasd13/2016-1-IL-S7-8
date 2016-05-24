@@ -8,14 +8,23 @@ namespace NS.CalviScript.Tests
         [Test]
         public void can_stringify()
         {
-            Tokenizer tokenizer = new Tokenizer( "2 + 7 / 12" );
-            Parser parser = new Parser( tokenizer );
-            IExpr expr = parser.ParseExpression();
+            IExpr expr = Parser.Parse( "2 + 7 / 12" );
             InfixStringVisitor sut = new InfixStringVisitor();
 
             sut.Visit( expr );
 
             Assert.That( sut.Result, Is.EqualTo( "(2 + (7 / 12))" ) );
+        }
+
+        [Test]
+        public void generic_impl_can_stringify()
+        {
+            IExpr expr = Parser.Parse( "70 % (50 - 4 * 6)" );
+            GenericInfixStringVisitor sut = new GenericInfixStringVisitor();
+
+            string result = sut.Visit( expr );
+
+            Assert.That( result, Is.EqualTo( "(70 % (50 - (4 * 6)))" ) );
         }
     }
 }

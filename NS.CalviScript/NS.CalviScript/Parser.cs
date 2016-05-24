@@ -1,4 +1,6 @@
-﻿namespace NS.CalviScript
+﻿using System;
+
+namespace NS.CalviScript
 {
     public class Parser
     {
@@ -36,6 +38,13 @@
             }
 
             return leftTerm;
+        }
+
+        public static IExpr Parse( string input )
+        {
+            Tokenizer tokenizer = new Tokenizer( input );
+            Parser parser = new Parser( tokenizer );
+            return parser.ParseExpression();
         }
 
         IExpr Term()

@@ -48,4 +48,22 @@ namespace NS.CalviScript
 
         public int Result { get; private set; }
     }
+
+    public class GenericEvalVisitor : IVisitor<int>
+    {
+        public int Visit( ErrorExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Visit( ConstantExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Visit( BinaryExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

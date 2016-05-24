@@ -29,4 +29,22 @@ namespace NS.CalviScript
 
         public string Result { get; private set; }
     }
+
+    public class GenericInfixStringVisitor : IVisitor<string>
+    {
+        public string Visit( ErrorExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Visit( ConstantExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Visit( BinaryExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
