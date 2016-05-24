@@ -34,7 +34,10 @@ namespace NS.CalviScript
             else if( Peek() == ')' ) result = HandleSimpleToken( TokenType.RightParenthesis );
             else if( Peek() == '?' ) result = HandleSimpleToken( TokenType.QuestionMark );
             else if( Peek() == ':' ) result = HandleSimpleToken( TokenType.Colon );
+            else if( Peek() == '=' ) result = HandleSimpleToken( TokenType.Equal );
+            else if( Peek() == ';' ) result = HandleSimpleToken( TokenType.SemiColon );
             else if( IsNumber ) result = HandleNumber();
+            else if( IsIdentifier ) result = HandleIdentifier();
             else result = new Token( TokenType.Error, Read() );
 
             CurrentToken = result;
@@ -152,6 +155,24 @@ namespace NS.CalviScript
             } while( !IsEnd && IsNumber );
 
             return new Token( TokenType.Number, sb.ToString() );
+        }
+
+        bool IsIdentifier => char.IsLetter( Peek() ) || Peek() == '_';
+
+        Token HandleIdentifier()
+        {
+            Debug.Assert( IsIdentifier );
+
+            StringBuilder sb = new StringBuilder();
+            do
+            {
+                sb.Append( Peek() );
+                Forward();
+            } while( !IsEnd && ( IsIdentifier || char.IsDigit( Peek() ) ) );
+
+            string identifier = sb.ToString();
+            if( identifier == "var" ) return new Token( TokenType.Var, identifier );
+            return new Token( TokenType.Identifier, identifier );
         }
     }
 }

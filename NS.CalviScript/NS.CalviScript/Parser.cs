@@ -10,6 +10,21 @@
             _tokenizer.GetNextToken();
         }
 
+        public IExpr ParseProgram()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        IExpr Statement()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        IExpr VarDecl()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public IExpr ParseExpression()
         {
             IExpr expr = Expr();
@@ -99,6 +114,10 @@
                 }
 
                 return expr;
+            }
+            if( _tokenizer.MatchToken( TokenType.Identifier, out token ) )
+            {
+                return new LookUpExpr( token.Value );
             }
 
             return new ErrorExpr(

@@ -16,6 +16,11 @@ namespace NS.CalviScript
                 : expr.FalseExpr.Accept( this );
         }
 
+        public int Visit( LookUpExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+
         public int Visit( UnaryExpr expr )
         {
             return TokenTypeHelpers.Compute( expr.Expr.Accept( this ), expr.Type );

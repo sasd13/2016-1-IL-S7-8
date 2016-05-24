@@ -11,6 +11,8 @@
         T Visit( UnaryExpr expr );
 
         T Visit( TernaryExpr expr );
+
+        T Visit( LookUpExpr expr );
     }
 
     public static class IVisitorExtensions

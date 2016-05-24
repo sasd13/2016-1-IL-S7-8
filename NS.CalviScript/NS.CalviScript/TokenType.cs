@@ -14,6 +14,10 @@
         Error,
         End,
         QuestionMark,
-        Colon
+        Colon,
+        Equal,
+        SemiColon,
+        Var,
+        Identifier
     }
 }

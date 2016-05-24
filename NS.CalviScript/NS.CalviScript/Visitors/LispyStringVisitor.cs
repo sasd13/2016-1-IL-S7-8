@@ -17,6 +17,11 @@ namespace NS.CalviScript
                 expr.FalseExpr.Accept( this ) );
         }
 
+        public string Visit( LookUpExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+
         public string Visit( UnaryExpr expr )
         {
             return string.Format( "[{0} {1}]",
