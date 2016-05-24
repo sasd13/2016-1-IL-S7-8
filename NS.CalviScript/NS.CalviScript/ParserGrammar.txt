@@ -1,0 +1,13 @@
+﻿#legend
+| : OR
+* : 0..n
+##
+
+start: expr EOI
+
+expr: term (('+' | '-') term)*
+
+term: factor (('*' | '/' | '%') factor)*
+
+factor: NUMBER
+      | '(' expr ')'

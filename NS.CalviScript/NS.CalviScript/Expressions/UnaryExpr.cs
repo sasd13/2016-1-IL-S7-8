@@ -14,9 +14,9 @@ namespace NS.CalviScript
             Expr = expr;
         }
 
-        TokenType Type { get; }
+        public TokenType Type { get; }
 
-        IExpr Expr { get; }
+        public IExpr Expr { get; }
 
         public void Accept( IVisitor visitor )
         {

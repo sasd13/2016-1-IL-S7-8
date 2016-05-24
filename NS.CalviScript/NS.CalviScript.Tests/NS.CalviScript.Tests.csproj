@@ -54,7 +54,7 @@
     <Compile Include="InfixStringVisitorTests.cs" />
     <Compile Include="LispyStringVisitorTests.cs" />
     <Compile Include="ParserTests.cs" />
-    <Compile Include="SimpleTests.cs" />
+    <Compile Include="TokenizerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

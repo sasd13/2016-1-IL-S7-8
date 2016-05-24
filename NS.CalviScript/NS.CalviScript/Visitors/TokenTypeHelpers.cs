@@ -36,5 +36,16 @@ namespace NS.CalviScript
                     throw new ArgumentException(string.Format("'{0}' is not a valid operator", tokenType));
             }
         }
+
+        internal static int Compute( int value, TokenType type )
+        {
+            switch( type )
+            {
+                case TokenType.Minus:
+                    return -value;
+                default:
+                    throw new ArgumentException( "Unknown operator.", nameof( type ) );
+            }
+        }
     }
 }

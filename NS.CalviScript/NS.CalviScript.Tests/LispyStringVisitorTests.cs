@@ -5,26 +5,28 @@ namespace NS.CalviScript.Tests
     [TestFixture]
     public class LispyStringVisitorTests
     {
-        [Test]
-        public void can_stringify()
+        [TestCase( "(8 + 10) * (11 % 15)", "[* [+ 8 10] [% 11 15]]" )]
+        [TestCase( "(8 + 10) * -(11 % 15)", "[* [+ 8 10] [- [% 11 15]]]" )]
+        public void can_stringify( string input, string expected )
         {
-            IExpr expr = Parser.Parse( "(8 + 10) * (11 % 15)" );
+            IExpr expr = Parser.Parse( input );
             LispyStringVisitor sut = new LispyStringVisitor();
 
             sut.Visit( expr );
 
-            Assert.That( sut.Result, Is.EqualTo( "[* [+ 8 10] [% 11 15]]" ) );
+            Assert.That( sut.Result, Is.EqualTo( expected ) );
         }
 
-        [Test]
-        public void generic_impl_can_stringify()
+        [TestCase( "5 + 10 % 2", "[+ 5 [% 10 2]]" )]
+        [TestCase( "-5 + 10 % 2", "[+ [- 5] [% 10 2]]" )]
+        public void generic_impl_can_stringify( string input, string expected )
         {
-            IExpr expr = Parser.Parse( "5 + 10 % 2" );
+            IExpr expr = Parser.Parse( input );
             GenericLispyStringVisitor sut = new GenericLispyStringVisitor();
 
             string result = sut.Visit( expr );
 
-            Assert.That( result, Is.EqualTo( "[+ 5 [% 10 2]]" ) );
+            Assert.That( result, Is.EqualTo( expected ) );
         }
     }
 }
