@@ -76,7 +76,16 @@ namespace ITI2016.Dev
             return new EWhere<T>( container, predicate );
         }
 
-        class ESelect<T, TResult> : IEnumerable<T>
+        public static System.Collections.Generic.IEnumerable<T> Where2<T>( this IEnumerable<T> container, Func<T, bool> predicate )
+        {
+            foreach( var item in container )
+            {
+                if( predicate( item ) ) yield return item;
+            }
+        }
+
+
+        class ESelect<T, TResult> : IEnumerable<TResult>
         {
             readonly IEnumerable<T> _container;
             readonly Func<T, TResult> _proj;
@@ -122,7 +131,7 @@ namespace ITI2016.Dev
 
             }
 
-            public IEnumerator<T> GetEnumerator()
+            public IEnumerator<TResult> GetEnumerator()
             {
                 return new E( this );
             }
@@ -131,7 +140,7 @@ namespace ITI2016.Dev
 
         public static IEnumerable<TResult> Select<T, TResult>( this IEnumerable<T> container, Func<T, TResult> projection )
         {
-            return new ESelect<T>( container, projection );
+            return new ESelect<T,TResult>( container, projection );
         }
 
     }
