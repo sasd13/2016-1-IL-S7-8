@@ -38,18 +38,19 @@ namespace NS.CalviScript
         {
             readonly SyntaxicScope _current;
 
-            public ScopeCloser(SyntaxicScope s)
+            public ScopeCloser( SyntaxicScope s )
             {
                 _current = s;
-                
+                // DO IT
             }
 
             public void Dispose()
             {
-
+                // UNDO IT
             }
         }
 
-        internal IDisposable OpenScope() => new ScopeCloser(this);
+        internal IDisposable OpenScope() => new ScopeCloser( this );
+
     }
 }
