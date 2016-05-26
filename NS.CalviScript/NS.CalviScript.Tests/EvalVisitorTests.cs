@@ -13,9 +13,9 @@ namespace NS.CalviScript.Tests
             IExpr expr = Parser.Parse( input );
             EvalVisitor sut = new EvalVisitor();
 
-            int result = sut.Visit( expr );
-
-            Assert.That( result, Is.EqualTo( expected ) );
+            IExpr result = sut.Visit( expr );
+            Assert.That( result, Is.InstanceOf<ConstantExpr>() );
+            Assert.That( (( ConstantExpr)result).Value, Is.EqualTo( expected ) );
         }
     }
 }

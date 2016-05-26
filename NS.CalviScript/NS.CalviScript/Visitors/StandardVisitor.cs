@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NS.CalviScript.Visitors
+namespace NS.CalviScript
 {
     public class StandardVisitor : IVisitor<IExpr>
     {
@@ -22,7 +22,7 @@ namespace NS.CalviScript.Visitors
 
         public virtual IExpr Visit( VarDeclExpr expr ) => expr;
 
-        public IExpr Visit( AssignExpr expr )
+        public virtual IExpr Visit( AssignExpr expr )
         {
             IIdentifierExpr l = (IIdentifierExpr)expr.Left.Accept( this );
             IExpr e = expr.Expression.Accept( this );
@@ -31,7 +31,7 @@ namespace NS.CalviScript.Visitors
                     : expr;
         }
 
-        public IExpr Visit( BlockExpr expr )
+        public virtual IExpr Visit( BlockExpr expr )
         {
             List<IExpr> newContent = null;
             int i = 0;
@@ -54,15 +54,15 @@ namespace NS.CalviScript.Visitors
 
         public virtual IExpr Visit( LookUpExpr expr ) => expr;
 
-        public IExpr Visit( UnaryExpr expr )
+        public virtual IExpr Visit( UnaryExpr expr )
         {
             var e = expr.Expr.Accept( this );
             return e != expr.Expr ? new UnaryExpr( expr.Type, e ) : expr;
         }
 
-        public IExpr Visit( ConstantExpr expr ) => expr;
+        public virtual IExpr Visit( ConstantExpr expr ) => expr;
 
-        public IExpr Visit( BinaryExpr expr )
+        public virtual IExpr Visit( BinaryExpr expr )
         {
             var l = expr.LeftExpr.Accept( this );
             var r = expr.RightExpr.Accept( this );
