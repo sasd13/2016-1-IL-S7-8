@@ -32,5 +32,22 @@ namespace NS.CalviScript.Tests
             Assert.That( ((ConstantExpr)result).Value, Is.EqualTo( 3712 ) );
         }
 
+        [TestCase( "x;", 3712 )]
+        [TestCase( "x+10;", 3712 + 10 )]
+        [TestCase( "(x*x)+10;", 3712 * 3712 + 10 )]
+        [TestCase( "var a = 3;", 3 )]
+        [TestCase( "var a = 3 + x;", 3712 + 3 )]
+        [TestCase( "var a = 3 + x; var b = a + 7", 3712 + 3 + 7 )]
+        public void real_eval_tests_with_x_equals_3712( string program, int exptectedValue )
+        {
+            IExpr expr = Parser.ParseProgram( program );
+            var globalContext = new Dictionary<string, int>();
+            globalContext.Add( "x", 3712 );
+            EvalVisitor sut = new EvalVisitor( globalContext );
+            IExpr result = sut.Visit( expr );
+            Assert.That( result, Is.InstanceOf<ConstantExpr>() );
+            Assert.That( ((ConstantExpr)result).Value, Is.EqualTo( exptectedValue ) );
+        }
+
     }
 }
