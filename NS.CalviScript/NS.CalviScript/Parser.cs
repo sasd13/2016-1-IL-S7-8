@@ -19,11 +19,9 @@ namespace NS.CalviScript
             List<IExpr> statements = new List<IExpr>();
             while( !_tokenizer.MatchToken( TokenType.End ) )
             {
-                statements.Add( Statement() );
-                if( !_tokenizer.MatchToken( TokenType.SemiColon ) )
-                {
-                    return CreateErrorExpr( ";" );
-                }
+                var s = Block( false ) ?? Statement();
+                if( s is ErrorExpr ) return s;
+                statements.Add( s );
             }
             return new BlockExpr( statements );
         }
@@ -50,7 +48,7 @@ namespace NS.CalviScript
         IExpr Statement()
         {
             IExpr r = VarDecl() 
-                        ?? ParseExpression();
+                        ?? Expr();
             if( r == null )
             {
                 return new ErrorExpr( "Expected statement." );
@@ -186,6 +184,13 @@ namespace NS.CalviScript
             Tokenizer tokenizer = new Tokenizer( input );
             Parser parser = new Parser( tokenizer );
             return parser.ParseExpression();
+        }
+
+        public static IExpr ParseProgram( string input )
+        {
+            Tokenizer tokenizer = new Tokenizer( input );
+            Parser parser = new Parser( tokenizer );
+            return parser.ParseProgram();
         }
 
         ErrorExpr CreateErrorExpr( string expected )

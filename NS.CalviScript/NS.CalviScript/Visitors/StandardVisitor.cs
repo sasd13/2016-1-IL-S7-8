@@ -70,5 +70,8 @@ namespace NS.CalviScript
                     ? new BinaryExpr( expr.Type, l, r )
                     : expr;
         }
+
+        public virtual IExpr Visit( UndefinedExpr expr ) => expr;
+
     }
 }
