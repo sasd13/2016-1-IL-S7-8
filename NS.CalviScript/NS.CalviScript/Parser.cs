@@ -25,14 +25,30 @@ namespace NS.CalviScript
                     return CreateErrorExpr( ";" );
                 }
             }
-
             return new BlockExpr( statements );
+        }
+
+        IExpr Block()
+        {
+            if( _tokenizer.MatchToken( TokenType.OpenCurly ) )
+            {
+
+            }
         }
 
         IExpr Statement()
         {
-            if( _tokenizer.CurrentToken.Type == TokenType.Var ) return VarDecl();
-            return ParseExpression();
+            IExpr r = VarDecl() 
+                        ?? ParseExpression();
+            if( r == null )
+            {
+                return new ErrorExpr( "Expected statement." );
+            }
+            if( !_tokenizer.MatchToken( TokenType.SemiColon ) )
+            {
+                return new ErrorExpr( "Expected ; statement terminator." );
+            }
+            return r;
         }
 
         IExpr VarDecl()
