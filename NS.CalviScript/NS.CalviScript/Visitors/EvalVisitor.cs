@@ -12,6 +12,24 @@ namespace NS.CalviScript
             _globalContext = globalContext;
         }
 
+        public override IExpr Visit( BlockExpr expr )
+        {
+            IExpr last = UndefinedExpr.Default;
+            foreach( var s in expr.Statements )
+            {
+                last = s.Accept( this );
+            }
+            return last;
+        }
 
+        public override IExpr Visit( LookUpExpr expr )
+        {
+            int knownValue;
+            if( _globalContext.TryGetValue( expr.Identifier, out knownValue ) )
+            {
+                return new ConstantExpr( knownValue );
+            }
+            return new ErrorExpr( "Reference not found: " + expr.Identifier );
+        }
     }
 }

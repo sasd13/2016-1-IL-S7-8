@@ -19,5 +19,18 @@ namespace NS.CalviScript.Tests
             Assert.That( result, Is.InstanceOf<ConstantExpr>() );
             Assert.That( (( ConstantExpr)result).Value, Is.EqualTo( expected ) );
         }
+
+        [Test]
+        public void access_to_the_context()
+        {
+            IExpr expr = Parser.ParseProgram( "x;" );
+            var globalContext = new Dictionary<string, int>();
+            globalContext.Add( "x", 3712 );
+            EvalVisitor sut = new EvalVisitor( globalContext );
+            IExpr result = sut.Visit( expr );
+            Assert.That( result, Is.InstanceOf<ConstantExpr>() );
+            Assert.That( ((ConstantExpr)result).Value, Is.EqualTo( 3712 ) );
+        }
+
     }
 }
