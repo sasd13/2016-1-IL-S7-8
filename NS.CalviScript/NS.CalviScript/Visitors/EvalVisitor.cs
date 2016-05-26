@@ -58,20 +58,26 @@ namespace NS.CalviScript
             if( l is UndefinedExpr ) return l;
             if( r is UndefinedExpr ) return r;
 
-            var lC = (ConstantExpr)l;
-            var rC = (ConstantExpr)r;
-            switch( expr.Type )
+            if( l is ConstantExpr && r is ConstantExpr )
             {
-                case TokenType.Div: return new ConstantExpr( lC.Value / rC.Value );
-                case TokenType.Mult: return new ConstantExpr( lC.Value * rC.Value );
-                case TokenType.Minus: return new ConstantExpr( lC.Value - rC.Value );
-                case TokenType.Plus: return new ConstantExpr( lC.Value + rC.Value );
-                default:
-                    {
-                        Debug.Assert( expr.Type == TokenType.Modulo );
-                        return new ConstantExpr( lC.Value % rC.Value );
-                    }
+                var lC = (ConstantExpr)l;
+                var rC = (ConstantExpr)r;
+                switch( expr.Type )
+                {
+                    case TokenType.Div: return new ConstantExpr( lC.Value / rC.Value );
+                    case TokenType.Mult: return new ConstantExpr( lC.Value * rC.Value );
+                    case TokenType.Minus: return new ConstantExpr( lC.Value - rC.Value );
+                    case TokenType.Plus: return new ConstantExpr( lC.Value + rC.Value );
+                    default:
+                        {
+                            Debug.Assert( expr.Type == TokenType.Modulo );
+                            return new ConstantExpr( lC.Value % rC.Value );
+                        }
+                }
             }
+            return l != expr.LeftExpr || r != expr.RightExpr
+                    ? new BinaryExpr( expr.Type, l, r )
+                    : expr;
         }
 
         public override IExpr Visit( TernaryExpr expr )
