@@ -33,5 +33,24 @@ namespace NS.CalviScript
             _scope.TryGetValue( identifier, out existing );
             return new LookUpExpr( identifier, existing );        
         }
+
+        class ScopeCloser : IDisposable
+        {
+            readonly SyntaxicScope _current;
+
+            public ScopeCloser( SyntaxicScope s )
+            {
+                _current = s;
+                // DO IT
+            }
+
+            public void Dispose()
+            {
+                // UNDO IT
+            }
+        }
+
+        internal IDisposable OpenScope() => new ScopeCloser( this );
+
     }
 }
