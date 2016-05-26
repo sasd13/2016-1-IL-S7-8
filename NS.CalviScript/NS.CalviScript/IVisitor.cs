@@ -19,6 +19,8 @@
         T Visit( BlockExpr expr );
 
         T Visit( AssignExpr expr );
+
+        T Visit( UndefinedExpr expr );
     }
 
     public static class IVisitorExtensions

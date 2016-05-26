@@ -47,6 +47,8 @@ namespace NS.CalviScript
             return string.Format( "\"{0}\" <- \"{1}\"", expr.Left.Accept( this ), expr.Expression.Accept( this ) );
         }
 
+        public string Visit( UndefinedExpr expr ) => "<<Undefined>>";
+
         public string Visit( UnaryExpr expr )
         {
             return string.Format( "[{0} {1}]",

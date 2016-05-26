@@ -49,6 +49,8 @@ namespace NS.CalviScript
             return expr.Value.ToString();
         }
 
+        public string Visit( UndefinedExpr expr ) => "<<Undefined>>";
+
         public string Visit( BinaryExpr expr )
         {
             return string.Format( "({0} {1} {2})",
