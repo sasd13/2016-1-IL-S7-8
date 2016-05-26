@@ -42,6 +42,11 @@ namespace NS.CalviScript
             return string.Format( "[LU \"{0}\"]", expr.Identifier );
         }
 
+        public string Visit( AssignExpr expr )
+        {
+            return string.Format( "\"{0}\" <- \"{1}\"", expr.Left.Accept( this ), expr.Expression.Accept( this ) );
+        }
+
         public string Visit( UnaryExpr expr )
         {
             return string.Format( "[{0} {1}]",

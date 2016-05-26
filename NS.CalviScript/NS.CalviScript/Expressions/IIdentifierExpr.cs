@@ -1,6 +1,6 @@
 ﻿namespace NS.CalviScript
 {
-    public interface IIdentifierExpr
+    public interface IIdentifierExpr : IExpr
     {
         string Identifier { get; }
     }

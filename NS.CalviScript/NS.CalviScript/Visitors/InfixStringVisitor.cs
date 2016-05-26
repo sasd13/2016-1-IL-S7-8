@@ -29,7 +29,12 @@ namespace NS.CalviScript
 
         public string Visit( LookUpExpr expr )
         {
-            throw new NotImplementedException();
+            return expr.Identifier;
+        }
+
+        public string Visit( AssignExpr expr )
+        {
+            return string.Format( "{0} = {1}", expr.Left.Accept( this ), expr.Expression.Accept( this ) );
         }
 
         public string Visit( UnaryExpr expr )

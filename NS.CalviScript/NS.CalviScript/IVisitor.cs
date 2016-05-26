@@ -17,6 +17,8 @@
         T Visit( VarDeclExpr expr );
 
         T Visit( BlockExpr expr );
+
+        T Visit( AssignExpr expr );
     }
 
     public static class IVisitorExtensions
