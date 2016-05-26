@@ -76,17 +76,16 @@ namespace ITI2016.Dev.Tests
                             .Select( s => int.Parse( s ) );
 
             var backToInt3 = from v in list
-                              where v >= 0
-                              let s = v.ToString()
-                              where s.Contains( '0' )
-                              select int.Parse( s );
+                             where v >= 0
+                             let s = v.ToString()
+                             where s.Contains( '0' )
+                             select int.Parse( s );
 
 
             var backToInt4 = EnumerableExtension.Select(
                                 EnumerableExtension.Where(
                                     EnumerableExtension.Select(
-                                        EnumerableExtension.Where( list, 
-                                                                   v => v >= 0 ),
+                                        EnumerableExtension.Where( list, v => v >= 0 ),
                                         v => v.ToString() ),
                                     s => s.Contains( '0' ) ),
                                 s => int.Parse( s ) );
@@ -105,5 +104,65 @@ namespace ITI2016.Dev.Tests
             }
         }
 
+        [Test]
+        public void useful_linq_methods()
+        {
+            //List<int> list = new List<int>( new int[] { 7, 9, 67, 90809 } );
+            var list = new List<int>( -7, 8, 67, -50, 90809, 870, -6, 90, -4, 8006 );
+
+            SubMethod( new int[] { 7, 9, 67, 90809 } );
+
+        }
+
+        private void SubMethod( System.Collections.Generic.IEnumerable<int> list )
+        {
+            var e = Enumerable.Empty<IPV4>();
+            var firstDaysOfYears = Enumerable.Range( 1, 2000 )
+                                        .Select( y => new DateTime( y, 1, 1 ).DayOfWeek );
+            foreach( var dayName in firstDaysOfYears )
+            {
+                Console.WriteLine( dayName );
+            }
+
+            if( list.Count() == 0 )
+            {
+                //.... BAD !!!!!!! Prefer Any below.
+            }
+            if( list.Any( i => (i & 1) != 0 ) )
+            {
+                //....
+            }
+            foreach( var inFirstHundred in list.Take( 100 ) )
+            {
+                //....
+            }
+            foreach( var inFirstHundredAfter20 in list.Skip( 20 ).Take( 100 ) )
+            {
+                //....
+            }
+            foreach( var ordered in list.OrderBy( Identity ) )
+            {
+                //....
+            }
+            foreach( var ordered in list.OrderByDescending( Identity ) )
+            {
+                //....
+            }
+            //foreach( var users in list.OrderByDescending( u => u.LastName + '|' + u.FirstName ) ) )
+            //{
+            //    //....
+            //}
+            //foreach( var users in list
+            //                        .OrderByDescending( u => u.LastName )
+            //                        .AndThenBy( u => u.FirstName ) ) )
+            //{
+            //    //....
+            //}
+        }
+
+        static T Identity<T>( T x ) => x;
+
     }
+
+
 }

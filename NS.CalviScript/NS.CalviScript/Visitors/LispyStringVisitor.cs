@@ -20,9 +20,7 @@ namespace NS.CalviScript
 
         public string Visit( VarDeclExpr expr )
         {
-            return string.Format( "[VD \"{0}\" {1}]",
-                expr.Identifier,
-                expr.Expr.Accept( this ) );
+            return string.Format( "[VD \"{0}\"]", expr.Identifier );
         }
 
         public string Visit( ProgramExpr expr )
