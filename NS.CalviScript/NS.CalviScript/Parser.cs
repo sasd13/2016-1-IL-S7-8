@@ -73,8 +73,12 @@ namespace NS.CalviScript
 
             IExpr eV = _synScope.Declare( token.Value );
             if( eV is ErrorExpr ) return eV;
-            VarDeclExpr v = (VarDeclExpr)eV;
 
+            return MayBeAssigned( (VarDeclExpr)eV );
+        }
+
+        private IExpr MayBeAssigned( IIdentifierExpr v )
+        {
             if( !_tokenizer.MatchToken( TokenType.Equal ) ) return v;
             IExpr expr = ParseExpression();
             if( expr == null )
@@ -167,7 +171,7 @@ namespace NS.CalviScript
             }
             if( _tokenizer.MatchToken( TokenType.Identifier, out token ) )
             {
-                return _synScope.Lookup( token.Value );
+                return MayBeAssigned( _synScope.Lookup( token.Value ) );
             }
 
             return new ErrorExpr(
