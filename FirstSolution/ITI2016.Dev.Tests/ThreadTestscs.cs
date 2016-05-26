@@ -11,7 +11,6 @@ namespace ITI2016.Dev.Tests
     [TestFixture]
     public class ThreadTestscs
     {
-
         int _counter;
 
         [Test]

@@ -5,10 +5,12 @@ namespace NS.CalviScript
     public class Parser
     {
         readonly Tokenizer _tokenizer;
+        readonly SyntaxicScope _synScope;
 
         public Parser( Tokenizer tokenizer )
         {
             _tokenizer = tokenizer;
+            _synScope = new SyntaxicScope();
             _tokenizer.GetNextToken();
         }
 
@@ -35,22 +37,24 @@ namespace NS.CalviScript
 
         IExpr VarDecl()
         {
-            if( !_tokenizer.MatchToken( TokenType.Var ) )
-            {
-                return CreateErrorExpr( "var" );
-            }
+            if( !_tokenizer.MatchToken( TokenType.Var ) ) return null;
             Token token;
             if( !_tokenizer.MatchToken( TokenType.Identifier, out token ) )
             {
                 return CreateErrorExpr( "IDENTIFIER" );
             }
-            if( !_tokenizer.MatchToken( TokenType.Equal ) )
-            {
-                return CreateErrorExpr( "=" );
-            }
-            IExpr expr = ParseExpression();
 
-            return new VarDeclExpr( token.Value, expr );
+            IExpr eV = _synScope.Declare( token.Value );
+            if( eV is ErrorExpr ) return eV;
+            VarDeclExpr v = (VarDeclExpr)eV;
+
+            if( !_tokenizer.MatchToken( TokenType.Equal ) ) return v;
+            IExpr expr = ParseExpression();
+            if( expr == null )
+            {
+                return CreateErrorExpr( "Expected expression." );
+            }
+            return new AssignExpr( v, expr );
         }
 
         public IExpr ParseExpression()
@@ -136,7 +140,7 @@ namespace NS.CalviScript
             }
             if( _tokenizer.MatchToken( TokenType.Identifier, out token ) )
             {
-                return new LookUpExpr( token.Value );
+                return _synScope.Lookup( token.Value );
             }
 
             return new ErrorExpr(

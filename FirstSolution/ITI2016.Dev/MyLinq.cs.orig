@@ -76,6 +76,18 @@ namespace ITI2016.Dev
             return new EWhere<T>( container, predicate );
         }
 
+<<<<<<< HEAD
+        public static System.Collections.Generic.IEnumerable<T> Where2<T>( this IEnumerable<T> container, Func<T, bool> predicate )
+        {
+            foreach( var item in container )
+            {
+                if( predicate( item ) ) yield return item;
+            }
+        }
+
+
+=======
+>>>>>>> origin/parser-enhancement
         class ESelect<T, TResult> : IEnumerable<TResult>
         {
             readonly IEnumerable<T> _container;
@@ -131,7 +143,11 @@ namespace ITI2016.Dev
 
         public static IEnumerable<TResult> Select<T, TResult>( this IEnumerable<T> container, Func<T, TResult> projection )
         {
+<<<<<<< HEAD
+            return new ESelect<T,TResult>( container, projection );
+=======
             return new ESelect<T, TResult>( container, projection );
+>>>>>>> origin/parser-enhancement
         }
 
     }
