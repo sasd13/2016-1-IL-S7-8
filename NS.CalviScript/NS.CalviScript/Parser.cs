@@ -23,7 +23,9 @@ namespace NS.CalviScript
                 if( s is ErrorExpr ) return s;
                 statements.Add( s );
             }
-            return new BlockExpr( statements );
+            return statements.Count == 1 && statements[0] is BlockExpr
+                    ? (BlockExpr)statements[0]
+                    : new BlockExpr( statements );
         }
 
         IExpr Block( bool expected )
@@ -78,7 +80,7 @@ namespace NS.CalviScript
         private IExpr MayBeAssigned( IIdentifierExpr v )
         {
             if( !_tokenizer.MatchToken( TokenType.Equal ) ) return v;
-            IExpr expr = ParseExpression();
+            IExpr expr = Expr();
             if( expr == null )
             {
                 return CreateErrorExpr( "Expected expression." );
@@ -178,7 +180,7 @@ namespace NS.CalviScript
                     _tokenizer.CurrentToken.Value ) );
         }
 
-        public static IExpr Parse( string input )
+        public static IExpr ParseExpression( string input )
         {
             Tokenizer tokenizer = new Tokenizer( input );
             Parser parser = new Parser( tokenizer );
