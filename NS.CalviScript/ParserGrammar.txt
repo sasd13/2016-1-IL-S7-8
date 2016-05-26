@@ -1,0 +1,29 @@
+﻿#legend
+|	: OR
+?	: 0..1
+*	: 0..n
++	: 1..n
+EOI	: End Of Interrupt
+##
+
+program			: (block | statement)+ EOI
+
+block			: '{' (statement | block)* '}'
+
+statement		: (vaDecl | assign | expression) ';'
+		 
+varDeclaration	: 'var' IDENTIFIER
+
+assign			: iIdentifier '=' expression
+
+iIdentifier		: IDENTIFIER | varDeclaration
+
+expression		: mathExpression ('?' expression ':' expression)?
+
+mathExpression	: term (('+' | '-') term)*
+
+term			: factor (('*' | '/' | '%') factor)*
+
+factor			: '-'? positiveFactor
+	  
+positiveFactor	: NUMBER | IDENTIFIER | '(' expression ')'

@@ -28,18 +28,28 @@ namespace NS.CalviScript
             return new BlockExpr( statements );
         }
 
-        IExpr Block()
+        IExpr Block( bool expected)
         {
-            if( _tokenizer.MatchToken( TokenType.OpenCurly ) )
+            if( !_tokenizer.MatchToken( TokenType.OpenCurly ) )
             {
-
+                return expected ? new ErrorExpr("Expected Block.") : null;
             }
+            List<IExpr> statements = new List<IExpr>();
+            using (_synScope.OpenScope())
+            {
+                while (!_tokenizer.MatchToken(TokenType.OpenCurly))
+                {
+                    var s = Block(false) ?? Statement();
+                    if (s is ErrorExpr) return s;
+                    statements.Add(s);
+                }
+            }
+            return new BlockExpr(statements);
         }
 
         IExpr Statement()
         {
-            IExpr r = VarDecl() 
-                        ?? ParseExpression();
+            IExpr r = VarDecl() ?? ParseExpression();
             if( r == null )
             {
                 return new ErrorExpr( "Expected statement." );
