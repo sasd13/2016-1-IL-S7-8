@@ -8,29 +8,34 @@ namespace NS.CalviScript
 {
     class SyntaxicScope
     {
-        Dictionary<string, VarDeclExpr> _scope;
+        readonly Stack<Dictionary<string, VarDeclExpr>> _scopes;
 
         public SyntaxicScope()
         {
-            _scope = new Dictionary<string, VarDeclExpr>();
+            _scopes = new Stack<Dictionary<string, VarDeclExpr>>();
+            _scopes.Push(new Dictionary<string, VarDeclExpr>());
         }
 
         public IExpr Declare( string identifier )
         {
             VarDeclExpr existing;
-            if( _scope.TryGetValue( identifier, out existing ) )
+            if( _scopes.Peek().TryGetValue( identifier, out existing ) )
             {
                 return new ErrorExpr( "Duplicate identifier declaration: " + identifier );
             }
             existing = new VarDeclExpr( identifier );
-            _scope.Add( identifier, existing );
+            _scopes.Peek().Add( identifier, existing );
             return existing;
         }
 
         internal LookUpExpr Lookup( string identifier )
         {
-            VarDeclExpr existing;
-            _scope.TryGetValue( identifier, out existing );
+            VarDeclExpr existing = null;
+            foreach (var d in _scopes)
+            {
+                if (d.TryGetValue(identifier, out existing)) break;
+            }
+            
             return new LookUpExpr( identifier, existing );        
         }
 
@@ -41,16 +46,15 @@ namespace NS.CalviScript
             public ScopeCloser( SyntaxicScope s )
             {
                 _current = s;
-                // DO IT
+                _current._scopes.Push(new Dictionary<string, VarDeclExpr>());
             }
 
             public void Dispose()
             {
-                // UNDO IT
+                _current._scopes.Pop();
             }
         }
 
         internal IDisposable OpenScope() => new ScopeCloser( this );
-
     }
 }

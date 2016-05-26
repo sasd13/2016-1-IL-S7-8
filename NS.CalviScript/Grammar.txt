@@ -1,6 +1,6 @@
 Program			-> (Block|Statement)+ EOI
 Block			-> '{' (Block|Statement)* '}'
-Statement		->  (VarDecl | Assign | Expression) ';'
+Statement		-> (VarDecl | Assign | Expression) ';'
 VarDecl			-> 'var' IDENTIFIER
 Assign			-> IIdentifier '=' Expression
 IIdentifier		-> IDENTIFIER | VarDecl
