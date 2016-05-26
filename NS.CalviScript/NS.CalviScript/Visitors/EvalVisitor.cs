@@ -36,6 +36,11 @@ namespace NS.CalviScript
             return TokenTypeHelpers.Compute( expr.Expr.Accept( this ), expr.Type );
         }
 
+        public int Visit( AssignExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+
         public int Visit( ConstantExpr expr )
         {
             return expr.Value;
