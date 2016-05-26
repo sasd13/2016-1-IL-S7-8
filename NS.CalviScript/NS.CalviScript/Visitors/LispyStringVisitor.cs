@@ -23,7 +23,7 @@ namespace NS.CalviScript
             return string.Format( "[VD \"{0}\"]", expr.Identifier );
         }
 
-        public string Visit( ProgramExpr expr )
+        public string Visit( BlockExpr expr )
         {
             StringBuilder sb = new StringBuilder();
             sb.Append( "[S" );

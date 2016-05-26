@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace NS.CalviScript
 {
-    public class ProgramExpr : IExpr
+    public class BlockExpr : IExpr
     {
-        public ProgramExpr( IReadOnlyList<IExpr> statements )
+        public BlockExpr( IReadOnlyList<IExpr> statements )
         {
             Statements = statements;
         }
