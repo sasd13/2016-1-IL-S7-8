@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace NS.CalviScript.Tests
 {
@@ -11,7 +12,8 @@ namespace NS.CalviScript.Tests
         public void generic_impl_can_evaluate_expression( string input, int expected )
         {
             IExpr expr = Parser.Parse( input );
-            EvalVisitor sut = new EvalVisitor();
+            var globalContext = new Dictionary<string, int>();
+            EvalVisitor sut = new EvalVisitor( globalContext );
 
             IExpr result = sut.Visit( expr );
             Assert.That( result, Is.InstanceOf<ConstantExpr>() );
