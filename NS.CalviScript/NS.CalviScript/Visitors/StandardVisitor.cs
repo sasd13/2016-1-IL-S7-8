@@ -1,0 +1,74 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace NS.CalviScript.Visitors
+{
+    public class StandardVisitor : IVisitor<IExpr>
+    {
+        public IExpr Visit( ErrorExpr expr ) => expr;
+
+        public virtual IExpr Visit( TernaryExpr expr )
+        {
+            IExpr p = expr.PredicateExpr.Accept( this );
+            IExpr t = expr.TrueExpr.Accept( this );
+            IExpr f = expr.FalseExpr.Accept( this );
+            return p != expr.PredicateExpr || t != expr.TrueExpr || f != expr.FalseExpr
+                    ? new TernaryExpr( p, t, f )
+                    : expr;
+        }
+
+        public virtual IExpr Visit( VarDeclExpr expr ) => expr;
+
+        public IExpr Visit( AssignExpr expr )
+        {
+            IIdentifierExpr l = (IIdentifierExpr)expr.Left.Accept( this );
+            IExpr e = expr.Expression.Accept( this );
+            return l != expr.Left || e != expr.Expression
+                    ? new AssignExpr( l, e )
+                    : expr;
+        }
+
+        public IExpr Visit( BlockExpr expr )
+        {
+            List<IExpr> newContent = null;
+            int i = 0;
+            foreach( var s in expr.Statements )
+            {
+                var sT = s.Accept( this );
+                if( sT != s )
+                {
+                    if( newContent == null )
+                    {
+                        newContent = new List<IExpr>();
+                        newContent.AddRange( expr.Statements.Take( i ) );
+                    }
+                }
+                if( newContent != null ) newContent.Add( sT );
+                ++i;
+            }
+            return newContent != null ? new BlockExpr( newContent ) : expr;
+        }
+
+        public virtual IExpr Visit( LookUpExpr expr ) => expr;
+
+        public IExpr Visit( UnaryExpr expr )
+        {
+            var e = expr.Expr.Accept( this );
+            return e != expr.Expr ? new UnaryExpr( expr.Type, e ) : expr;
+        }
+
+        public IExpr Visit( ConstantExpr expr ) => expr;
+
+        public IExpr Visit( BinaryExpr expr )
+        {
+            var l = expr.LeftExpr.Accept( this );
+            var r = expr.RightExpr.Accept( this );
+            return l != expr.LeftExpr || r != expr.RightExpr
+                    ? new BinaryExpr( expr.Type, l, r )
+                    : expr;
+        }
+    }
+}
