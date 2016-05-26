@@ -13,7 +13,7 @@ namespace NS.CalviScript
         public SyntaxicScope()
         {
             _scopes = new Stack<Dictionary<string, VarDeclExpr>>();
-            _scopes.Push(new Dictionary<string, VarDeclExpr>());
+            _scopes.Push( new Dictionary<string, VarDeclExpr>() );
         }
 
         public IExpr Declare( string identifier )
@@ -28,16 +28,18 @@ namespace NS.CalviScript
             return existing;
         }
 
-        internal LookUpExpr Lookup( string identifier )
+        public LookUpExpr Lookup( string identifier )
         {
             VarDeclExpr existing = null;
-            foreach (var d in _scopes)
+            foreach( var d in _scopes )
             {
-                if (d.TryGetValue(identifier, out existing)) break;
+                if( d.TryGetValue( identifier, out existing ) ) break;
             }
-            
             return new LookUpExpr( identifier, existing );        
         }
+
+        public IDisposable OpenScope() => new ScopeCloser( this );
+
 
         class ScopeCloser : IDisposable
         {
@@ -46,7 +48,7 @@ namespace NS.CalviScript
             public ScopeCloser( SyntaxicScope s )
             {
                 _current = s;
-                _current._scopes.Push(new Dictionary<string, VarDeclExpr>());
+                _current._scopes.Push( new Dictionary<string, VarDeclExpr>() );
             }
 
             public void Dispose()
@@ -55,6 +57,5 @@ namespace NS.CalviScript
             }
         }
 
-        internal IDisposable OpenScope() => new ScopeCloser( this );
     }
 }

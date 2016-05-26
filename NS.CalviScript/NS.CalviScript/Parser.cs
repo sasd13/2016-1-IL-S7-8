@@ -74,10 +74,10 @@ namespace NS.CalviScript
             IExpr eV = _synScope.Declare(token.Value);
             if (eV is ErrorExpr) return eV;
 
-            return MayBeAssigned(eV);
+            return MayBeAssigned((IIdentifierExpr)eV);
         }
 
-        private IExpr MayBeAssigned(IExpr eV)
+        private IExpr MayBeAssigned(IIdentifierExpr eV)
         {
             VarDeclExpr v = (VarDeclExpr)eV;
             if (!_tokenizer.MatchToken(TokenType.Equal)) return v;
