@@ -23,7 +23,9 @@ namespace NS.CalviScript
                 if( s is ErrorExpr ) return s;
                 statements.Add( s );
             }
-            return new BlockExpr( statements );
+            return statements.Count == 1 && statements[0] is BlockExpr
+                    ? (BlockExpr)statements[0]
+                    : new BlockExpr( statements );
         }
 
         IExpr Block( bool expected )
@@ -62,29 +64,28 @@ namespace NS.CalviScript
 
         IExpr VarDecl()
         {
-            if (!_tokenizer.MatchToken(TokenType.Var)) return null;
+            if( !_tokenizer.MatchToken( TokenType.Var ) ) return null;
             Token token;
-            if (!_tokenizer.MatchToken(TokenType.Identifier, out token))
+            if( !_tokenizer.MatchToken( TokenType.Identifier, out token ) )
             {
-                return CreateErrorExpr("IDENTIFIER");
+                return CreateErrorExpr( "IDENTIFIER" );
             }
 
-            IExpr eV = _synScope.Declare(token.Value);
-            if (eV is ErrorExpr) return eV;
+            IExpr eV = _synScope.Declare( token.Value );
+            if( eV is ErrorExpr ) return eV;
 
-            return MayBeAssigned((IIdentifierExpr)eV);
+            return MayBeAssigned( (VarDeclExpr)eV );
         }
 
-        private IExpr MayBeAssigned(IIdentifierExpr eV)
+        private IExpr MayBeAssigned( IIdentifierExpr v )
         {
-            VarDeclExpr v = (VarDeclExpr)eV;
-            if (!_tokenizer.MatchToken(TokenType.Equal)) return v;
-            IExpr expr = ParseExpression();
-            if (expr == null)
+            if( !_tokenizer.MatchToken( TokenType.Equal ) ) return v;
+            IExpr expr = Expr();
+            if( expr == null )
             {
-                return CreateErrorExpr("Expected expression.");
+                return CreateErrorExpr( "Expected expression." );
             }
-            return new AssignExpr(v, expr);
+            return new AssignExpr( v, expr );
         }
 
         public IExpr ParseExpression()
@@ -170,7 +171,7 @@ namespace NS.CalviScript
             }
             if( _tokenizer.MatchToken( TokenType.Identifier, out token ) )
             {
-                return MayBeAssigned(_synScope.Lookup( token.Value ));
+                return MayBeAssigned( _synScope.Lookup( token.Value ) );
             }
 
             return new ErrorExpr(
@@ -179,7 +180,7 @@ namespace NS.CalviScript
                     _tokenizer.CurrentToken.Value ) );
         }
 
-        public static IExpr Parse( string input )
+        public static IExpr ParseExpression( string input )
         {
             Tokenizer tokenizer = new Tokenizer( input );
             Parser parser = new Parser( tokenizer );

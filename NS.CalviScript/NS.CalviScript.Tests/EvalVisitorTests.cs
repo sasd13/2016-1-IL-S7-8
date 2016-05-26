@@ -11,7 +11,7 @@ namespace NS.CalviScript.Tests
         [TestCase( "50 - 70 ? 30 + 2 : 50 * 4", 200 )]
         public void generic_impl_can_evaluate_expression( string input, int expected )
         {
-            IExpr expr = Parser.Parse( input );
+            IExpr expr = Parser.ParseExpression( input );
             var globalContext = new Dictionary<string, int>();
             EvalVisitor sut = new EvalVisitor( globalContext );
 
@@ -37,7 +37,7 @@ namespace NS.CalviScript.Tests
         [TestCase( "(x*x)+10;", 3712 * 3712 + 10 )]
         [TestCase( "var a = 3;", 3 )]
         [TestCase( "var a = 3 + x;", 3712 + 3 )]
-        [TestCase( "var a = 3 + x; var b = a + 7", 3712 + 3 + 7 )]
+        [TestCase( "var a = 3 + x; var b = a + 7;", 3712 + 3 + 7 )]
         public void real_eval_tests_with_x_equals_3712( string program, int exptectedValue )
         {
             IExpr expr = Parser.ParseProgram( program );
