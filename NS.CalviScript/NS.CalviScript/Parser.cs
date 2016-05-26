@@ -26,7 +26,7 @@ namespace NS.CalviScript
                 }
             }
 
-            return new ProgramExpr( statements );
+            return new BlockExpr( statements );
         }
 
         IExpr Statement()
