@@ -21,6 +21,8 @@
         T Visit( AssignExpr expr );
 
         T Visit( UndefinedExpr expr );
+
+        T Visit( WhileExpr expr );
     }
 
     public static class IVisitorExtensions

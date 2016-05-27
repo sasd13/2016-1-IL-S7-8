@@ -1,11 +1,14 @@
 Program			-> (Block|Statement)+ EOI
 Block			-> '{' (Block|Statement)* '}'
-Statement		->  (VarDecl | Assign | Expression) ';'
+Statement		->  (VarDecl | Assign | While | Expression) ';'?
 VarDecl			-> 'var' IDENTIFIER
 Assign			-> IIdentifier '=' Expression
 IIdentifier		-> IDENTIFIER | VarDecl
-Expression		-> MathExpression ('?' Expression ':' Expression)?
+Expression		-> FunDecl | (MathExpression ('?' Expression ':' Expression)?)
 MathExpression	-> Term (('+' | '-') Term)*
 Term			-> Factor (('*' | '/' | '%') Factor)*
 Factor			-> '-'? PositiveFactor
-PositiveFactor	-> NUMBER | IDENTIFIER | ('(' Expression ')')
+PositiveFactor	-> NUMBER | FunCall | IDENTIFIER | ('(' Expression ')') 
+FunCall			-> IDENTIFIER '(' (Expression (',' Expression)*)? ')'
+FunDecl			-> 'function' '(' (IDENTIFIER (',' IDENTIFIER)*)? ')' Block
+While			-> 'while' '(' Expression ')' Block

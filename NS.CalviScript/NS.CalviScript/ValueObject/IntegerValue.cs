@@ -34,6 +34,8 @@ namespace NS.CalviScript
 
         public int Value { get; }
 
+        public override bool IsTrue => Value >= 0;
+
         public override string ToString() => Value.ToString();
 
     }

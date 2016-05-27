@@ -108,6 +108,16 @@ namespace NS.CalviScript
             return UndefinedValue.Default;
         }
 
+        public ValueBase Visit( WhileExpr expr )
+        {
+            ValueBase last = UndefinedValue.Default;
+            while( expr.Condition.Accept( this ).IsTrue )
+            {
+                last = expr.Body.Accept( this );
+            }
+            return last;
+        }
+
         public ValueBase Visit( ConstantExpr expr ) => IntegerValue.Create( expr.Value );
 
         public ValueBase Visit( ErrorExpr expr ) => new ErrorValue( expr.Message );

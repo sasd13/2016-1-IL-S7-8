@@ -20,6 +20,7 @@
         Var,
         Identifier,
         OpenCurly,
-        CloseCurly
+        CloseCurly,
+        While
     }
 }

@@ -10,6 +10,11 @@ namespace NS.CalviScript
             return string.Format( "[Error {0}]", expr.Message );
         }
 
+        public string Visit( WhileExpr expr )
+        {
+            return "[while]";
+        }
+
         public string Visit( TernaryExpr expr )
         {
             return string.Format( "[? {0} {1} {2}]",

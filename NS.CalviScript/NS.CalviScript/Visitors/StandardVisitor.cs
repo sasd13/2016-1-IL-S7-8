@@ -31,6 +31,15 @@ namespace NS.CalviScript
                     : expr;
         }
 
+        public virtual IExpr Visit( WhileExpr expr )
+        {
+            IExpr condition = expr.Condition.Accept( this );
+            BlockExpr body = (BlockExpr)expr.Body.Accept( this );
+            return condition != expr.Condition || body != expr.Body
+                    ? new WhileExpr( condition, body )
+                    : expr;
+        }
+
         public virtual IExpr Visit( BlockExpr expr )
         {
             List<IExpr> newContent = null;

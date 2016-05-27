@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace NS.CalviScript
 {
-    public class ValueBase
+    public abstract class ValueBase
     {
+        public abstract bool IsTrue { get; }
+
     }
 }
