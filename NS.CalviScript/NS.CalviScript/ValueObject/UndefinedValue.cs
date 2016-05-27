@@ -14,6 +14,8 @@ namespace NS.CalviScript
         {
         }
 
+        public override bool IsTrue => false;
+
         public override string ToString() => "undefined";
 
     }

@@ -50,15 +50,13 @@ namespace NS.CalviScript
         IExpr Statement()
         {
             IExpr r = VarDecl() 
+                        ?? While( false )
                         ?? Expr();
             if( r == null )
             {
                 return new ErrorExpr( "Expected statement." );
             }
-            if( !_tokenizer.MatchToken( TokenType.SemiColon ) )
-            {
-                return new ErrorExpr( "Expected ; statement terminator." );
-            }
+            _tokenizer.MatchToken( TokenType.SemiColon );
             return r;
         }
 
@@ -178,6 +176,22 @@ namespace NS.CalviScript
                 string.Format(
                     "Unexpected token: {0}.",
                     _tokenizer.CurrentToken.Value ) );
+        }
+
+        IExpr While( bool expected )
+        {
+            if( !_tokenizer.MatchToken( TokenType.While ) )
+            {
+                return expected ? CreateErrorExpr( "while" ) : null; 
+            }
+            if( !_tokenizer.MatchToken( TokenType.LeftParenthesis ) )
+                return CreateErrorExpr( "(" );
+            IExpr condition = Expr();
+            if( !_tokenizer.MatchToken( TokenType.RightParenthesis ) )
+                return CreateErrorExpr( ")" );
+            IExpr body = Block( true );
+            if( body == null || body is ErrorExpr) return body;
+            return new WhileExpr( condition, (BlockExpr)body );
         }
 
         public static IExpr ParseExpression( string input )

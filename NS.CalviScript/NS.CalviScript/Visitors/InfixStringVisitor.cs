@@ -22,6 +22,11 @@ namespace NS.CalviScript
             throw new NotImplementedException();
         }
 
+        public string Visit( WhileExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+
         public string Visit( BlockExpr expr )
         {
             throw new NotImplementedException();

@@ -44,8 +44,27 @@ namespace NS.CalviScript.Tests
                             var a;
                             a = 4;
                         } 
-                        var b = a + 17;", 
+                        var b = a + 17;",
             3712 + 3 + 17 )]
+        [TestCase( @"
+                        var a = 3;
+                        var collector = 0;
+                        while( a )
+                        { 
+                            a = a - 1;
+                            collector = collector + 10;
+                        }",
+            40 )]
+        [TestCase( @"
+                        var a = 3;
+                        var collector = 0;
+                        while( a )
+                        { 
+                            a = a - 1;
+                            collector = collector + 10;
+                        } 
+                        collector;",
+            40 )]
         public void real_eval_tests_with_x_equals_3712( string program, int exptectedValue )
         {
             IExpr expr = Parser.ParseProgram( program );

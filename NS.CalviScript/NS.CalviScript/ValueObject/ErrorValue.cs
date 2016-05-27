@@ -13,6 +13,8 @@ namespace NS.CalviScript
             Message = message ?? "An error occured.";
         }
 
+        public override bool IsTrue => true;
+
         public string Message { get; }
 
         public override string ToString() => "Error: " + Message;
