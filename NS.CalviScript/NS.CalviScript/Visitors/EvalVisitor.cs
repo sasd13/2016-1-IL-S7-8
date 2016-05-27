@@ -4,18 +4,20 @@ using System.Diagnostics;
 
 namespace NS.CalviScript
 {
-    public class EvalVisitor : StandardVisitor
+    public class EvalVisitor : IVisitor<ValueBase>
     {
-        readonly Dictionary<string, int> _globalContext;
+        readonly Dictionary<string, ValueBase> _globalContext;
+        readonly Dictionary<VarDeclExpr, ValueBase> _variables;
 
-        public EvalVisitor( Dictionary<string, int> globalContext )
+        public EvalVisitor( Dictionary<string, ValueBase> globalContext )
         {
             _globalContext = globalContext;
+            _variables = new Dictionary<VarDeclExpr, ValueBase>();
         }
 
-        public override IExpr Visit( BlockExpr expr )
+        public ValueBase Visit( BlockExpr expr )
         {
-            IExpr last = UndefinedExpr.Default;
+            ValueBase last = UndefinedValue.Default;
             foreach( var s in expr.Statements )
             {
                 last = s.Accept( this );
@@ -23,81 +25,94 @@ namespace NS.CalviScript
             return last;
         }
 
-        public override IExpr Visit( LookUpExpr expr )
+        public ValueBase Visit( VarDeclExpr expr )
         {
-            //TODO: Before challenging the global context,
-            //      we must first handle the expr.VarDecl associated value
-            //      (when expr.VarDecl is not null)...
-            int knownValue;
-            if( _globalContext.TryGetValue( expr.Identifier, out knownValue ) )
-            {
-                return new ConstantExpr( knownValue );
-            }
-            return new ErrorExpr( "Reference not found: " + expr.Identifier );
+            _variables.Add( expr, UndefinedValue.Default );
+            return UndefinedValue.Default;
         }
 
-        public override IExpr Visit( AssignExpr expr )
+        public ValueBase Visit( LookUpExpr expr )
+        {
+            if( expr.VarDecl != null )
+            {
+                return _variables[expr.VarDecl];
+            }
+            else
+            {
+                ValueBase knownValue;
+                if( _globalContext.TryGetValue( expr.Identifier, out knownValue ) )
+                {
+                    return knownValue;
+                }
+                return new ErrorValue( "Reference not found: " + expr.Identifier );
+            }
+        }
+
+        public ValueBase Visit( AssignExpr expr )
         {
             var e = expr.Expression.Accept( this );
-            // TODO: Set the value associated to expr.Left...
-            return e;
+            if( expr.Left.VarDecl != null )
+            {
+                return _variables[expr.Left.VarDecl] = e;
+            }
+            else
+            {
+                // if( stricMode )
+                //    return new ErrorValue( "Global assignation is disabled in strict mode." );
+                return _globalContext[expr.Left.Identifier] = e;
+            }
         }
 
-        public override IExpr Visit( UnaryExpr expr )
+        public ValueBase Visit( UnaryExpr expr )
         {
-            IExpr e = expr.Expr.Accept( this );
-            if( !(e is ConstantExpr) ) return e;
-            ConstantExpr val = (ConstantExpr)e;
-            return new ConstantExpr( -val.Value );
+            ValueBase e = expr.Expr.Accept( this );
+            if( !(e is IntegerValue) ) return UndefinedValue.Default;
+            IntegerValue val = (IntegerValue)e;
+            return IntegerValue.Create( -val.Value );
         }
 
-        public override IExpr Visit( BinaryExpr expr )
+        public ValueBase Visit( BinaryExpr expr )
         {
             var l = expr.LeftExpr.Accept( this );
             var r = expr.RightExpr.Accept( this );
-            if( l is UndefinedExpr ) return l;
-            if( r is UndefinedExpr ) return r;
-
-            if( l is ConstantExpr && r is ConstantExpr )
+            if( l is IntegerValue && r is IntegerValue )
             {
-                var lC = (ConstantExpr)l;
-                var rC = (ConstantExpr)r;
+                var lC = (IntegerValue)l;
+                var rC = (IntegerValue)r;
                 switch( expr.Type )
                 {
-                    case TokenType.Div: return new ConstantExpr( lC.Value / rC.Value );
-                    case TokenType.Mult: return new ConstantExpr( lC.Value * rC.Value );
-                    case TokenType.Minus: return new ConstantExpr( lC.Value - rC.Value );
-                    case TokenType.Plus: return new ConstantExpr( lC.Value + rC.Value );
+                    case TokenType.Div: return IntegerValue.Create( lC.Value / rC.Value );
+                    case TokenType.Mult: return IntegerValue.Create( lC.Value * rC.Value );
+                    case TokenType.Minus: return IntegerValue.Create( lC.Value - rC.Value );
+                    case TokenType.Plus: return IntegerValue.Create( lC.Value + rC.Value );
                     default:
                         {
                             Debug.Assert( expr.Type == TokenType.Modulo );
-                            return new ConstantExpr( lC.Value % rC.Value );
+                            return IntegerValue.Create( lC.Value % rC.Value );
                         }
                 }
             }
-            return l != expr.LeftExpr || r != expr.RightExpr
-                    ? new BinaryExpr( expr.Type, l, r )
-                    : expr;
+            return UndefinedValue.Default;
         }
 
-        public override IExpr Visit( TernaryExpr expr )
+        public ValueBase Visit( TernaryExpr expr )
         {
             var p = expr.PredicateExpr.Accept( this );
-            if( p is ConstantExpr )
+            IntegerValue v = p as IntegerValue;
+            if( v != null )
             {
-                if( ((ConstantExpr)p).Value >= 0 )
-                {
-                    return expr.TrueExpr.Accept( this );
-                }
-                return expr.FalseExpr.Accept( this );
+                return v.Value >= 0
+                        ? expr.TrueExpr.Accept( this )
+                        : expr.FalseExpr.Accept( this );
             }
-            var t = expr.TrueExpr.Accept( this );
-            var f = expr.FalseExpr.Accept( this );
-            return p != expr.PredicateExpr || t != expr.TrueExpr || f != expr.FalseExpr
-                    ? new TernaryExpr( p, t, f )
-                    : expr;
+            return UndefinedValue.Default;
         }
 
+        public ValueBase Visit( ConstantExpr expr ) => IntegerValue.Create( expr.Value );
+
+        public ValueBase Visit( ErrorExpr expr ) => new ErrorValue( expr.Message );
+
+        public ValueBase Visit( UndefinedExpr expr ) => UndefinedValue.Default;
 
 
     }

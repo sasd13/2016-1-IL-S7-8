@@ -12,24 +12,24 @@ namespace NS.CalviScript.Tests
         public void generic_impl_can_evaluate_expression( string input, int expected )
         {
             IExpr expr = Parser.ParseExpression( input );
-            var globalContext = new Dictionary<string, int>();
+            var globalContext = new Dictionary<string, ValueBase>();
             EvalVisitor sut = new EvalVisitor( globalContext );
 
-            IExpr result = sut.Visit( expr );
-            Assert.That( result, Is.InstanceOf<ConstantExpr>() );
-            Assert.That( (( ConstantExpr)result).Value, Is.EqualTo( expected ) );
+            ValueBase result = sut.Visit( expr );
+            Assert.That( result, Is.InstanceOf<IntegerValue>() );
+            Assert.That( ((IntegerValue)result).Value, Is.EqualTo( expected ) );
         }
 
         [Test]
         public void access_to_the_context()
         {
             IExpr expr = Parser.ParseProgram( "x;" );
-            var globalContext = new Dictionary<string, int>();
-            globalContext.Add( "x", 3712 );
+            var globalContext = new Dictionary<string, ValueBase>();
+            globalContext.Add( "x", IntegerValue.Create( 3712 ) );
             EvalVisitor sut = new EvalVisitor( globalContext );
-            IExpr result = sut.Visit( expr );
-            Assert.That( result, Is.InstanceOf<ConstantExpr>() );
-            Assert.That( ((ConstantExpr)result).Value, Is.EqualTo( 3712 ) );
+            var result = sut.Visit( expr );
+            Assert.That( result, Is.InstanceOf<IntegerValue>() );
+            Assert.That( ((IntegerValue)result).Value, Is.EqualTo( 3712 ) );
         }
 
         [TestCase( "x;", 3712 )]
@@ -41,12 +41,12 @@ namespace NS.CalviScript.Tests
         public void real_eval_tests_with_x_equals_3712( string program, int exptectedValue )
         {
             IExpr expr = Parser.ParseProgram( program );
-            var globalContext = new Dictionary<string, int>();
-            globalContext.Add( "x", 3712 );
+            var globalContext = new Dictionary<string, ValueBase>();
+            globalContext.Add( "x", IntegerValue.Create( 3712 ) );
             EvalVisitor sut = new EvalVisitor( globalContext );
-            IExpr result = sut.Visit( expr );
-            Assert.That( result, Is.InstanceOf<ConstantExpr>() );
-            Assert.That( ((ConstantExpr)result).Value, Is.EqualTo( exptectedValue ) );
+            var result = sut.Visit( expr );
+            Assert.That( result, Is.InstanceOf<IntegerValue>() );
+            Assert.That( ((IntegerValue)result).Value, Is.EqualTo( exptectedValue ) );
         }
 
     }
