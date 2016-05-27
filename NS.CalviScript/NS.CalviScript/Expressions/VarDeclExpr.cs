@@ -15,6 +15,13 @@ namespace NS.CalviScript
 
         public string Identifier { get; }
 
+        VarDeclExpr IIdentifierExpr.VarDecl => this;
+
         public T Accept<T>( IVisitor<T> visitor ) => visitor.Visit( this );
+
+        T IExpr.Accept<T>( IVisitor<T> visitor )
+        {
+            throw new NotImplementedException();
+        }
     }
 }
