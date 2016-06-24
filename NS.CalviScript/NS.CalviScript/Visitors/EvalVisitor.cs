@@ -48,6 +48,11 @@ namespace NS.CalviScript
             }
         }
 
+        public ValueBase Visit( FunDeclExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+
         public ValueBase Visit( AssignExpr expr )
         {
             var e = expr.Expression.Accept( this );

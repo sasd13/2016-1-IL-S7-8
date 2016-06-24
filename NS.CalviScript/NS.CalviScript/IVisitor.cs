@@ -14,6 +14,8 @@
 
         T Visit( LookUpExpr expr );
 
+        T Visit( FunDeclExpr expr );
+
         T Visit( VarDeclExpr expr );
 
         T Visit( BlockExpr expr );

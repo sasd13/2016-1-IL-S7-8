@@ -15,6 +15,11 @@ namespace NS.CalviScript
             return "[while]";
         }
 
+        public string Visit( FunDeclExpr expr )
+        {
+            return "[function]";
+        }
+
         public string Visit( TernaryExpr expr )
         {
             return string.Format( "[? {0} {1} {2}]",

@@ -28,14 +28,14 @@ namespace NS.CalviScript
                     : new BlockExpr( statements );
         }
 
-        IExpr Block( bool expected )
+        IExpr Block( bool expected, bool openScope = true )
         {
             if( !_tokenizer.MatchToken( TokenType.OpenCurly ) )
             {
                 return expected ? new ErrorExpr( "Expected Block." ) : null;
             }
             List<IExpr> statements = new List<IExpr>();
-            using( _synScope.OpenScope() )
+            using( openScope ? _synScope.OpenScope() : null )
             {
                 while( !_tokenizer.MatchToken( TokenType.CloseCurly ) )
                 {
@@ -100,6 +100,9 @@ namespace NS.CalviScript
 
         IExpr Expr()
         {
+            var funDecl = FunDecl( expected: false );
+            if( funDecl != null ) return funDecl;
+
             IExpr expr = MathExpr();
             if( _tokenizer.MatchToken( TokenType.QuestionMark ) )
             {
@@ -177,6 +180,39 @@ namespace NS.CalviScript
                     "Unexpected token: {0}.",
                     _tokenizer.CurrentToken.Value ) );
         }
+
+        IExpr FunDecl( bool expected )
+        {
+            if( !_tokenizer.MatchToken( TokenType.Function ) )
+            {
+                return expected ? CreateErrorExpr( "function" ) : null;
+            }
+            if( !_tokenizer.MatchToken( TokenType.LeftParenthesis ) )
+                return CreateErrorExpr( "(" );
+
+            using( _synScope.OpenScope() )
+            {
+                var parameters = new List<VarDeclExpr>();
+                while( _tokenizer.CurrentToken.Type == TokenType.Identifier )
+                {
+                    string identifierName = _tokenizer.CurrentToken.Value;
+                    IExpr declOrError = _synScope.Declare( identifierName );
+                    if( declOrError is ErrorExpr ) return declOrError;
+                    parameters.Add( (VarDeclExpr)declOrError );
+
+                    if( _tokenizer.GetNextToken().Type != TokenType.Comma ) break;
+                    _tokenizer.GetNextToken();
+                }
+                if( !_tokenizer.MatchToken( TokenType.RightParenthesis ) )
+                    return CreateErrorExpr( ")" );
+
+                BlockExpr body = Block( expected: true, openScope: false ) as BlockExpr;
+                if( body == null ) return null;
+
+                return new FunDeclExpr( parameters, body );
+            }
+        }
+
 
         IExpr While( bool expected )
         {
