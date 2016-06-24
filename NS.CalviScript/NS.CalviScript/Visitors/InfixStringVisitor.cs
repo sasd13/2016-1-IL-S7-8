@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace NS.CalviScript
 {
@@ -20,27 +21,27 @@ namespace NS.CalviScript
 
         public string Visit( FunDeclExpr expr )
         {
-            throw new NotImplementedException();
+            return $"function({string.Join( ", ", expr.Parameters.Select( p => p.Accept( this ) ) )}){expr.Body.Accept(this)}";
         }
 
         public string Visit( FunCallExpr expr )
         {
-            throw new NotImplementedException();
+            return $"{expr.Name}( {string.Join( ", ", expr.ActualParameters.Select( p => p.Accept(this) ))} )";
         }
 
         public string Visit( VarDeclExpr expr )
         {
-            throw new NotImplementedException();
+            return $"var {expr.Identifier}";
         }
 
         public string Visit( WhileExpr expr )
         {
-            throw new NotImplementedException();
+            return $"while( {expr.Condition.Accept( this )} ) {expr.Body.Accept(this)}";
         }
 
         public string Visit( BlockExpr expr )
         {
-            throw new NotImplementedException();
+            return "{" + string.Join( " ", expr.Statements.Select( s => s.Accept( this ) ) ) + "}";
         }
 
         public string Visit( LookUpExpr expr )

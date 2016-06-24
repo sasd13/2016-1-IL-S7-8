@@ -36,5 +36,23 @@ var test2 = test * 3;";
             string expected = @"[S [VD ""test"" [+ 3 50]] [VD ""test2"" [* [LU ""test""] 3]]]";
             Assert.That( visitor.Visit( expr ), Is.EqualTo( expected ) );
         }
+
+        [Test]
+        public void parsing_function_declarations()
+        {
+            string text = @"
+var f = function( a, b ) { };
+f( 3, 4+1 );
+";
+            Tokenizer tokenizer = new Tokenizer( text );
+            Parser sut = new Parser( tokenizer );
+
+            IExpr expr = sut.ParseProgram();
+            InfixStringVisitor printer = new InfixStringVisitor();
+            string p = printer.Visit( expr );
+
+            Assert.That( p, Is.EqualTo( "var f = function( a, b ){}" ) );
+
+        }
     }
 }
