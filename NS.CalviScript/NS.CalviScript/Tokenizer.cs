@@ -172,7 +172,9 @@ namespace NS.CalviScript
                         return error;
                 }
                 else
+                {
                     Forward();
+                }
             }
 
             if (IsEnd(1))
