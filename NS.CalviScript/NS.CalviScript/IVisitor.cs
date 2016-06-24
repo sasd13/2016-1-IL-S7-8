@@ -10,6 +10,8 @@
 
         T Visit( UnaryExpr expr );
 
+        T Visit( FunCallExpr expr );
+
         T Visit( TernaryExpr expr );
 
         T Visit( LookUpExpr expr );

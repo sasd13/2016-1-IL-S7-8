@@ -88,6 +88,33 @@ namespace NS.CalviScript
                     : expr;
         }
 
+        public virtual IExpr Visit( FunCallExpr expr )
+        {
+            List<IExpr> newContent = null;
+            int i = 0;
+            foreach( var s in expr.ActualParameters )
+            {
+                var sT = s.Accept( this );
+                if( sT != s )
+                {
+                    if( newContent == null )
+                    {
+                        newContent = new List<IExpr>();
+                        newContent.AddRange( expr.ActualParameters.Take( i ) );
+                    }
+                }
+                if( newContent != null ) newContent.Add( sT );
+                ++i;
+            }
+
+            var newName = (LookUpExpr)expr.Name.Accept( this );
+            IReadOnlyList<IExpr> newParameters = newContent != null ? newContent : expr.ActualParameters;
+
+            return newParameters != expr.ActualParameters || newName != expr.Name
+                    ? new FunCallExpr( newName, newParameters )
+                    : expr;
+        }
+
         public virtual IExpr Visit( LookUpExpr expr ) => expr;
 
         public virtual IExpr Visit( UnaryExpr expr )

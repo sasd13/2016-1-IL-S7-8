@@ -20,6 +20,11 @@ namespace NS.CalviScript
             return "[function]";
         }
 
+        public string Visit( FunCallExpr expr )
+        {
+            return "[function call]";
+        }
+
         public string Visit( TernaryExpr expr )
         {
             return string.Format( "[? {0} {1} {2}]",

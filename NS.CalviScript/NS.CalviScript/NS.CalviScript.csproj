@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Expressions\FunCall.cs" />
     <Compile Include="Expressions\FunDeclExpr.cs" />
     <Compile Include="Expressions\WhileExpr.cs" />
     <Compile Include="Expressions\BinaryExpr.cs" />
