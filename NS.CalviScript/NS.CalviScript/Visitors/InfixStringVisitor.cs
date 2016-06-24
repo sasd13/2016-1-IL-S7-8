@@ -26,7 +26,7 @@ namespace NS.CalviScript
 
         public string Visit( FunCallExpr expr )
         {
-            return $"{expr.Name}( {string.Join( ", ", expr.ActualParameters.Select( p => p.Accept(this) ))} )";
+            return $"{expr.Name.Accept(this)}( {string.Join( ", ", expr.ActualParameters.Select( p => p.Accept(this) ))} )";
         }
 
         public string Visit( VarDeclExpr expr )

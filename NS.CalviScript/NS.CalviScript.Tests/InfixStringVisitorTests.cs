@@ -15,7 +15,8 @@ namespace NS.CalviScript.Tests
 
             string result = sut.Visit( expr );
 
-            Assert.That( result, Is.EqualTo( expected ) );
+            Assert.That( result.Replace( " ", string.Empty ), 
+                            Is.EqualTo( expected.Replace( " ", string.Empty ) ) );
         }
     }
 }

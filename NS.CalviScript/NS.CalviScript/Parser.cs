@@ -183,8 +183,7 @@ namespace NS.CalviScript
                         parameters.Add( e );
                         _tokenizer.MatchToken( TokenType.Comma );
                     }
-                    if( !_tokenizer.MatchToken( TokenType.RightParenthesis ) )
-                        return CreateErrorExpr( ")" );
+                    return new FunCallExpr( _synScope.Lookup( identifierName ), parameters );
                 }
                 return MayBeAssigned( _synScope.Lookup( identifierName ) );
             }
