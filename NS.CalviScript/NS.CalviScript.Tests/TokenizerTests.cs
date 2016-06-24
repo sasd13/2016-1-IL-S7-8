@@ -216,5 +216,22 @@ namespace NS.CalviScript.Tests
             Assert.That( t7.Type, Is.EqualTo( TokenType.SemiColon ) );
             Assert.That( t8.Type, Is.EqualTo( TokenType.End ) );
         }
+
+        [TestCase("0", TokenType.Number, "0")]
+        [TestCase("1", TokenType.Number, "1")]
+        [TestCase("01", TokenType.Error, "01")]
+        [TestCase("10", TokenType.Number, "10")]
+        [TestCase("0name", TokenType.Error, "0n")]
+        [TestCase("1name", TokenType.Error, "1n")]
+        [TestCase("123name", TokenType.Error, "123n")]
+        public void handle_numbers(string input, TokenType expectedType, string expectedValue)
+        {
+            Tokenizer sut = new Tokenizer(input);
+
+            sut.GetNextToken();
+
+            Assert.That(sut.CurrentToken.Type, Is.EqualTo(expectedType));
+            Assert.That(sut.CurrentToken.Value, Is.EqualTo(expectedValue));
+        }
     }
 }
