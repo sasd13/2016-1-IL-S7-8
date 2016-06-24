@@ -16,15 +16,17 @@ namespace NS.CalviScript
 
         public Token GetNextToken()
         {
-            if( IsEnd ) return CurrentToken = new Token( TokenType.End );
-
-            while( IsWhiteSpace || IsComment )
+            Token result = null;
+            while (!IsEnd() &&( IsWhiteSpace || IsComment || IsMultiLineComment ))
             {
                 if( IsWhiteSpace ) HandleWhiteSpaces();
                 if( IsComment ) HandleComment();
+                if (IsMultiLineComment) result = HandleMultiLineComment();
+                if (result != null) return CurrentToken = result;
             }
 
-            Token result;
+            if (IsEnd()) return CurrentToken = new Token(TokenType.End);
+
             if( Peek() == '+' ) result = HandleSimpleToken( TokenType.Plus );
             else if( Peek() == '-' ) result = HandleSimpleToken( TokenType.Minus );
             else if( Peek() == '*' ) result = HandleSimpleToken( TokenType.Mult );
@@ -109,11 +111,36 @@ namespace NS.CalviScript
 
         void Forward() => _pos++;
 
+        /// <summary>
+        /// Moves forward two times.
+        /// </summary>
+        void SkipMultilineComment()
+        {
+            Forward();
+            Forward();
+        }
+
         char Peek( int offset ) => _input[ _pos + offset ];
 
-        public bool IsEnd => _pos >= _input.Length;
+        /// <summary>
+        /// Checks if the current position has reached the End Of Input (EOI).
+        /// </summary>
+        /// <returns>True if the current position is greater than or equal to the input length.</returns>
+        public bool IsEnd() => IsEnd(0);
+
+        /// <summary>
+        /// Checks if the current position plus an offset has reached the End Of Input (EOI).
+        /// </summary>
+        /// <param name="offset">True if the current position plus the offset is greater than or equal to the input length.</param>
+        /// <returns></returns>
+        public bool IsEnd(int offset) => _pos + offset >= _input.Length;
 
         bool IsComment => _pos < _input.Length - 1 && Peek() == '/' && Peek( 1 ) == '/';
+
+        /// <summary>
+        /// Checks if there is a multi line comment ahead in the input.
+        /// </summary>
+        bool IsMultiLineComment => !IsEnd(1) && Peek() == '/' && Peek(1) == '*';
 
         void HandleComment()
         {
@@ -122,7 +149,41 @@ namespace NS.CalviScript
             do
             {
                 Forward();
-            } while( !IsEnd && Peek() != '\r' && Peek() != '\n' );
+            } while( !IsEnd() && Peek() != '\r' && Peek() != '\n' );
+        }
+
+        /// <summary>
+        /// Moves forward until the closing muliline comment is found.
+        /// Supports nested multiline comments with recursive calls.
+        /// Multilines comments must be closed before the end of file.
+        /// </summary>
+        /// <returns>A new <see cref="Token"/> of type <see cref="TokenType.Error"/>
+        /// if the EOI is reached before the last closing comment.</returns>
+        Token HandleMultiLineComment()
+        {
+            Debug.Assert(IsMultiLineComment);
+
+            Token error = null;
+            SkipMultilineComment();
+            while (!IsEnd(1) && !(Peek() == '*' && Peek(1) == '/'))
+            {
+                if (IsMultiLineComment)
+                {
+                    if ((error = HandleMultiLineComment()) != null)
+                        return error;
+                }
+                else
+                {
+                    Forward();
+                }
+            }
+
+            if (IsEnd(1))
+                error = new Token(TokenType.Error, "Expected <*/>, but <EOI> found.");
+            if (error == null)
+                SkipMultilineComment();
+
+            return error;
         }
 
         bool IsWhiteSpace => char.IsWhiteSpace( Peek() );
@@ -134,7 +195,7 @@ namespace NS.CalviScript
             do
             {
                 Forward();
-            } while( !IsEnd && IsWhiteSpace );
+            } while( !IsEnd() && IsWhiteSpace );
         }
 
         bool IsNumber => char.IsDigit( Peek() );
@@ -152,7 +213,7 @@ namespace NS.CalviScript
             if( Peek() == '0' )
             {
                 Forward();
-                if( !IsEnd && (IsNumber || IsIdentifier) ) return new Token( TokenType.Error, "0" + Peek() );
+                if( !IsEnd() && (IsNumber || IsIdentifier) ) return new Token( TokenType.Error, "0" + Peek() );
                 return new Token( TokenType.Number, '0' );
             }
 
@@ -161,9 +222,9 @@ namespace NS.CalviScript
             {
                 sb.Append( Peek() );
                 Forward();
-            } while( !IsEnd && IsNumber );
+            } while( !IsEnd() && IsNumber );
 
-            if (!IsEnd && IsIdentifier)
+            if (!IsEnd() && IsIdentifier)
             {
                 sb.Append(Peek());
                 return new Token(TokenType.Error, sb.ToString());
@@ -183,7 +244,7 @@ namespace NS.CalviScript
             {
                 sb.Append( Peek() );
                 Forward();
-            } while( !IsEnd && ( IsIdentifier || char.IsDigit( Peek() ) ) );
+            } while( !IsEnd() && ( IsIdentifier || char.IsDigit( Peek() ) ) );
 
             string identifier = sb.ToString();
             if( identifier == "var" ) return new Token( TokenType.Var, identifier );
