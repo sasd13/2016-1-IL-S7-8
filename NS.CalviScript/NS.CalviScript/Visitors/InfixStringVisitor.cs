@@ -23,6 +23,11 @@ namespace NS.CalviScript
             throw new NotImplementedException();
         }
 
+        public string Visit( FunCallExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+
         public string Visit( VarDeclExpr expr )
         {
             throw new NotImplementedException();
