@@ -17,10 +17,12 @@
         Colon,
         Equal,
         SemiColon,
+        Comma,
         Var,
         Identifier,
         OpenCurly,
         CloseCurly,
-        While
+        While,
+        Function
     }
 }

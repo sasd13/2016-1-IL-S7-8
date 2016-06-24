@@ -61,6 +61,33 @@ namespace NS.CalviScript
             return newContent != null ? new BlockExpr( newContent ) : expr;
         }
 
+        public virtual IExpr Visit( FunDeclExpr expr )
+        {
+            List<VarDeclExpr> newContent = null;
+            int i = 0;
+            foreach( var s in expr.Parameters )
+            {
+                var sT = s.Accept( this );
+                if( sT != s )
+                {
+                    if( newContent == null )
+                    {
+                        newContent = new List<VarDeclExpr>();
+                        newContent.AddRange( expr.Parameters.Take( i ) );
+                    }
+                }
+                if( newContent != null ) newContent.Add( (VarDeclExpr)sT);
+                ++i;
+            }
+
+            var newParameters = newContent != null ? newContent : expr.Parameters;
+            var newBody = (BlockExpr)expr.Body.Accept( this );
+
+            return newParameters != expr.Parameters || newBody != expr.Body 
+                    ? new FunDeclExpr( newParameters, newBody ) 
+                    : expr;
+        }
+
         public virtual IExpr Visit( LookUpExpr expr ) => expr;
 
         public virtual IExpr Visit( UnaryExpr expr )

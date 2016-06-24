@@ -17,6 +17,12 @@ namespace NS.CalviScript
                 expr.FalseExpr.Accept( this ) );
         }
 
+
+        public string Visit( FunDeclExpr expr )
+        {
+            throw new NotImplementedException();
+        }
+
         public string Visit( VarDeclExpr expr )
         {
             throw new NotImplementedException();
