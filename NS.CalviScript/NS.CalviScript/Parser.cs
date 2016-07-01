@@ -172,7 +172,20 @@ namespace NS.CalviScript
             }
             if( _tokenizer.MatchToken( TokenType.Identifier, out token ) )
             {
-                return MayBeAssigned( _synScope.Lookup( token.Value ) );
+                string identifierName = token.Value;
+                if( _tokenizer.MatchToken(TokenType.LeftParenthesis ) )
+                {
+                    var parameters = new List<IExpr>();
+                    while( !_tokenizer.MatchToken( TokenType.RightParenthesis ) )
+                    {
+                        IExpr e = Expr();
+                        if( e == null || e is ErrorExpr ) return e;
+                        parameters.Add( e );
+                        _tokenizer.MatchToken( TokenType.Comma );
+                    }
+                    return new FunCallExpr( _synScope.Lookup( identifierName ), parameters );
+                }
+                return MayBeAssigned( _synScope.Lookup( identifierName ) );
             }
 
             return new ErrorExpr(

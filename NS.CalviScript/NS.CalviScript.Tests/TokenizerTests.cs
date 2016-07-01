@@ -1,10 +1,12 @@
 ﻿using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace NS.CalviScript.Tests
 {
     [TestFixture]
     public class TokenizerTests
     {
+        [TestCase( " ", TokenType.End )]
         [TestCase( "+", TokenType.Plus )]
         [TestCase( "(", TokenType.LeftParenthesis )]
         public void parse_string_containing_1_token( string input, TokenType expected )
@@ -134,6 +136,39 @@ namespace NS.CalviScript.Tests
             Assert.That( t2.Type, Is.EqualTo( TokenType.Plus ) );
             Assert.That( t3.Type, Is.EqualTo( TokenType.Number ) );
             Assert.That( t4.Type, Is.EqualTo( TokenType.End ) );
+        }
+
+        [TestCase("/*", TokenType.Error)]
+        [TestCase("*/", TokenType.Mult, TokenType.Div)]
+        [TestCase("/**/", TokenType.End)]
+        [TestCase("1 /* 2 + 2 */ /* var x */ x", TokenType.Number, TokenType.Identifier, TokenType.End)]
+        [TestCase("1 /* \r\n\r\n */ /* \r\n */ x", TokenType.Number, TokenType.Identifier, TokenType.End)]
+        [TestCase("1 /* 2 + 2 */ /* var x */ x /* */", TokenType.Number, TokenType.Identifier, TokenType.End)]
+        public void parse_multiline_comments(string input, params TokenType[] expected)
+        {
+            Tokenizer tokenizer = new Tokenizer(input);
+            List<TokenType> expectedTokens = new List<TokenType>(expected);
+
+            foreach (TokenType token in expectedTokens)
+            {
+                tokenizer.GetNextToken();
+                Assert.That(tokenizer.CurrentToken.Type, Is.EqualTo(token));
+            }
+        }
+
+        [TestCase("/*/**/*/", TokenType.End)]
+        [TestCase("/* /* */", TokenType.Error)]
+        [TestCase("1 /* 2 /* 3 */ 4 */ z", TokenType.Number, TokenType.Identifier, TokenType.End)]
+        public void parse_nested_multiline_comments(string input, params TokenType[] expected)
+        {
+            Tokenizer tokenizer = new Tokenizer(input);
+            List<TokenType> expectedTokens = new List<TokenType>(expected);
+
+            foreach (TokenType token in expectedTokens)
+            {
+                tokenizer.GetNextToken();
+                Assert.That(tokenizer.CurrentToken.Type, Is.EqualTo(token));
+            }
         }
 
         [Test]
