@@ -100,6 +100,20 @@ namespace NS.CalviScript.Tests
             X(2);
             ", 24
             )]
+        [TestCase(
+            @"
+            var add10 = function(a) { a + 10; }
+            var add15 = function(a) { add10(a) + 5; }
+            add10(add15(100));
+            ", 125
+            )]
+        [TestCase(
+            @"
+            var recurse = function(a) { a ? a+recurse(a-1) : 0; }
+            recurse(3);
+            ", 6
+            )]
+
         public void functions_definition_and_call( string program, int expectedValue )
         {
             IExpr expr = Parser.ParseProgram( program );
