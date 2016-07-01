@@ -51,7 +51,10 @@ namespace NS.CalviScript
 
         public ValueBase Visit( FunDeclExpr expr )
         {
-            return new FunctionValue( expr );
+            var closure = expr.RequiredClosure
+                                .Select( v => new ClosureCapture( v, _variables.FindRegistered( v ) ) )
+                                .ToArray();
+            return new FunctionValue( expr, closure );
         }
 
         public ValueBase Visit( FunCallExpr expr )
@@ -69,6 +72,10 @@ namespace NS.CalviScript
                 for( int i = 0; i < f.FunDecl.Parameters.Count; ++i )
                 {
                     _variables.Register( f.FunDecl.Parameters[i], parameterValues[i] );
+                }
+                foreach( var c in f.Closure )
+                {
+                    _variables.Register( c.VarDecl, c.Value );
                 }
                 return f.FunDecl.Body.Accept( this );
             }
