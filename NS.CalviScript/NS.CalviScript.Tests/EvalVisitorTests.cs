@@ -136,6 +136,18 @@ namespace NS.CalviScript.Tests
                 f1() + f2();
             ", 3711
             )]
+        [TestCase(
+            @"
+                var x = 0;
+                var fA = function() { function() { x = x+1; } };
+                var fB = function() { function() { x = x+10; } };
+                var f1 = fA();
+                var f2 = fB();
+                f1();
+                f2();
+                f1() + f2();
+            ", 34
+            )]
 
 
         public void functions_definition_and_call( string program, int expectedValue )
