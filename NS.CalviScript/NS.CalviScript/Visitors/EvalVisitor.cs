@@ -28,7 +28,7 @@ namespace NS.CalviScript
 
         public ValueBase Visit( VarDeclExpr expr )
         {
-            _variables.Register( expr );
+            _variables.Register( expr, new RefValue( UndefinedValue.Default ) );
             return UndefinedValue.Default;
         }
 
@@ -71,7 +71,7 @@ namespace NS.CalviScript
             {
                 for( int i = 0; i < f.FunDecl.Parameters.Count; ++i )
                 {
-                    _variables.Register( f.FunDecl.Parameters[i], parameterValues[i] );
+                    _variables.Register( f.FunDecl.Parameters[i], new RefValue( parameterValues[i] ) );
                 }
                 foreach( var c in f.Closure )
                 {
@@ -87,7 +87,7 @@ namespace NS.CalviScript
             expr.Left.Accept( this );
             if( expr.Left.VarDecl != null )
             {
-                return _variables.SetValue( expr.Left.VarDecl, e );
+                return _variables.FindRegistered( expr.Left.VarDecl ).RealValue = e;
             }
             else
             {

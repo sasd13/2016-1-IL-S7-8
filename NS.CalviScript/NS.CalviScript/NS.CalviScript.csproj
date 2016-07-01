@@ -65,6 +65,7 @@
     <Compile Include="TokenType.cs" />
     <Compile Include="ValueObject\ErrorValue.cs" />
     <Compile Include="ValueObject\FunctionValue.cs" />
+    <Compile Include="ValueObject\RefValue.cs" />
     <Compile Include="ValueObject\UndefinedValue.cs" />
     <Compile Include="ValueObject\ValueBase.cs" />
     <Compile Include="ValueObject\IntegerValue.cs" />

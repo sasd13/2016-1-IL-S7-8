@@ -9,9 +9,9 @@ namespace NS.CalviScript
     public class ClosureCapture
     {
         public readonly VarDeclExpr VarDecl;
-        public readonly ValueBase Value;
+        public readonly RefValue Value;
 
-        public ClosureCapture( VarDeclExpr d, ValueBase v )
+        public ClosureCapture( VarDeclExpr d, RefValue v )
         {
             VarDecl = d;
             Value = v;

@@ -8,12 +8,12 @@ namespace NS.CalviScript
 {
     class DynamicScope
     {
-        readonly Stack<Dictionary<VarDeclExpr,ValueBase>> _values;
+        readonly Stack<Dictionary<VarDeclExpr,RefValue>> _values;
 
         public DynamicScope()
         {
-            _values = new Stack<Dictionary<VarDeclExpr, ValueBase>>();
-            _values.Push( new Dictionary<VarDeclExpr, ValueBase>() );
+            _values = new Stack<Dictionary<VarDeclExpr, RefValue>>();
+            _values.Push( new Dictionary<VarDeclExpr, RefValue>() );
         }
 
         public IDisposable OpenScope() => new ScopeCloser( this );
@@ -26,7 +26,7 @@ namespace NS.CalviScript
             public ScopeCloser( DynamicScope s )
             {
                 _current = s;
-                _current._values.Push( new Dictionary<VarDeclExpr, ValueBase>() );
+                _current._values.Push( new Dictionary<VarDeclExpr, RefValue>() );
             }
 
             public void Dispose()
@@ -35,14 +35,14 @@ namespace NS.CalviScript
             }
         }
 
-        public void Register( VarDeclExpr expr, ValueBase v = null )
+        public void Register( VarDeclExpr expr, RefValue v )
         {
-            _values.Peek()[expr] = v ?? UndefinedValue.Default;
+            _values.Peek()[expr] = v;
         }
 
-        public ValueBase FindRegistered( VarDeclExpr varDecl )
+        public RefValue FindRegistered( VarDeclExpr varDecl )
         {
-            ValueBase existing = null;
+            RefValue existing = null;
             foreach( var d in _values )
             {
                 if( d.TryGetValue( varDecl, out existing ) )
@@ -53,17 +53,5 @@ namespace NS.CalviScript
             throw new Exception( "Variables are necessarily Registered!" );
         }
 
-        public ValueBase SetValue( VarDeclExpr varDecl, ValueBase e )
-        {
-            foreach( var d in _values )
-            {
-                if( d.ContainsKey( varDecl ) )
-                {
-                    d[varDecl] = e;
-                    return e;
-                }
-            }
-            throw new Exception( "Variables are necessarily Registered!" );
-        }
     }
 }
