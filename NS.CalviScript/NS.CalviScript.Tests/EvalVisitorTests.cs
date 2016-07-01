@@ -110,10 +110,33 @@ namespace NS.CalviScript.Tests
         [TestCase(
             @"
             var recurse;
-            recurse = function(a) { a ? a+recurse(a-1) : 0; }
+            recurse = function(a) { a ? a + recurse(a-1) : 0; }
             recurse(3);
             ", 6
             )]
+        [TestCase(
+            @"
+            var f1 = function(a) { a + 10; }
+            var f2 = function(a,f) { a + f(a); }
+            f2(3,f1);
+            ", 16
+            )]
+        [TestCase(
+            @"
+                var fA = function(p) { function() { p; } };
+                var f = fA( 3712 );
+                f();
+            ", 3712
+            )]
+        [TestCase(
+            @"
+                var fA = function(p) { function() { p; } };
+                var f1 = fA( 3712 );
+                var f2 = fA( -1 );
+                f1() + f2();
+            ", 3711
+            )]
+
 
         public void functions_definition_and_call( string program, int expectedValue )
         {
