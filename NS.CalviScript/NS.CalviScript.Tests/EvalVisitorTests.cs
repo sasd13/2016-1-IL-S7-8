@@ -123,8 +123,18 @@ namespace NS.CalviScript.Tests
             )]
         [TestCase(
             @"
-                16;
-            ", 16
+                var fA = function(p) { function() { p; } };
+                var f = fA( 3712 );
+                f();
+            ", 3712
+            )]
+        [TestCase(
+            @"
+                var fA = function(p) { function() { p; } };
+                var f1 = fA( 3712 );
+                var f2 = fA( -1 );
+                f1() + f2();
+            ", 3711
             )]
 
 
