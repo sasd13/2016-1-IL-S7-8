@@ -109,7 +109,8 @@ namespace NS.CalviScript.Tests
             )]
         [TestCase(
             @"
-            var recurse = function(a) { a ? a+recurse(a-1) : 0; }
+            var recurse;
+            recurse = function(a) { a ? a+recurse(a-1) : 0; }
             recurse(3);
             ", 6
             )]
