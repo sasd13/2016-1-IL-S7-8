@@ -84,7 +84,7 @@ namespace NS.CalviScript
             var newBody = (BlockExpr)expr.Body.Accept( this );
 
             return newParameters != expr.Parameters || newBody != expr.Body 
-                    ? new FunDeclExpr( newParameters, newBody ) 
+                    ? new FunDeclExpr( newParameters, newBody, expr.RequiredClosure ) 
                     : expr;
         }
 

@@ -12,13 +12,16 @@ namespace NS.CalviScript
     /// </summary>
     public class FunDeclExpr : IExpr
     {
-        public FunDeclExpr( IReadOnlyList<VarDeclExpr> parameters, BlockExpr body )
+        public FunDeclExpr( IReadOnlyList<VarDeclExpr> parameters, BlockExpr body, IReadOnlyList<VarDeclExpr> requiredClosure )
         {
             Parameters = parameters;
             Body = body;
+            RequiredClosure = requiredClosure;
         }
 
         public IReadOnlyList<VarDeclExpr> Parameters { get; }
+
+        public IReadOnlyList<VarDeclExpr> RequiredClosure { get; }
 
         public BlockExpr Body { get; }
 

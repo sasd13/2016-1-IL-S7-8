@@ -68,6 +68,7 @@
     <Compile Include="ValueObject\UndefinedValue.cs" />
     <Compile Include="ValueObject\ValueBase.cs" />
     <Compile Include="ValueObject\IntegerValue.cs" />
+    <Compile Include="Visitors\ClosureCapture.cs" />
     <Compile Include="Visitors\EvalVisitor.cs" />
     <Compile Include="Visitors\InfixStringVisitor.cs" />
     <Compile Include="Visitors\LispyStringVisitor.cs" />
