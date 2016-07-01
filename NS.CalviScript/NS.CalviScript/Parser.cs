@@ -68,22 +68,26 @@ namespace NS.CalviScript
             {
                 return CreateErrorExpr( "IDENTIFIER" );
             }
-
-            IExpr eV = _synScope.Declare( token.Value );
-            if( eV is ErrorExpr ) return eV;
-
-            return MayBeAssigned( (VarDeclExpr)eV );
+            return MayBeAssigned( token.Value, false );
         }
 
-        private IExpr MayBeAssigned( IIdentifierExpr v )
+        private IExpr MayBeAssigned( string name, bool lookupOnly, IExpr knownAssignedExpr = null )
         {
-            if( !_tokenizer.MatchToken( TokenType.Equal ) ) return v;
-            IExpr expr = Expr();
-            if( expr == null )
+            IExpr assignedExpr = knownAssignedExpr;
+            if( assignedExpr == null && _tokenizer.MatchToken( TokenType.Equal ) )
             {
-                return CreateErrorExpr( "Expected expression." );
+                assignedExpr = Expr();
+                if( assignedExpr == null )
+                {
+                    return CreateErrorExpr( "Expected expression." );
+                }
             }
-            return new AssignExpr( v, expr );
+            IExpr eV = lookupOnly ? _synScope.Lookup( name ) : _synScope.Declare( name );
+            if( eV is ErrorExpr ) return eV;
+
+            return assignedExpr != null
+                    ? new AssignExpr( (IIdentifierExpr)eV, assignedExpr )
+                    : eV;
         }
 
         public IExpr ParseExpression()
@@ -185,7 +189,7 @@ namespace NS.CalviScript
                     }
                     return new FunCallExpr( _synScope.Lookup( identifierName ), parameters );
                 }
-                return MayBeAssigned( _synScope.Lookup( identifierName ) );
+                return MayBeAssigned( identifierName, lookupOnly:true );
             }
 
             return new ErrorExpr(

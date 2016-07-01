@@ -10,9 +10,9 @@ namespace NS.CalviScript
         readonly Dictionary<string, ValueBase> _globalContext;
         readonly DynamicScope _variables;
 
-        public EvalVisitor( Dictionary<string, ValueBase> globalContext )
+        public EvalVisitor( Dictionary<string, ValueBase> globalContext = null )
         {
-            _globalContext = globalContext;
+            _globalContext = globalContext ?? new Dictionary<string, ValueBase>();
             _variables = new DynamicScope();
         }
 
@@ -77,6 +77,7 @@ namespace NS.CalviScript
         public ValueBase Visit( AssignExpr expr )
         {
             var e = expr.Expression.Accept( this );
+            expr.Left.Accept( this );
             if( expr.Left.VarDecl != null )
             {
                 return _variables.SetValue( expr.Left.VarDecl, e );
