@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace NS.CalviScript
 {
     public class EvalVisitor : IVisitor<ValueBase>
     {
         readonly Dictionary<string, ValueBase> _globalContext;
-        readonly Dictionary<VarDeclExpr, ValueBase> _variables;
+        readonly DynamicScope _variables;
 
         public EvalVisitor( Dictionary<string, ValueBase> globalContext )
         {
             _globalContext = globalContext;
-            _variables = new Dictionary<VarDeclExpr, ValueBase>();
+            _variables = new DynamicScope();
         }
 
         public ValueBase Visit( BlockExpr expr )
@@ -27,7 +28,7 @@ namespace NS.CalviScript
 
         public ValueBase Visit( VarDeclExpr expr )
         {
-            _variables.Add( expr, UndefinedValue.Default );
+            _variables.Register( expr );
             return UndefinedValue.Default;
         }
 
@@ -35,7 +36,7 @@ namespace NS.CalviScript
         {
             if( expr.VarDecl != null )
             {
-                return _variables[expr.VarDecl];
+                return _variables.FindRegistered(expr.VarDecl);
             }
             else
             {
@@ -55,7 +56,15 @@ namespace NS.CalviScript
 
         public ValueBase Visit( FunCallExpr expr )
         {
-            throw new NotImplementedException();
+            List<ValueBase> parameterValues = expr.ActualParameters.Select( p => p.Accept( this ) ).ToList();
+            ValueBase fO = expr.Name.Accept( this );
+            FunctionValue f = fO as FunctionValue;
+            if( f == null ) return new ErrorValue( $"{expr.Name.Identifier} is not a function." );
+            while( f.FunDecl.Parameters.Count > parameterValues.Count )
+            {
+                parameterValues.Add( UndefinedValue.Default );
+            }
+            return f.FunDecl.Body.Accept( this );
         }
 
         public ValueBase Visit( AssignExpr expr )
@@ -63,7 +72,7 @@ namespace NS.CalviScript
             var e = expr.Expression.Accept( this );
             if( expr.Left.VarDecl != null )
             {
-                return _variables[expr.Left.VarDecl] = e;
+                return _variables.SetValue( expr.Left.VarDecl, e );
             }
             else
             {
