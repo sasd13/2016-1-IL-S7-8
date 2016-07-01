@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace NS.CalviScript
 {
@@ -55,7 +56,15 @@ namespace NS.CalviScript
 
         public ValueBase Visit( FunCallExpr expr )
         {
-            throw new NotImplementedException();
+            List<ValueBase> parameterValues = expr.ActualParameters.Select( p => p.Accept( this ) ).ToList();
+            ValueBase fO = expr.Name.Accept( this );
+            FunctionValue f = fO as FunctionValue;
+            if( f == null ) return new ErrorValue( $"{expr.Name.Identifier} is not a function." );
+            while( f.FunDecl.Parameters.Count > parameterValues.Count )
+            {
+                parameterValues.Add( UndefinedValue.Default );
+            }
+            return f.FunDecl.Body.Accept( this );
         }
 
         public ValueBase Visit( AssignExpr expr )
