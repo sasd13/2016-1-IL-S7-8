@@ -65,7 +65,7 @@ namespace NS.CalviScript.Tests
                         } 
                         collector;",
             40 )]
-        public void real_eval_tests_with_x_equals_3712( string program, int exptectedValue )
+        public void real_eval_tests_with_x_equals_3712( string program, int expectedValue )
         {
             IExpr expr = Parser.ParseProgram( program );
             var globalContext = new Dictionary<string, ValueBase>();
@@ -73,8 +73,57 @@ namespace NS.CalviScript.Tests
             EvalVisitor sut = new EvalVisitor( globalContext );
             var result = sut.Visit( expr );
             Assert.That( result, Is.InstanceOf<IntegerValue>() );
-            Assert.That( ((IntegerValue)result).Value, Is.EqualTo( exptectedValue ) );
+            Assert.That( ((IntegerValue)result).Value, Is.EqualTo( expectedValue ) );
         }
+
+        [TestCase(
+            @"
+            var f = function(a) { a + 10; }
+            f(3);
+            ", 13
+            )]
+        [TestCase(
+            @"
+            var X = function(b) 
+            { 
+                var r;
+                var a = 3;
+                while( b - 1 )
+                {
+                    a = a + 10;
+                    var a = a + b;
+                    b = b - 1;
+                    r = a;
+                }
+                r;    
+            }
+            X(2);
+            ", 24
+            )]
+        [TestCase(
+            @"
+            var add10 = function(a) { a + 10; }
+            var add15 = function(a) { add10(a) + 5; }
+            add10(add15(100));
+            ", 125
+            )]
+        [TestCase(
+            @"
+            var recurse;
+            recurse = function(a) { a ? a+recurse(a-1) : 0; }
+            recurse(3);
+            ", 6
+            )]
+
+        public void functions_definition_and_call( string program, int expectedValue )
+        {
+            IExpr expr = Parser.ParseProgram( program );
+            EvalVisitor sut = new EvalVisitor();
+            var result = sut.Visit( expr );
+            Assert.That( result, Is.InstanceOf<IntegerValue>() );
+            Assert.That( ((IntegerValue)result).Value, Is.EqualTo( expectedValue ) );
+        }
+
 
     }
 }
