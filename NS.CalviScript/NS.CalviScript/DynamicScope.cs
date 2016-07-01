@@ -35,9 +35,9 @@ namespace NS.CalviScript
             }
         }
 
-        public void Register( VarDeclExpr expr )
+        public void Register( VarDeclExpr expr, ValueBase v = null )
         {
-            _values.Peek().Add( expr, UndefinedValue.Default );
+            _values.Peek()[expr] = v ?? UndefinedValue.Default;
         }
 
         public ValueBase FindRegistered( VarDeclExpr varDecl )
@@ -50,7 +50,7 @@ namespace NS.CalviScript
                     return existing;
                 }
             }
-            throw new Exception( "Variables are necessarily Regisered!" );
+            throw new Exception( "Variables are necessarily Registered!" );
         }
 
         public ValueBase SetValue( VarDeclExpr varDecl, ValueBase e )
@@ -63,7 +63,7 @@ namespace NS.CalviScript
                     return e;
                 }
             }
-            throw new Exception( "Variables are necessarily Regisered!" );
+            throw new Exception( "Variables are necessarily Registered!" );
         }
     }
 }

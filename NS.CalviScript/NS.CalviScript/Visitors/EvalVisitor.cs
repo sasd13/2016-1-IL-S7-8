@@ -51,7 +51,7 @@ namespace NS.CalviScript
 
         public ValueBase Visit( FunDeclExpr expr )
         {
-            throw new NotImplementedException();
+            return new FunctionValue( expr );
         }
 
         public ValueBase Visit( FunCallExpr expr )
@@ -64,7 +64,14 @@ namespace NS.CalviScript
             {
                 parameterValues.Add( UndefinedValue.Default );
             }
-            return f.FunDecl.Body.Accept( this );
+            using( _variables.OpenScope() )
+            {
+                for( int i = 0; i < f.FunDecl.Parameters.Count; ++i )
+                {
+                    _variables.Register( f.FunDecl.Parameters[i], parameterValues[i] );
+                }
+                return f.FunDecl.Body.Accept( this );
+            }
         }
 
         public ValueBase Visit( AssignExpr expr )
