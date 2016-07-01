@@ -8,12 +8,12 @@ namespace NS.CalviScript
     public class EvalVisitor : IVisitor<ValueBase>
     {
         readonly Dictionary<string, ValueBase> _globalContext;
-        readonly Dictionary<VarDeclExpr, ValueBase> _variables;
+        readonly DynamicScope _variables;
 
         public EvalVisitor( Dictionary<string, ValueBase> globalContext )
         {
             _globalContext = globalContext;
-            _variables = new Dictionary<VarDeclExpr, ValueBase>();
+            _variables = new DynamicScope();
         }
 
         public ValueBase Visit( BlockExpr expr )
@@ -28,7 +28,7 @@ namespace NS.CalviScript
 
         public ValueBase Visit( VarDeclExpr expr )
         {
-            _variables.Add( expr, UndefinedValue.Default );
+            _variables.Register( expr );
             return UndefinedValue.Default;
         }
 
@@ -36,7 +36,7 @@ namespace NS.CalviScript
         {
             if( expr.VarDecl != null )
             {
-                return _variables[expr.VarDecl];
+                return _variables.FindRegistered(expr.VarDecl);
             }
             else
             {
@@ -72,7 +72,7 @@ namespace NS.CalviScript
             var e = expr.Expression.Accept( this );
             if( expr.Left.VarDecl != null )
             {
-                return _variables[expr.Left.VarDecl] = e;
+                return _variables.SetValue( expr.Left.VarDecl, e );
             }
             else
             {

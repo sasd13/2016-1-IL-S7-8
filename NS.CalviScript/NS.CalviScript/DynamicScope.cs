@@ -35,5 +35,35 @@ namespace NS.CalviScript
             }
         }
 
+        public void Register( VarDeclExpr expr )
+        {
+            _values.Peek().Add( expr, UndefinedValue.Default );
+        }
+
+        public ValueBase FindRegistered( VarDeclExpr varDecl )
+        {
+            ValueBase existing = null;
+            foreach( var d in _values )
+            {
+                if( d.TryGetValue( varDecl, out existing ) )
+                {
+                    return existing;
+                }
+            }
+            throw new Exception( "Variables are necessarily Regisered!" );
+        }
+
+        public ValueBase SetValue( VarDeclExpr varDecl, ValueBase e )
+        {
+            foreach( var d in _values )
+            {
+                if( d.ContainsKey( varDecl ) )
+                {
+                    d[varDecl] = e;
+                    return e;
+                }
+            }
+            throw new Exception( "Variables are necessarily Regisered!" );
+        }
     }
 }
