@@ -150,6 +150,11 @@ namespace ITI2016.Dev
 
                 return true;
             }
+
+            public void Dispose()
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

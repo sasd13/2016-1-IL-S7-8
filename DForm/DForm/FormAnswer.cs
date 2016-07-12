@@ -1,20 +1,22 @@
 ﻿using System.Collections.Generic;
 
-namespace Formulaire
+namespace DForm
 {
     public class FormAnswer
     {
+        Form _form;
         readonly List<AnswerBase> _answers;
         
         internal FormAnswer(string uniqueName, Form form)
         {
             UniqueName = uniqueName;
-            Form = form;
+            _form = form;
+            _answers = new List<AnswerBase>();
         }
 
         public string UniqueName { get; }
 
-        private Form Form { get; }
+        private Form GetForm => _form;
 
         public AnswerBase FindAnswer(QuestionBase question)
         {
@@ -31,8 +33,25 @@ namespace Formulaire
 
         public AnswerBase AddAnswerFor(QuestionBase question)
         {
-            AnswerBase answer = new AnswerBase(question);
+            if (FindAnswer(question) != null)
+            {
+                return null;
+            }
+
+            AnswerBase answer = question.CreateAnswer();
             _answers.Add(answer);
+
+            return answer;
+        }
+
+        internal AnswerBase RemoveAnswerOf(QuestionBase question)
+        {
+            AnswerBase answer = FindAnswer(question);
+
+            if (answer != null)
+            {
+                _answers.Remove(answer);
+            }
 
             return answer;
         }

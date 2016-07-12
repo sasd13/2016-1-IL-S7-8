@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Formulaire", "Formulaire\Formulaire.csproj", "{87C88CF9-304A-4181-AC51-2EE8A957BC3B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DForm", "DForm\DForm.csproj", "{87C88CF9-304A-4181-AC51-2EE8A957BC3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Formulaire.Tests", "Formulaire.Tests\Formulaire.Tests.csproj", "{85FD813C-2360-491F-8EEC-B230D34F4F82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DForm.Tests", "DForm.Tests\DForm.Tests.csproj", "{85FD813C-2360-491F-8EEC-B230D34F4F82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

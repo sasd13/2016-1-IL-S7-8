@@ -1,4 +1,5 @@
-﻿using Formulaire;
+﻿using DForm;
+using DForm.Questions;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Formulaire.Tests
+namespace DForm.Tests
 {
     [TestFixture]
     public class Tests
@@ -38,9 +39,9 @@ namespace Formulaire.Tests
             Form f = new Form();
             f.Questions.Title = "HG67-Bis";
             Assert.AreEqual("HG67-Bis", f.Title);
-            QuestionBase q1 = f.Questions.AddNewQuestion("Formulaire.QuestionFolder,Formulaire");
-            QuestionBase q2 = f.Questions.AddNewQuestion("Formulaire.QuestionFolder,Formulaire");
-            //QuestionBase q2 = f.Questions.AddNewQuestion(typeOf(CompositeQuestion));
+            QuestionBase q1 = f.Questions.AddNewQuestion("DForm.QuestionFolder,DForm");
+            QuestionBase q2 = f.Questions.AddNewQuestion("DForm.QuestionFolder,DForm");
+            
             Assert.AreEqual(0, q1.Index);
             Assert.AreEqual(1, q2.Index);
             q2.Index = 0;
@@ -58,7 +59,7 @@ namespace Formulaire.Tests
         {
             Form f = new Form();
 
-            OpenQuestion qOpen = (OpenQuestion)f.Questions.AddNewQuestion("Formulaire.OpenQuestion");
+            OpenQuestion qOpen = (OpenQuestion)f.Questions.AddNewQuestion("DForm.OpenQuestion");
             qOpen.Title = "First Question in the World!";
             qOpen.AllowEmptyAnswer = false;
 
@@ -73,6 +74,44 @@ namespace Formulaire.Tests
 
             OpenAnswer emilieAnswer = (OpenAnswer)theAnswerOfEmilieToQOpen;
             emilieAnswer.FreeAnswer = "I'm very happy to be here.";
+        }
+
+        [Test]
+        public void DFormTree()
+        {
+            Form form = new Form();
+
+            QuestionBase q1 = form.Questions.AddNewQuestion(typeof(BinaryQuestion).FullName);
+
+            QuestionFolder q2 = (QuestionFolder) form.Questions.AddNewQuestion(typeof(QuestionFolder).FullName);
+            QuestionBase q21 = q2.AddNewQuestion(typeof(BinaryQuestion).FullName);
+
+            QuestionFolder q3 = (QuestionFolder) q2.AddNewQuestion(typeof(QuestionFolder).FullName);
+            QuestionBase q31 = q3.AddNewQuestion(typeof(MultiChoiceQuestion).FullName);
+
+            QuestionBase q4 = form.Questions.AddNewQuestion(typeof(MultiChoiceQuestion).FullName);
+
+            q4.Parent = q3;
+            q1.Parent = q2;
+            q3.Parent = form.Questions;
+
+            Assert.AreEqual(q4.Index, 1);
+            Assert.AreEqual(q1.Index, 1);
+            Assert.AreEqual(q2.Index, 0);
+        }
+
+        public void TestAnswers()
+        {
+            Form form = new Form();
+
+            QuestionBase q1 = form.Questions.AddNewQuestion(typeof(BinaryQuestion).FullName);
+            QuestionBase q2 = form.Questions.AddNewQuestion(typeof(OpenQuestion).FullName);
+
+            AnswerBase a1 = q1.CreateAnswer();
+            AnswerBase a2 = q2.CreateAnswer();
+
+            Assert.IsInstanceOf(typeof(BinaryAnswer), a1);
+            Assert.IsInstanceOf(typeof(MultiChoiceAnswer), a2);
         }
     }
 }

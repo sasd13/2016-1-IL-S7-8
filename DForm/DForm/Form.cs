@@ -4,20 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Formulaire
+namespace DForm
 {
     public class Form
     {
-        private readonly List<FormAnswer> _formAnswers;
+        readonly List<FormAnswer> _formAnswers;
 
         public Form()
         {
             Questions = new QuestionRoot(this);
+            _formAnswers = new List<FormAnswer>();
         }
 
         public QuestionRoot Questions { get; }
 
-        public string Title { get; set; }
+        public string Title
+        {
+            get
+            {
+                return Questions.Title;
+            }
+            set
+            {
+                Questions.Title = value;
+            }
+        }
 
         public int AnswerCount => _formAnswers.Count;
 
@@ -36,7 +47,7 @@ namespace Formulaire
 
         public FormAnswer CreateAnswer(string username)
         {
-            FormAnswer formAnswer = new FormAnswer(username, this);
+            FormAnswer formAnswer = FormAnswerFactory.create(username, this);
             _formAnswers.Add(formAnswer);
 
             return formAnswer;

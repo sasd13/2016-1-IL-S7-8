@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{85FD813C-2360-491F-8EEC-B230D34F4F82}</ProjectGuid>
+    <ProjectGuid>{87C88CF9-304A-4181-AC51-2EE8A957BC3B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Formulaire.Tests</RootNamespace>
-    <AssemblyName>Formulaire.Tests</AssemblyName>
+    <RootNamespace>DForm</RootNamespace>
+    <AssemblyName>DForm</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,17 +40,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tests.cs" />
+    <Compile Include="AnswerBase.cs" />
+    <Compile Include="Form.cs" />
+    <Compile Include="FormAnswer.cs" />
+    <Compile Include="FormAnswerFactory.cs" />
+    <Compile Include="IVisitor.cs" />
+    <Compile Include="AnswerBaseFactory.cs" />
+    <Compile Include="Questions\BinaryAnswer.cs" />
+    <Compile Include="Questions\MultiChoiceAnswer.cs" />
+    <Compile Include="Questions\MultiChoiceQuestion.cs" />
+    <Compile Include="Questions\OpenAnswer.cs" />
+    <Compile Include="Questions\OpenQuestion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Formulaire\Formulaire.csproj">
-      <Project>{87C88CF9-304A-4181-AC51-2EE8A957BC3B}</Project>
-      <Name>Formulaire</Name>
-    </ProjectReference>
+    <Compile Include="QuestionBase.cs" />
+    <Compile Include="QuestionBaseFactory.cs" />
+    <Compile Include="QuestionFolder.cs" />
+    <Compile Include="QuestionRoot.cs" />
+    <Compile Include="Questions\BinaryQuestion.cs" />
+    <Compile Include="Visitors\RenderVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6AE9B3CE-1FFC-4705-B3BE-FA91F6DF2814}</ProjectGuid>
+    <ProjectGuid>{85FD813C-2360-491F-8EEC-B230D34F4F82}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ITI2016.Dev.Tests</RootNamespace>
-    <AssemblyName>ITI2016.Dev.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <RootNamespace>DForm.Tests</RootNamespace>
+    <AssemblyName>DForm.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -31,8 +31,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,31 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyLinqTests.cs" />
-    <Compile Include="StreamTests.cs" />
-    <Compile Include="StringTests.cs" />
-    <Compile Include="CarStatusTests.cs" />
-    <Compile Include="ComplexityMeasureTests.cs" />
-    <Compile Include="DictionaryTests.cs" />
-    <Compile Include="ListTests.cs" />
-    <Compile Include="MyVeryFirstTests.cs" />
+    <Compile Include="Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ITI2016.Dev\ITI2016.Dev.csproj">
-      <Project>{6dddd50b-d099-4558-a51b-7b4ccfaae574}</Project>
-      <Name>ITI2016.Dev</Name>
+    <ProjectReference Include="..\DForm\DForm.csproj">
+      <Project>{87C88CF9-304A-4181-AC51-2EE8A957BC3B}</Project>
+      <Name>DForm</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-<<<<<<< HEAD
-    <WCFMetadata Include="Service References\" />
-=======
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
->>>>>>> c0906eec09fcc8e591403f147625ef711a73fb23
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

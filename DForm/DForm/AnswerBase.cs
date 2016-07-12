@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Formulaire
+namespace DForm
 {
     public class AnswerBase
     {
@@ -14,5 +14,7 @@ namespace Formulaire
         }
 
         public QuestionBase Question { get; }
+
+        public string Title { get; set; }
     }
 }

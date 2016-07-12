@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DForm.Questions;
 
-namespace Formulaire
+namespace DForm.Visitors
 {
-    public class OpenQuestion : Question
+    public class RenderVisitor : IVisitor<string>
     {
-        public bool AllowEmptyAnswer { get; set; }
-
-        public override void Accept(IVisitor visitor)
+        public string Visit(MultiChoiceQuestion multiChoiceQuestion)
         {
             throw new NotImplementedException();
         }
 
-        public override AnswerBase createAnswer()
+        public string Visit(BinaryQuestion binaryQuestion)
         {
             throw new NotImplementedException();
         }
