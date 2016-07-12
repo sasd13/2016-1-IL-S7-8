@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace DForm
 {
-    public class QuestionRoot : QuestionFolder
+    public abstract class AnswerBase
     {
-        Form _form;
-
-        internal QuestionRoot(Form form)
+        public AnswerBase(QuestionBase question)
         {
-            _form = form;
+            Question = question;
         }
 
-        public Form GetForm => _form;
+        public QuestionBase Question { get; }
     }
 }

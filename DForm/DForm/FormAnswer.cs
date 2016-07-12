@@ -5,13 +5,13 @@ namespace DForm
     public class FormAnswer
     {
         Form _form;
-        readonly List<AnswerBase> _answers;
+        AnswerFolder _answer;
         
-        internal FormAnswer(string uniqueName, Form form)
+        public FormAnswer(string uniqueName, Form form)
         {
             UniqueName = uniqueName;
             _form = form;
-            _answers = new List<AnswerBase>();
+            _answer = new AnswerFolder(form.Questions);
         }
 
         public string UniqueName { get; }
@@ -20,40 +20,17 @@ namespace DForm
 
         public AnswerBase FindAnswer(QuestionBase question)
         {
-            foreach (AnswerBase answer in _answers)
-            {
-                if (answer.Question.Equals(question))
-                {
-                    return answer;
-                }
-            }
-
-            return null;
+            return _answer.FindFor(question);
         }
 
         public AnswerBase AddAnswerFor(QuestionBase question)
         {
-            if (FindAnswer(question) != null)
-            {
-                return null;
-            }
-
-            AnswerBase answer = question.CreateAnswer();
-            _answers.Add(answer);
-
-            return answer;
+            return _answer.AddFor(question);
         }
 
-        internal AnswerBase RemoveAnswerOf(QuestionBase question)
+        public AnswerBase RemoveAnswerOf(QuestionBase question)
         {
-            AnswerBase answer = FindAnswer(question);
-
-            if (answer != null)
-            {
-                _answers.Remove(answer);
-            }
-
-            return answer;
+            return _answer.RemoveOf(question);
         }
     }
 }

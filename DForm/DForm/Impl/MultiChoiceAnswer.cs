@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DForm.Questions
+namespace DForm
 {
     public class MultiChoiceAnswer : AnswerBase
     {
-        readonly List<AnswerBase> _answers;
+        readonly List<MultiChoiceOption> _answers;
 
         public MultiChoiceAnswer(QuestionBase question) : base(question)
         {
-            _answers = new List<AnswerBase>();
+            _answers = new List<MultiChoiceOption>();
         }
 
-        public List<AnswerBase> Answers => _answers;
+        public List<MultiChoiceOption> Answers => _answers;
     }
 }

@@ -1,4 +1,4 @@
-﻿using DForm.Questions;
+﻿using DForm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,18 +44,15 @@ namespace DForm
             
             foreach (QuestionBase question in _questions)
             {
-                answerFolder.AddAnswer(question.CreateAnswer());
+                answerFolder.AddFor(question);
             }
 
             return answerFolder;
         }
 
-        public override void Accept(IVisitor<object> visitor)
+        public override T Accept<T>(IVisitor<T> visitor)
         {
-            foreach (QuestionBase question in _questions)
-            {
-                question.Accept(visitor);
-            }
+            return visitor.Visit(this);
         }
     }
 }

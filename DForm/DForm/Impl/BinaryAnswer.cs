@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DForm.Questions
+namespace DForm
 {
-    public class BinaryAnswer : AnswerBase
+    public class BinaryAnswer : MultiChoiceAnswer
     {
         public BinaryAnswer(QuestionBase question) : base(question)
         {
         }
 
-        public bool Value { get; set; }
+        public MultiChoiceOption Answer => Answers.Any() ? Answers.First() : null;
     }
 }

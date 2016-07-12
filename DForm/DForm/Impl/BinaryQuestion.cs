@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DForm;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace DForm
 {
-    public class OpenQuestion : QuestionBase
+    public class BinaryQuestion : MultiChoiceQuestion
     {
-        public bool AllowEmptyAnswer { get; set; }
+        public BinaryQuestion() : base(false)
+        {
+            
+        }
 
         public override AnswerBase CreateAnswer()
         {
-            return new OpenAnswer(this);
+            return new BinaryAnswer(this);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace DForm
     {
         QuestionFolder _parent;
 
-        public QuestionBase Parent
+        public virtual QuestionBase Parent
         {
             get
             {
@@ -24,32 +24,23 @@ namespace DForm
                     _parent.Children.Remove(this);
                 }
 
+                _parent = (QuestionFolder)value;
+
                 if (value != null)
                 {
-                    _parent = (QuestionFolder)value;
                     _parent.Children.Add(this);
                 }
             }
         }
 
-        public int Index
+        public virtual int Index
         {
             get
             {
-                if (this is QuestionRoot)
-                {
-                    return 0;
-                }
-
                 return _parent.Children.IndexOf(this);
             }
             set
             {
-                if (this is QuestionRoot)
-                {
-                    throw new InvalidOperationException("Index of type QuestionRoot cannot be changed");
-                }
-
                 _parent.Children.Remove(this);
                 _parent.Children.Insert(value, this);
             }
@@ -59,7 +50,9 @@ namespace DForm
 
         public abstract AnswerBase CreateAnswer();
 
-        public virtual void Accept(IVisitor<Object> visitor)
+        internal AnswerBase Answer{ get; set; }
+
+        public virtual T Accept<T>(IVisitor<T> visitor)
         {
             throw new NotImplementedException();
         }

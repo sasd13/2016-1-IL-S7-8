@@ -40,24 +40,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnswerBase.cs" />
+    <Compile Include="Core\AnswerBase.cs" />
     <Compile Include="Form.cs" />
     <Compile Include="FormAnswer.cs" />
     <Compile Include="FormAnswerFactory.cs" />
     <Compile Include="IVisitor.cs" />
-    <Compile Include="AnswerBaseFactory.cs" />
-    <Compile Include="Questions\BinaryAnswer.cs" />
-    <Compile Include="Questions\MultiChoiceAnswer.cs" />
-    <Compile Include="Questions\MultiChoiceQuestion.cs" />
-    <Compile Include="Questions\OpenAnswer.cs" />
-    <Compile Include="Questions\OpenQuestion.cs" />
+    <Compile Include="Core\AnswerFolder.cs" />
+    <Compile Include="Impl\BinaryAnswer.cs" />
+    <Compile Include="Impl\MultiChoiceAnswer.cs" />
+    <Compile Include="Impl\MultiChoiceQuestion.cs" />
+    <Compile Include="Impl\OpenAnswer.cs" />
+    <Compile Include="Impl\OpenQuestion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QuestionBase.cs" />
-    <Compile Include="QuestionBaseFactory.cs" />
-    <Compile Include="QuestionFolder.cs" />
-    <Compile Include="QuestionRoot.cs" />
-    <Compile Include="Questions\BinaryQuestion.cs" />
-    <Compile Include="Visitors\RenderVisitor.cs" />
+    <Compile Include="Core\QuestionBase.cs" />
+    <Compile Include="Core\QuestionBaseFactory.cs" />
+    <Compile Include="Core\QuestionFolder.cs" />
+    <Compile Include="Core\QuestionRoot.cs" />
+    <Compile Include="Impl\BinaryQuestion.cs" />
+    <Compile Include="Visitors\HTMLRenderVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

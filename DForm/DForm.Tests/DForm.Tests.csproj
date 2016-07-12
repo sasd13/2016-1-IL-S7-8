@@ -44,8 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tests.cs" />
+    <Compile Include="TestsDForm.cs" />
+    <Compile Include="TestsDFormTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestsVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DForm\DForm.csproj">
