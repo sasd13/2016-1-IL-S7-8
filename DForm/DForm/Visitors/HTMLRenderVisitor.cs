@@ -23,10 +23,7 @@ namespace DForm
                 builder.Append("</h3>");
             }
 
-            foreach (QuestionBase question in form.Questions.Children)
-            {
-                builder.Append(question.Accept(this));
-            }
+            foreach (QuestionBase question in form.Questions.Children) builder.Append(question.Accept(this));
             
             builder.Append("</form>");
 
@@ -46,10 +43,7 @@ namespace DForm
                 builder.Append("</h4>");
             }
 
-            foreach (QuestionBase question in questionFolder.Children)
-            {
-                builder.Append(question.Accept(this));
-            }
+            foreach (QuestionBase question in questionFolder.Children) builder.Append(question.Accept(this));
 
             builder.Append(TAG_END);
 
@@ -61,7 +55,6 @@ namespace DForm
             StringBuilder builder = new StringBuilder();
 
             builder.Append(TAG_START);
-
             TryAppendTitleForQuestion(builder, binaryQuestion);
             
             foreach (MultiCriteriaOption option in binaryQuestion.Options)
@@ -94,15 +87,12 @@ namespace DForm
             StringBuilder builder = new StringBuilder();
 
             builder.Append(TAG_START);
-
             TryAppendTitleForQuestion(builder, multiChoiceQuestion);
-
             builder.Append("<select");
 
-            if (multiChoiceQuestion.AllowMultipleAnswers)
-            {
-                builder.Append(" multiple='multiple'");
-            }
+            if (multiChoiceQuestion.AllowMultipleAnswers) builder.Append(" multiple='multiple'");
+
+            builder.Append(">");
 
             foreach (MultiCriteriaOption option in multiChoiceQuestion.Options)
             {
@@ -111,17 +101,14 @@ namespace DForm
                 builder.Append("' value='");
                 builder.Append(option.Value);
 
-                if (option.Selected)
-                {
-                    builder.Append(" selected='selected'");
-                }
+                if (option.Selected) builder.Append(" selected='selected'");
+
                 builder.Append("'>");
                 builder.Append(option.Title);
                 builder.Append("</option>");
             }
 
             builder.Append("</select>");
-
             builder.Append(TAG_END);
 
             return builder.ToString();
@@ -132,19 +119,13 @@ namespace DForm
             StringBuilder builder = new StringBuilder();
 
             builder.Append(TAG_START);
-
             TryAppendTitleForQuestion(builder, openQuestion);
-
             builder.Append("<textarea");
 
-            if (!openQuestion.AllowEmptyAnswer)
-            {
-                builder.Append(" required='required'");
-            }
+            if (!openQuestion.AllowEmptyAnswer) builder.Append(" required='required'");
 
             builder.Append(">");
             builder.Append("</textarea>");
-
             builder.Append(TAG_END);
 
             return builder.ToString();
