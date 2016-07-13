@@ -44,7 +44,7 @@ namespace DForm
             
             foreach (QuestionBase question in _questions)
             {
-                answerFolder.AddFor(question);
+                answerFolder.AddAnswerFor(question);
             }
 
             return answerFolder;

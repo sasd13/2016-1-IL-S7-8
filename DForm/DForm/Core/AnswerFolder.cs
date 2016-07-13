@@ -26,7 +26,7 @@ namespace DForm
             return false;
         }
 
-        public AnswerBase FindFor(QuestionBase question)
+        public AnswerBase FindAnswerFor(QuestionBase question)
         {
             AnswerBase answer;
 
@@ -34,7 +34,7 @@ namespace DForm
             {
                 if (a is AnswerFolder)
                 {
-                    answer = ((AnswerFolder)a).FindFor(question);
+                    answer = ((AnswerFolder)a).FindAnswerFor(question);
                     if (answer != null) return answer;
                 }
                 else if (a.Question.Equals(question)) return a;
@@ -43,9 +43,9 @@ namespace DForm
             return null;
         }
 
-        public AnswerBase AddFor(QuestionBase question)
+        public AnswerBase AddAnswerFor(QuestionBase question)
         {
-            if (FindFor(question) != null)
+            if (FindAnswerFor(question) != null)
             {
                 return null;
             }
@@ -56,7 +56,7 @@ namespace DForm
             return answer;
         }
 
-        public AnswerBase RemoveOf(QuestionBase question)
+        public AnswerBase RemoveAnswerOf(QuestionBase question)
         {
             AnswerBase answer = null;
 
@@ -64,7 +64,7 @@ namespace DForm
             {
                 if (a is AnswerFolder)
                 {
-                    answer = ((AnswerFolder)a).RemoveOf(question);
+                    answer = ((AnswerFolder)a).RemoveAnswerOf(question);
                     if (answer != null) return answer;
                 }
                 else if (a.Question.Equals(question))

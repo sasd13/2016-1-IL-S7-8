@@ -8,6 +8,11 @@ namespace DForm
 {
     public class OpenQuestion : QuestionBase
     {
+        public OpenQuestion()
+        {
+            AllowEmptyAnswer = true;
+        }
+
         public bool AllowEmptyAnswer { get; set; }
 
         public override AnswerBase CreateAnswer()

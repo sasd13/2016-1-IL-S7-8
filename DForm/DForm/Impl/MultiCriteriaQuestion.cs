@@ -38,14 +38,14 @@ namespace DForm
 
     public class MultiCriteriaOption
     {
-        private KeyValuePair<string, string> _pair;
+        KeyValuePair<string, string> _pair;
 
-        public MultiCriteriaOption(QuestionBase question)
+        public MultiCriteriaOption(QuestionBase question, string key, string value)
         {
-            _pair = new KeyValuePair<string, string>();
+            _pair = new KeyValuePair<string, string>(key, value);
         }
 
-        public string Name => _pair.Key;
+        public string Key => _pair.Key;
 
         public string Value => _pair.Value;
 

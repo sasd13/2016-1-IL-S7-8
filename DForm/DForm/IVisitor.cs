@@ -20,11 +20,5 @@ namespace DForm
         T Visit(OpenQuestion openQuestion);
     }
 
-    public static class IVisitorExtensions
-    {
-        public static T Visit<T>(this IVisitor<T> @this, QuestionBase question)
-        {
-            return question.Accept(@this);
-        }
-    }
+    
 }

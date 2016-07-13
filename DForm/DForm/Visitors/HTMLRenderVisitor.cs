@@ -8,6 +8,8 @@ namespace DForm
 {
     public class HTMLRenderVisitor : IVisitor<string>
     {
+        const string TAG_START = "<div>", TAG_END = "</div>";
+
         public string Visit(Form form)
         {
             StringBuilder builder = new StringBuilder();
@@ -16,9 +18,9 @@ namespace DForm
 
             if (form.Title != null)
             {
-                builder.Append("<h1>");
+                builder.Append("<h3>");
                 builder.Append(form.Title);
-                builder.Append("</h1>");
+                builder.Append("</h3>");
             }
 
             foreach (QuestionBase question in form.Questions.Children)
@@ -35,20 +37,21 @@ namespace DForm
         {
             StringBuilder builder = new StringBuilder();
 
-            builder.Append("<div>");
+            builder.Append(TAG_START);
 
             if (questionFolder.Title != null)
             {
-                builder.Append("<h2>");
+                builder.Append("<h4>");
                 builder.Append(questionFolder.Title);
-                builder.Append("</h2>");
+                builder.Append("</h4>");
             }
 
-            foreach (QuestionBase questionBase in questionFolder.Children)
+            foreach (QuestionBase question in questionFolder.Children)
             {
-                builder.Append(questionBase.Accept(this));
+                builder.Append(question.Accept(this));
             }
-            builder.Append("</div>");
+
+            builder.Append(TAG_END);
 
             return builder.ToString();
         }
@@ -57,17 +60,21 @@ namespace DForm
         {
             StringBuilder builder = new StringBuilder();
 
+            builder.Append(TAG_START);
+
             TryAppendTitleForQuestion(builder, binaryQuestion);
             
             foreach (MultiCriteriaOption option in binaryQuestion.Options)
             {
-                builder.Append("<input type='radio' name=");
-                builder.Append(option.Name);
+                builder.Append("<input type='radio' name='");
+                builder.Append(option.Key);
                 builder.Append("' value='");
                 builder.Append(option.Value);
                 builder.Append("'>");
                 builder.Append(option.Title);
             }
+
+            builder.Append(TAG_END);
 
             return builder.ToString();
         }
@@ -86,6 +93,8 @@ namespace DForm
         {
             StringBuilder builder = new StringBuilder();
 
+            builder.Append(TAG_START);
+
             TryAppendTitleForQuestion(builder, multiChoiceQuestion);
 
             builder.Append("<select");
@@ -98,7 +107,7 @@ namespace DForm
             foreach (MultiCriteriaOption option in multiChoiceQuestion.Options)
             {
                 builder.Append("<option name='");
-                builder.Append(option.Name);
+                builder.Append(option.Key);
                 builder.Append("' value='");
                 builder.Append(option.Value);
 
@@ -113,12 +122,16 @@ namespace DForm
 
             builder.Append("</select>");
 
+            builder.Append(TAG_END);
+
             return builder.ToString();
         }
 
         public string Visit(OpenQuestion openQuestion)
         {
             StringBuilder builder = new StringBuilder();
+
+            builder.Append(TAG_START);
 
             TryAppendTitleForQuestion(builder, openQuestion);
 
@@ -131,6 +144,8 @@ namespace DForm
 
             builder.Append(">");
             builder.Append("</textarea>");
+
+            builder.Append(TAG_END);
 
             return builder.ToString();
         }

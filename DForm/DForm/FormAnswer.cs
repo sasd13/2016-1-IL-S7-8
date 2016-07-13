@@ -20,17 +20,17 @@ namespace DForm
 
         public AnswerBase FindAnswer(QuestionBase question)
         {
-            return _answer.FindFor(question);
+            return _answer.FindAnswerFor(question);
         }
 
         public AnswerBase AddAnswerFor(QuestionBase question)
         {
-            return _answer.AddFor(question);
+            return _answer.AddAnswerFor(question);
         }
 
         public AnswerBase RemoveAnswerOf(QuestionBase question)
         {
-            return _answer.RemoveOf(question);
+            return _answer.RemoveAnswerOf(question);
         }
     }
 }

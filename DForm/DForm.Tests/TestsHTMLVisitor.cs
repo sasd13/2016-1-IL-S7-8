@@ -27,12 +27,14 @@ namespace DForm.Tests
         [TestCase(
             @"
             <form>
-                <h1>Questionnaire</h1>
-                <label>Commentaires</label>
-                <textarea required='required'></textarea>
+                <h3>Questionnaire</h3>
+                <div>
+                    <label>Commentaires</label>
+                    <textarea></textarea>
+                </div>
             </form>"
             )]
-        public void RenderOperation(string expectedOutput)
+        public void RenderQuestion(string expectedOutput)
         {
             Form form = new Form();
             IVisitor<string> visitor = new HTMLRenderVisitor();
@@ -49,20 +51,24 @@ namespace DForm.Tests
         [TestCase(
             @"
             <form>
-                <h1>Questionnaire</h1>
+                <h3>Questionnaire</h3>
                 <div>
-                    <h2>Partie 1</h2>
+                    <h4>Partie 1</h4>
                     <div>
-                        <h2>Partie 1.1</h2>
-                        <label>Commentaires</label>
-                        <textarea></textarea>
+                        <h4>Partie 1.1</h4>
+                        <div>
+                            <label>Commentaires</label>
+                            <textarea required='required'></textarea>
+                        </div>
                     </div>
                 </div>
-                <label>Remarques</label>
-                <textarea required='required'></textarea>
+                <div>
+                    <label>Remarques</label>
+                    <textarea></textarea>
+                </div>
             </form>"
             )]
-        public void RenderOperationFolder(string expectedOutput)
+        public void RenderQuestionFolder(string expectedOutput)
         {
             Form form = new Form();
             IVisitor<string> visitor = new HTMLRenderVisitor();
@@ -75,7 +81,7 @@ namespace DForm.Tests
             qf2.Title = "Partie 1.1";
             OpenQuestion qo21 = (OpenQuestion)qf2.AddNewQuestion("DForm.OpenQuestion");
             qo21.Title = "Commentaires";
-            qo21.AllowEmptyAnswer = true;
+            qo21.AllowEmptyAnswer = false;
 
             OpenQuestion q2 = (OpenQuestion)form.Questions.AddNewQuestion("DForm.OpenQuestion");
             q2.Title = "Remarques";
