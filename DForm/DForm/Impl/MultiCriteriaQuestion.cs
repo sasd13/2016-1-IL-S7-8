@@ -25,15 +25,9 @@ namespace DForm
 
         public List<MultiCriteriaOption> Options => _options;
 
-        public override AnswerBase CreateAnswer()
-        {
-            return new MultiCriteriaAnswer(this);
-        }
+        public override AnswerBase CreateAnswer() => new MultiCriteriaAnswer(this);
 
-        public override T Accept<T>(IVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override T Accept<T>(IVisitor<T> visitor) => visitor.Visit(this);
     }
 
     public class MultiCriteriaOption

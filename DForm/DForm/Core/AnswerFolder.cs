@@ -19,8 +19,8 @@ namespace DForm
         {
             foreach (AnswerBase a in _answers)
             {
-                if (a is AnswerFolder && ((AnswerFolder)a).Contains(answer)) return true;
-                else if (a.Equals(answer)) return true;
+                if (a.Equals(answer)) return true;
+                else if (a is AnswerFolder && ((AnswerFolder)a).Contains(answer)) return true;
             }
 
             return false;
@@ -32,12 +32,12 @@ namespace DForm
 
             foreach (AnswerBase a in _answers)
             {
-                if (a is AnswerFolder)
+                if (a.Question.Equals(question)) return a;
+                else if (a is AnswerFolder)
                 {
                     answer = ((AnswerFolder)a).FindAnswerFor(question);
                     if (answer != null) return answer;
                 }
-                else if (a.Question.Equals(question)) return a;
             }
 
             return null;
@@ -45,10 +45,7 @@ namespace DForm
 
         public AnswerBase AddAnswerFor(QuestionBase question)
         {
-            if (FindAnswerFor(question) != null)
-            {
-                return null;
-            }
+            if (FindAnswerFor(question) != null) throw new InvalidOperationException("QuestionBase has already an answer");
 
             AnswerBase answer = question.CreateAnswer();
             _answers.Add(answer);
@@ -58,24 +55,24 @@ namespace DForm
 
         public AnswerBase RemoveAnswerOf(QuestionBase question)
         {
-            AnswerBase answer = null;
+            AnswerBase answer;
 
             foreach (AnswerBase a in _answers)
             {
-                if (a is AnswerFolder)
-                {
-                    answer = ((AnswerFolder)a).RemoveAnswerOf(question);
-                    if (answer != null) return answer;
-                }
-                else if (a.Question.Equals(question))
+                if (a.Question.Equals(question))
                 {
                     answer = a;
                     _answers.Remove(answer);
                     return answer;
                 }
+                else if (a is AnswerFolder)
+                {
+                    answer = ((AnswerFolder)a).RemoveAnswerOf(question);
+                    if (answer != null) return answer;
+                }
             }
 
-            return answer;
+            return null;
         }
     }
 }

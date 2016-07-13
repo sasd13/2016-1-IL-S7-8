@@ -21,10 +21,9 @@ namespace DForm
             {
                 return null;
             }
-
             set
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("QuestionRoot cannot have parent");
             }
         }
 
@@ -34,10 +33,9 @@ namespace DForm
             {
                 return 0;
             }
-
             set
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("QuestionRoot index cannot be setted");
             }
         }
     }

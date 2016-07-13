@@ -18,19 +18,10 @@ namespace DForm
 
         private Form Form => _form;
 
-        public AnswerBase FindAnswer(QuestionBase question)
-        {
-            return _answer.FindAnswerFor(question);
-        }
+        public AnswerBase FindAnswer(QuestionBase question) => _answer.FindAnswerFor(question);
 
-        public AnswerBase AddAnswerFor(QuestionBase question)
-        {
-            return _answer.AddAnswerFor(question);
-        }
+        public AnswerBase AddAnswerFor(QuestionBase question) => _answer.AddAnswerFor(question);
 
-        public AnswerBase RemoveAnswerOf(QuestionBase question)
-        {
-            return _answer.RemoveAnswerOf(question);
-        }
+        public AnswerBase RemoveAnswerOf(QuestionBase question) => _answer.RemoveAnswerOf(question);
     }
 }

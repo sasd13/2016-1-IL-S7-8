@@ -19,6 +19,4 @@ namespace DForm
 
         T Visit(OpenQuestion openQuestion);
     }
-
-    
 }

@@ -32,14 +32,13 @@ namespace DForm
 
         public int AnswerCount => _formAnswers.Count;
 
+        internal List<FormAnswer> Answers => _formAnswers;
+
         public FormAnswer FindOrCreateAnswer(string username)
         {
             foreach(FormAnswer formAnswer in _formAnswers)
             {
-                if (String.Equals(formAnswer.UniqueName, username))
-                {
-                    return formAnswer;
-                }
+                if (String.Equals(formAnswer.UniqueName, username)) return formAnswer;
             }
 
             return CreateAnswer(username);
@@ -47,15 +46,12 @@ namespace DForm
 
         public FormAnswer CreateAnswer(string username)
         {
-            FormAnswer formAnswer = FormAnswerFactory.create(username, this);
+            FormAnswer formAnswer = FormAnswerFactory.Create(username, this);
             _formAnswers.Add(formAnswer);
 
             return formAnswer;
         }
 
-        public T Accept<T>(IVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public T Accept<T>(IVisitor<T> visitor) => visitor.Visit(this);
     }
 }

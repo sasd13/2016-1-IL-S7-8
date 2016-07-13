@@ -21,7 +21,7 @@ namespace DForm
 
         public QuestionBase AddNewQuestion(string questionClass)
         {
-            QuestionBase question = QuestionBaseFactory.create(questionClass);
+            QuestionBase question = QuestionBaseFactory.Create(questionClass);
             question.Parent = this;
 
             return question;
@@ -40,19 +40,13 @@ namespace DForm
 
         public override AnswerBase CreateAnswer()
         {
-            AnswerFolder answerFolder = new AnswerFolder(this);
+            AnswerFolder answer = new AnswerFolder(this);
             
-            foreach (QuestionBase question in _questions)
-            {
-                answerFolder.AddAnswerFor(question);
-            }
+            foreach (QuestionBase question in _questions) answer.AddAnswerFor(question);
 
-            return answerFolder;
+            return answer;
         }
 
-        public override T Accept<T>(IVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
-        }
+        public override T Accept<T>(IVisitor<T> visitor) => visitor.Visit(this);
     }
 }

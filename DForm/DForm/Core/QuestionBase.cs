@@ -19,17 +19,11 @@ namespace DForm
             }
             set
             {
-                if (_parent != null)
-                {
-                    _parent.Children.Remove(this);
-                }
+                if (_parent != null) _parent.Children.Remove(this);
 
                 _parent = (QuestionFolder)value;
 
-                if (value != null)
-                {
-                    _parent.Children.Add(this);
-                }
+                if (_parent != null) _parent.Children.Add(this);
             }
         }
 

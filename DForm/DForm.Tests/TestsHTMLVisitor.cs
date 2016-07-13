@@ -53,9 +53,9 @@ namespace DForm.Tests
             <form>
                 <h3>Questionnaire</h3>
                 <div>
-                    <h4>Partie 1</h4>
+                    <h4>Question 1</h4>
                     <div>
-                        <h4>Partie 1.1</h4>
+                        <h4>Question 1.1</h4>
                         <div>
                             <label>Commentaires</label>
                             <textarea required='required'></textarea>
@@ -75,10 +75,10 @@ namespace DForm.Tests
 
             form.Title = "Questionnaire";
             QuestionFolder qf1 = (QuestionFolder)form.Questions.AddNewQuestion("DForm.QuestionFolder");
-            qf1.Title = "Partie 1";
+            qf1.Title = "Question 1";
 
             QuestionFolder qf2 = (QuestionFolder)qf1.AddNewQuestion("DForm.QuestionFolder");
-            qf2.Title = "Partie 1.1";
+            qf2.Title = "Question 1.1";
             OpenQuestion qo21 = (OpenQuestion)qf2.AddNewQuestion("DForm.OpenQuestion");
             qo21.Title = "Commentaires";
             qo21.AllowEmptyAnswer = false;

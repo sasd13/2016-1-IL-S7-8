@@ -14,9 +14,6 @@ namespace DForm
             
         }
 
-        public override AnswerBase CreateAnswer()
-        {
-            return new BinaryAnswer(this);
-        }
+        public override AnswerBase CreateAnswer() => new BinaryAnswer(this);
     }
 }

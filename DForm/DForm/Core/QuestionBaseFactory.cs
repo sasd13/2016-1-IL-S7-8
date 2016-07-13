@@ -6,21 +6,15 @@ using System.Threading.Tasks;
 
 namespace DForm
 {
-    class QuestionBaseFactory
+    public class QuestionBaseFactory
     { 
-        public static QuestionBase create(string mClass)
+        public static QuestionBase Create(string questionClass)
         {
-            string fullName = mClass.Split(',')[0];
+            string fullName = questionClass.Split(',')[0];
             Type type = Type.GetType(fullName);
 
-            if (typeof(QuestionBase).IsAssignableFrom(type))
-            {
-                return (QuestionBase)Activator.CreateInstance(Type.GetType(fullName));
-            }
-            else
-            {
-                throw new ArgumentException("Invalid argument class: " + type);
-            }
+            if (typeof(QuestionBase).IsAssignableFrom(type)) return (QuestionBase)Activator.CreateInstance(Type.GetType(fullName));
+            else throw new ArgumentException("Invalid argument class: " + type);
         }
     }
 }
