@@ -15,7 +15,7 @@ namespace DForm
 
         T Visit(BinaryQuestion binaryQuestion);
 
-        T Visit(MultiChoiceQuestion multiChoiceQuestion);
+        T Visit(MultiCriteriaQuestion multiChoiceQuestion);
 
         T Visit(OpenQuestion openQuestion);
     }

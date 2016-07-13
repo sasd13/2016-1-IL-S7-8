@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DForm
 {
-    public class BinaryAnswer : MultiChoiceAnswer
+    public class BinaryAnswer : MultiCriteriaAnswer
     {
         public BinaryAnswer(QuestionBase question) : base(question)
         {
         }
 
-        public MultiChoiceOption Answer => Answers.Any() ? Answers.First() : null;
+        public MultiCriteriaOption Answer => Answers.Any() ? Answers.First() : null;
     }
 }

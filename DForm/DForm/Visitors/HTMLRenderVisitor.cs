@@ -59,7 +59,7 @@ namespace DForm
 
             TryAppendTitleForQuestion(builder, binaryQuestion);
             
-            foreach (MultiChoiceOption option in binaryQuestion.Options)
+            foreach (MultiCriteriaOption option in binaryQuestion.Options)
             {
                 builder.Append("<input type='radio' name=");
                 builder.Append(option.Name);
@@ -82,7 +82,7 @@ namespace DForm
             }
         }
 
-        public string Visit(MultiChoiceQuestion multiChoiceQuestion)
+        public string Visit(MultiCriteriaQuestion multiChoiceQuestion)
         {
             StringBuilder builder = new StringBuilder();
 
@@ -95,7 +95,7 @@ namespace DForm
                 builder.Append(" multiple='multiple'");
             }
 
-            foreach (MultiChoiceOption option in multiChoiceQuestion.Options)
+            foreach (MultiCriteriaOption option in multiChoiceQuestion.Options)
             {
                 builder.Append("<option name='");
                 builder.Append(option.Name);

@@ -47,8 +47,8 @@
     <Compile Include="IVisitor.cs" />
     <Compile Include="Core\AnswerFolder.cs" />
     <Compile Include="Impl\BinaryAnswer.cs" />
-    <Compile Include="Impl\MultiChoiceAnswer.cs" />
-    <Compile Include="Impl\MultiChoiceQuestion.cs" />
+    <Compile Include="Impl\MultiCriteriaAnswer.cs" />
+    <Compile Include="Impl\MultiCriteriaQuestion.cs" />
     <Compile Include="Impl\OpenAnswer.cs" />
     <Compile Include="Impl\OpenQuestion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

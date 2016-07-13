@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DForm
 {
-    public class BinaryQuestion : MultiChoiceQuestion
+    public class BinaryQuestion : MultiCriteriaQuestion
     {
         public BinaryQuestion() : base(false)
         {

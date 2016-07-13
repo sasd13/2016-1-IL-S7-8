@@ -6,28 +6,28 @@ using System.Threading.Tasks;
 
 namespace DForm
 {
-    public class MultiChoiceQuestion : QuestionBase
+    public class MultiCriteriaQuestion : QuestionBase
     {
-        readonly List<MultiChoiceOption> _options;
+        readonly List<MultiCriteriaOption> _options;
 
-        public MultiChoiceQuestion() : this(true)
+        public MultiCriteriaQuestion() : this(true)
         {
             
         }
 
-        public MultiChoiceQuestion(bool allowMultipleAnswers)
+        public MultiCriteriaQuestion(bool allowMultipleAnswers)
         {
             AllowMultipleAnswers = allowMultipleAnswers;
-            _options = new List<MultiChoiceOption>();
+            _options = new List<MultiCriteriaOption>();
         }
 
         public bool AllowMultipleAnswers { get; }
 
-        public List<MultiChoiceOption> Options => _options;
+        public List<MultiCriteriaOption> Options => _options;
 
         public override AnswerBase CreateAnswer()
         {
-            return new MultiChoiceAnswer(this);
+            return new MultiCriteriaAnswer(this);
         }
 
         public override T Accept<T>(IVisitor<T> visitor)
@@ -36,11 +36,11 @@ namespace DForm
         }
     }
 
-    public class MultiChoiceOption
+    public class MultiCriteriaOption
     {
         private KeyValuePair<string, string> _pair;
 
-        public MultiChoiceOption(QuestionBase question)
+        public MultiCriteriaOption(QuestionBase question)
         {
             _pair = new KeyValuePair<string, string>();
         }

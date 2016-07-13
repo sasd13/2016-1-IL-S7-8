@@ -50,8 +50,6 @@ namespace DForm
 
         public abstract AnswerBase CreateAnswer();
 
-        internal AnswerBase Answer{ get; set; }
-
         public virtual T Accept<T>(IVisitor<T> visitor)
         {
             throw new NotImplementedException();

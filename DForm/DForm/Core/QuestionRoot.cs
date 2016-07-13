@@ -15,8 +15,6 @@ namespace DForm
             _form = form;
         }
 
-        public Form GetForm => _form;
-
         public override QuestionBase Parent
         {
             get

@@ -22,9 +22,9 @@ namespace DForm.Tests
             QuestionBase q21 = q2.AddNewQuestion(typeof(BinaryQuestion).FullName);
 
             QuestionFolder q3 = (QuestionFolder) q2.AddNewQuestion(typeof(QuestionFolder).FullName);
-            QuestionBase q31 = q3.AddNewQuestion(typeof(MultiChoiceQuestion).FullName);
+            QuestionBase q31 = q3.AddNewQuestion(typeof(MultiCriteriaQuestion).FullName);
 
-            QuestionBase q4 = form.Questions.AddNewQuestion(typeof(MultiChoiceQuestion).FullName);
+            QuestionBase q4 = form.Questions.AddNewQuestion(typeof(MultiCriteriaQuestion).FullName);
 
             q4.Parent = q3;
             q1.Parent = q2;
@@ -46,7 +46,7 @@ namespace DForm.Tests
             AnswerBase a2 = q2.CreateAnswer();
 
             Assert.IsInstanceOf(typeof(BinaryAnswer), a1);
-            Assert.IsInstanceOf(typeof(MultiChoiceAnswer), a2);
+            Assert.IsInstanceOf(typeof(MultiCriteriaAnswer), a2);
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace DForm.Tests
             AnswerBase a2 = q2.CreateAnswer();
 
             Assert.IsInstanceOf(typeof(BinaryAnswer), a1);
-            Assert.IsNotInstanceOf(typeof(MultiChoiceAnswer), a2);
+            Assert.IsNotInstanceOf(typeof(MultiCriteriaAnswer), a2);
         }
     }
 }

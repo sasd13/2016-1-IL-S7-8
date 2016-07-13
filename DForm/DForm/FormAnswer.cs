@@ -16,7 +16,7 @@ namespace DForm
 
         public string UniqueName { get; }
 
-        private Form GetForm => _form;
+        private Form Form => _form;
 
         public AnswerBase FindAnswer(QuestionBase question)
         {
